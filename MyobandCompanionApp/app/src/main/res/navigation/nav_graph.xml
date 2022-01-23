@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.cmorrell.myobandcompanionapp.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_bondingFragment"
+            app:destination="@id/bondingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.cmorrell.myobandcompanionapp.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_calibrationFragment"
+            app:destination="@id/calibrationFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_unityFragment"
+            app:destination="@id/unityFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/calibrationFragment"
+        android:name="com.cmorrell.myobandcompanionapp.CalibrationFragment"
+        android:label="fragment_calibration"
+        tools:layout="@layout/fragment_calibration" />
+    <fragment
+        android:id="@+id/unityFragment"
+        android:name="com.cmorrell.myobandcompanionapp.UnityFragment"
+        android:label="fragment_unity"
+        tools:layout="@layout/fragment_unity" />
+    <fragment
+        android:id="@+id/bondingFragment"
+        android:name="com.cmorrell.myobandcompanionapp.BondingFragment"
+        android:label="fragment_bonding"
+        tools:layout="@layout/fragment_bonding" >
+        <action
+            android:id="@+id/action_bondingFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+</navigation>
