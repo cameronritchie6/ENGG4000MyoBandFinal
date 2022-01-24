@@ -7,6 +7,7 @@
 #include <BLEServer.h>
 #include <BLE2902.h>
 
+
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
 
@@ -20,15 +21,42 @@ BLEService *pService;
 BLECharacteristic *pCharacteristic;
 
 
-const int potPin = 4; //analog pin on esp 32
-double voltageIn=0;
+const int potPin1 = 4; //analog pin on esp 32
+const int potPin2 = 15; //analog pin 2 on esp 32
 double VoltageMax = 3.3; //max vltage applied to POT
 float ADCResolution = 12; //The ESP32 has a 12bit approximation register for 
 bool clientWrite;
 bool clientRead;
 bool deviceConnected;
-//char outputCode[];
+int outputCode;
+
+const int singleAnalogOut = 1; //the code that has to be written to the BLE server to begin sending single analog voltage readning
+const int doubleAnalogOut = 2; //the code that has to be written to the BLE server to begin sending two analog voltage readnings
+const int controlInput = 3; //the code that has to be written to the BLE server to begin sending contraction or co-contraction values
+
+
+double oldVoltage1;
+double oldVoltage2;
+double voltageIn;
+double voltageIn2;
+double ThresholdVoltage =2.0; //Threshold voltage in (V) to declare a contraction or not on the EMG signal
+double emgTollerance = 0.1; // the tollerance of fluctuation that the emg signal can have around the threshold voltage before a change state
+int tolleranceFlag =0;
+int SqeezeFlag=0;
+
+std::string Electrode1ContractionCode="1";
+std::string Electrode2ContractionCode="2";
+std::string CocontractionCode="3";
+std::string noContractionCode="4";
+std::string ContractionError ="5";
+
+
+
+
+
 double signalCheck(int Pin);
+boolean changeDetection(int checkedPin);
+int tolleraceCheck(double voltageIn);
 
 class MyServerCallbacks: public BLEServerCallbacks {
   void onConnect(BLEServer* pServer) {
@@ -40,7 +68,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
   }
 };
 
-/*
+
 class CharacteristicCallbacks: public BLECharacteristicCallbacks {
   
   void onWrite(BLECharacteristicCallbacks* pCharacteristic){
@@ -52,22 +80,28 @@ class CharacteristicCallbacks: public BLECharacteristicCallbacks {
     Serial.println("READ BOY");
   };  
 };
-*/
+
 
 class MyCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
-   // std::string strCode = pCharacteristic->getValue();
-   //outputCode() = strCode;
+    std::string strCode = pCharacteristic->getValue();
+   char outputCodeChar;
+   outputCodeChar =strCode[0];
+   Serial.println(outputCodeChar);
+    outputCode = outputCodeChar-'0';
+    }
+  
 
   
     //clientWrite  = true;
   //  Serial.println(outputCode);
 
-  };  
+    
   void onRead(BLECharacteristic* pCharacteristic){
    //If we need to know a reading flag
-  };  
+  }
 };
+
 
 void setup() {
 
@@ -104,32 +138,90 @@ void setup() {
 
 void loop() {
 
+switch(outputCode){
 
-double oldVoltage =voltageIn;
+  case singleAnalogOut: {//what will happen when the BLE code is 1 (single analog output)
+    if(changeDetection(potPin1)){
+     char voltString[8]; //declairng the strig that the voltage value will be converted to
+     dtostrf(voltageIn, 1, 2, voltString); //convert the double into a string
+     pCharacteristic->setValue(voltString); 
+     Serial.println(voltString);
+    } //end if
 
-  voltageIn=signalCheck(potPin); //probe the voltage
-  oldVoltage = round( oldVoltage * 100.0 ) / 100.0; //round to two didgits to compare if there is a change
-  voltageIn = round( voltageIn * 100.0 ) / 100.0; //round to two didgits to compare if there is a change from previous value
+  break; //end the singleAnalogOut case
+  }
 
-  if(oldVoltage!=voltageIn){ //if there is a difference betwen voltage ratings - display the change
-  char voltString[8]; //declairng the strig that the voltage value will be converted to
-dtostrf(voltageIn, 1, 2, voltString); //convert the double into a string
-pCharacteristic->setValue(voltString); 
-Serial.print(oldVoltage);
-Serial.print(" ");
-Serial.print(voltageIn);
-Serial.print(" ");
-Serial.println(voltString);
-Serial.println(clientWrite);
-}
+  case doubleAnalogOut:{
+
+    if(changeDetection(potPin1)||changeDetection(potPin2)){
+    char voltString1[8]; //declairng the strig that the voltage value will be converted to
+    char voltString2[8]; 
+     dtostrf(voltageIn, 1, 2, voltString1); //convert the double into a string
+     dtostrf(voltageIn2, 1, 2, voltString2); //convert the double into a string
+     std::string doubleVoltageString = std::string(voltString1) + " " +voltString2; //combine the two voltage readings as one string
+    
+     pCharacteristic->setValue(doubleVoltageString); //end the two analog values to the BLE server
+     Serial.println(doubleVoltageString.c_str() );
+  }//end if change detection 
+  break;
+  } //end double analog output case
+
+  case controlInput:{
+    std::string signalOut;
+    if(changeDetection(potPin1)||changeDetection(potPin2)){
+     int signal1 = tolleraceCheck(voltageIn);
+     int signal2 = tolleraceCheck(voltageIn2);
+
+    
+      if(signal1 ==1 && signal2 ==0 ){ //contraction on electrode 1
+      Serial.println("CONTRACTION ELECTRODE 1");
+      signalOut=Electrode1ContractionCode;
+
+       
+      }
+      else if(signal1 ==0 && signal2 ==1 ){ //contraction on electrode 2
+      Serial.println("CONTRACTION ELECTRODE 2");
+      signalOut=Electrode2ContractionCode;
+        
+      }
+      else if(signal1 ==1 && signal2 ==1 ){ //co-contraction
+      Serial.println("CO-CONTRACTION");
+      signalOut=CocontractionCode;
+
+        
+      }
+      else if(signal1 ==0 && signal2 ==0 ){ //no contraction
+      Serial.println("NO CONTRACTION");
+      signalOut=noContractionCode;     
+
+      }
+      else{ //is there is an error
+      Serial.println("CONTRACTION ERROR");
+      signalOut =ContractionError;
+      }//end else
+      pCharacteristic->setValue(signalOut); //output the contraction code
+    }//end change detection
+
+      break;
+     
+    }
+
+
+   
+
+  default :
+    Serial.println("Invalid Data request code");
+
+} //end switch case statement
+
+
+
+
 
 //Serial.println(outputCode);
-  delay(2000);
+  delay(500);
 
 }
-
-
-
 
 double signalCheck(int Pin){
 int potValue = analogRead(Pin);
@@ -140,3 +232,51 @@ return voltageMeasurement ;
 }
 
 
+boolean changeDetection(int checkedPin){
+
+  if(checkedPin == potPin1){
+   voltageIn=signalCheck(checkedPin); //probe the voltage
+  oldVoltage1 = round( oldVoltage1 * 100.0 ) / 100.0; //round to two didgits to compare if there is a change
+  voltageIn = round( voltageIn * 100.0 ) / 100.0; //round to two didgits to compare if there is a change from previous value
+
+  if(oldVoltage1 !=voltageIn){
+    oldVoltage1 = voltageIn;
+    return true;
+  } //end if
+  else {
+oldVoltage1 = voltageIn;
+    return false;
+  } //end else
+
+}
+else if(checkedPin == potPin2){
+  voltageIn2=signalCheck(checkedPin); //probe the voltage
+  oldVoltage2 = round( oldVoltage2 * 100.0 ) / 100.0; //round to two didgits to compare if there is a change
+  voltageIn2 = round( voltageIn2 * 100.0 ) / 100.0; //round to two didgits to compare if there is a change from previous value
+  if(oldVoltage2 !=voltageIn2){
+    oldVoltage2 = voltageIn2;
+    return true;
+  } //end if
+  else {
+oldVoltage2 = voltageIn2;
+    return false;
+  } //end else
+} //end elseif
+} //end changeDetection
+
+
+//***************** Signal Tollerance Check *********************//
+//Recieved the voltage of the signal, then checks to see if its a contraction or not
+ 
+int tolleraceCheck(double voltageInCheck){
+
+if(voltageInCheck>ThresholdVoltage&&SqeezeFlag==0){ //Begin the squeeze
+  SqeezeFlag=1;
+}
+else if (voltageInCheck<ThresholdVoltage&&SqeezeFlag==1){ //End the squeeze &check fluctation
+  SqeezeFlag=0; 
+}
+return SqeezeFlag;
+} //end tollerance check
+
+//*****************  END Signal Tollerance Check *******************//
