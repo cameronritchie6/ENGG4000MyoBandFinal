@@ -1,5 +1,8 @@
 package com.cmorrell.myobandcompanionapp;
 
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
+
+import android.Manifest;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -13,12 +16,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.util.regex.Pattern;
 
@@ -39,6 +49,7 @@ public class BluetoothLeService extends Service {
     private static String deviceAddress;
     private BluetoothGatt bluetoothGatt;
     private MainActivity main;
+
 
     public void setMain(MainActivity main) {
         this.main = main;
@@ -77,6 +88,7 @@ public class BluetoothLeService extends Service {
         close();
     }
 
+
     /**
      * Setup BluetoothAdapter for Bluetooth connection.
      * @return false if BluetoothAdapter could not be found, otherwise true.
@@ -90,11 +102,33 @@ public class BluetoothLeService extends Service {
         return true;
     }
 
+
+    private void checkForBTPermissions() {
+        int test = Build.VERSION.SDK_INT;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            main.checkForPermission(Manifest.permission.BLUETOOTH_CONNECT);
+            main.checkForPermission(Manifest.permission.BLUETOOTH_ADVERTISE);
+            main.checkForPermission(Manifest.permission.BLUETOOTH_SCAN);
+        } else {
+            main.checkForPermission(Manifest.permission.BLUETOOTH);
+            main.checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            main.checkForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+
+
+    }
+
     public boolean connect(final String address) {
         if (bluetoothAdapter == null || address == null) {
             Log.e(LOG_TAG, "BluetoothAdapter not initialized or unspecified address.");
             return false;
         }
+
+        // Check that user has the required Bluetooth permissions enabled
+        checkForBTPermissions();
+
+
 
         try {
             final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
@@ -105,7 +139,6 @@ public class BluetoothLeService extends Service {
             Log.e(LOG_TAG, "Device not found with provided address.");
             return false;
         }
-
     }
 
     /**

@@ -37,9 +37,10 @@ public class BondingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Bond with device
-
-                main.getBluetoothLeService().pairDevice();
-                main.getBluetoothLeService().connect(main.getBluetoothLeService().getDeviceAddress());
+main.getBluetoothLeService().connect(MainActivity.address);
+//main.getBluetoothLeService().pairDevice();
+//                main.getBluetoothLeService().pairDevice();
+//                main.getBluetoothLeService().connect(main.getBluetoothLeService().getDeviceAddress());
             }
         });
         return view;
