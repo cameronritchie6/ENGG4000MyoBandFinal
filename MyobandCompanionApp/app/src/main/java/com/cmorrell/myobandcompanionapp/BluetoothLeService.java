@@ -74,7 +74,8 @@ public class BluetoothLeService extends Service {
     public void onCreate() {
         super.onCreate();
         try {
-            registerReceiver(main.getMyoReceiver(), makeGattUpdateIntentFilter());
+            MyoReceiver myoReceiver = main.getMyoReceiver();
+            registerReceiver(myoReceiver, makeGattUpdateIntentFilter());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -104,15 +105,16 @@ public class BluetoothLeService extends Service {
 
 
     private void checkForBTPermissions() {
-        int test = Build.VERSION.SDK_INT;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            main.checkForPermission(Manifest.permission.BLUETOOTH_CONNECT);
-            main.checkForPermission(Manifest.permission.BLUETOOTH_ADVERTISE);
-            main.checkForPermission(Manifest.permission.BLUETOOTH_SCAN);
+//            main.checkLocationPermission(Manifest.permission.BLUETOOTH_CONNECT);
+//            main.checkForPermission(Manifest.permission.BLUETOOTH_ADVERTISE);
+//            main.checkForPermission(Manifest.permission.BLUETOOTH_SCAN);
         } else {
-            main.checkForPermission(Manifest.permission.BLUETOOTH);
-            main.checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            main.checkForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+//            main.checkForPermission(Manifest.permission.BLUETOOTH);
+//            main.checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+//            main.checkForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+//                main.checkForPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         }
 
 
@@ -126,14 +128,18 @@ public class BluetoothLeService extends Service {
         }
 
         // Check that user has the required Bluetooth permissions enabled
-        checkForBTPermissions();
+//        checkForBTPermissions();
 
+        main.checkLocationPermission();
 
 
         try {
             final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
             // Connect to the GATT server on the device
-            bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback);
+//            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+            bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback, BluetoothDevice.TRANSPORT_LE);
+//            else
+//                bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback);
             return true;
         } catch (IllegalArgumentException exception) {
             Log.e(LOG_TAG, "Device not found with provided address.");
@@ -163,6 +169,7 @@ public class BluetoothLeService extends Service {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         return intentFilter;
     }
 
@@ -172,7 +179,7 @@ public class BluetoothLeService extends Service {
         BluetoothLeDeviceFilter deviceFilter = new BluetoothLeDeviceFilter.Builder()
                 // Match only Bluetooth devices whose name matches the pattern
 //                .setNamePattern(Pattern.compile("Myo")).build();
-        .setNamePattern(Pattern.compile("BBC")).build();
+        .setNamePattern(Pattern.compile("hello")).build();
 
         // Set a DeviceFilter to an AssociationRequest so the device manager can determine what type of device to seek.
         AssociationRequest pairingRequest = new AssociationRequest.Builder()

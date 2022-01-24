@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -27,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothLeService bluetoothLeService;
     private final MyoReceiver myoReceiver = new MyoReceiver();
+    public static final int PERMISSION_CODE_FINE = 2;  // Request code for fine location permission
+    public static final int PERMISSION_CODE_BACKGROUND = 3;    // Request code for background location permission
+    public static final int SELECT_DEVICE_REQUEST_CODE = 4;    // Request code for bonding device
     private static final String LOG_TAG = "MainActivity";
     public static final String address = "CD:46:77:23:DE:11";
 
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();   // destroy activity
                 }
                 // Perform device connection
-//                bluetoothLeService.connect(bluetoothLeService.getDeviceAddress());
+//                bluetoothLeService.connect(address);
             }
         }
 
@@ -85,15 +89,18 @@ public class MainActivity extends AppCompatActivity {
 
             if (device != null) {
                 // Bond with device
-                if (device.createBond()) {
-                    Log.d(LOG_TAG, "Successful bond");
-                    bluetoothLeService.setDeviceAddress(device.getAddress());
-                    // NEED TO FIGURE OUT
-//                    bluetoothLeService.connect(bluetoothLeService.getDeviceAddress());
-                }
-                else
+//                if (device.createBond()) {
+//                    Log.d(LOG_TAG, "Successful bond");
+//                    bluetoothLeService.setDeviceAddress(device.getAddress());
+//                    // NEED TO FIGURE OUT
+////                    bluetoothLeService.connect(bluetoothLeService.getDeviceAddress());
+//                }
+                device.createBond();
+                bluetoothLeService.setDeviceAddress(device.getAddress());
+                bluetoothLeService.connect(bluetoothLeService.getDeviceAddress());
+            } else
                     Log.e(LOG_TAG, "Failed to bond");
-            }
+
         } else
             super.onActivityResult(requestCode, resultCode, data);
 
@@ -118,28 +125,46 @@ public class MainActivity extends AppCompatActivity {
     // https://developer.android.com/guide/topics/connectivity/bluetooth/permissions
     // https://developer.android.com/training/permissions/requesting#allow-system-manage-request-code
     // NEED TO FIX, IT ISN'T REQUESTING BUT IT SAYS DENIED
-    public boolean checkForPermission(String permission) {
-        if (ContextCompat.checkSelfPermission(
-                MainActivity.this, permission) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else if (shouldShowRequestPermissionRationale(permission)) {
-            // 1. Instantiate an AlertDialog builder with its constructor
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            // 2. Chain together various setter methods to set the dialog characteristics
-            builder.setMessage("This is the alert message CBM has set.")
-                    .setTitle("Title for AlertDialog set by CBM");
-            builder.setPositiveButton("OK", (dialog, which) -> {
-                requestPermissionLauncher.launch(permission);
-            });
-            builder.setNegativeButton("I do not give permission", (dialog, which) -> {
-            });
+    public void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // No explanation needed, we can request the permission.
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION_CODE_FINE);
 
-            // 3. Get the AlertDialog from its builder
-            AlertDialog dialog = builder.create();
+        } else if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
 
-            dialog.show();
+                    // Show an explanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+                    new AlertDialog.Builder(this)
+                            .setTitle("Background Location Permission")
+                            .setMessage("Background location is required for this device.")
+                            .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(this,
+                                        new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                                        PERMISSION_CODE_BACKGROUND);
+                            })
+                            .create()
+                            .show();
+
+                } else {
+                    // No explanation needed, we can request the permission.
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                            PERMISSION_CODE_BACKGROUND);
+                }
+            }
         }
-        return true;
     }
 
 
