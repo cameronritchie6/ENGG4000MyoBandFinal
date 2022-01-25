@@ -13,6 +13,7 @@ import android.companion.AssociationRequest;
 import android.companion.BluetoothLeDeviceFilter;
 import android.companion.CompanionDeviceManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
@@ -23,12 +24,12 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.util.regex.Pattern;
 
@@ -37,6 +38,8 @@ public class BluetoothLeService extends Service {
     public static final String ACTION_GATT_CONNECTED = "com.cmorrell.myobandcompanionapp.ACTION_GATT_CONNECTED";
     public static final String ACTION_GATT_DISCONNECTED = "com.cmorrell.myobandcompanionapp.ACTION_GATT_DISCONNECTED";
     public static final int SELECT_DEVICE_REQUEST_CODE = 1;    // request code for BLE bonding
+    public static final int REQUEST_ENABLE_BT = 2;
+    public static final int PERMISSION_REQUEST_CODE = 3;    // Request code for background location permission
 
     private static final int STATE_DISCONNECTED = 0;
     private static final int STATE_CONNECTED = 2;
@@ -53,6 +56,10 @@ public class BluetoothLeService extends Service {
 
     public void setMain(MainActivity main) {
         this.main = main;
+    }
+
+    public MainActivity getMain() {
+        return main;
     }
 
     private final BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
@@ -74,8 +81,11 @@ public class BluetoothLeService extends Service {
     public void onCreate() {
         super.onCreate();
         try {
-            MyoReceiver myoReceiver = main.getMyoReceiver();
+
+//            MyoReceiver myoReceiver = main.getMyoReceiver();
+            MyoReceiver myoReceiver = MainActivity.myoReceiver;
             registerReceiver(myoReceiver, makeGattUpdateIntentFilter());
+//            main.registerReceiver(myoReceiver, makeGattUpdateIntentFilter());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,22 +113,52 @@ public class BluetoothLeService extends Service {
         return true;
     }
 
+    private boolean hasPermission(String permission) {
+        return ContextCompat.checkSelfPermission(main, permission) == PackageManager.PERMISSION_GRANTED;
+    }
 
-    private void checkForBTPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//            main.checkLocationPermission(Manifest.permission.BLUETOOTH_CONNECT);
-//            main.checkForPermission(Manifest.permission.BLUETOOTH_ADVERTISE);
-//            main.checkForPermission(Manifest.permission.BLUETOOTH_SCAN);
-        } else {
-//            main.checkForPermission(Manifest.permission.BLUETOOTH);
-//            main.checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-//            main.checkForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-//                main.checkForPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+
+    private boolean checkForBTPermissions() {
+
+        if (!bluetoothAdapter.isEnabled()) {
+            // Ask user to enable Bluetooth
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            main.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            return false;
         }
 
+        if (!hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) ||
+        !hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
+        !hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            // Need to request permission
+            String[] permissions;
+            String message;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                permissions = new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION};
+                message = "Background location is required for Bluetooth connections on this device. Please select \"Allow all the time\"";
+            } else {
+               permissions = new String[] {Manifest.permission.ACCESS_FINE_LOCATION};
+                message = "Fine location is required for Bluetooth connections on this device. Please select \"Allow while using\"";
+            }
 
-
+            new AlertDialog.Builder(main)
+                            .setTitle("Location Permission")
+                            .setMessage(message)
+                            .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                                // Prompt the user once explanation has been shown
+//                                main.requestPermissions(permissions, PERMISSION_REQUEST_CODE);
+                                ActivityCompat.requestPermissions(main, permissions, PERMISSION_REQUEST_CODE);
+                            })
+                            .setNegativeButton("No thanks", (dialog, which) -> {
+                                // Close dialog
+                                dialog.dismiss();
+                            })
+                            .create()
+                            .show();
+            return false;
+        }
+        return true;
     }
 
     public boolean connect(final String address) {
@@ -127,24 +167,20 @@ public class BluetoothLeService extends Service {
             return false;
         }
 
+
         // Check that user has the required Bluetooth permissions enabled
-//        checkForBTPermissions();
-
-        main.checkLocationPermission();
-
-
-        try {
-            final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
-            // Connect to the GATT server on the device
-//            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
-            bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback, BluetoothDevice.TRANSPORT_LE);
-//            else
-//                bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback);
-            return true;
-        } catch (IllegalArgumentException exception) {
-            Log.e(LOG_TAG, "Device not found with provided address.");
-            return false;
+        if (checkForBTPermissions()) {
+            try {
+                final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
+                // Connect to the GATT server on the device
+                bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback, BluetoothDevice.TRANSPORT_LE);
+                return true;
+            } catch (IllegalArgumentException exception) {
+                Log.e(LOG_TAG, "Device not found with provided address.");
+                return false;
+            }
         }
+        return false;
     }
 
     /**
@@ -152,7 +188,9 @@ public class BluetoothLeService extends Service {
      * @param action - String that describes the action that has occurred.
      */
     private void broadcastUpdate(final String action) {
-        final Intent intent = new Intent(action);
+//        final Intent intent = new Intent(action);
+        final Intent intent = new Intent();
+        intent.setAction(action);
         sendBroadcast(intent);
     }
 
@@ -170,6 +208,7 @@ public class BluetoothLeService extends Service {
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
         intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        intentFilter.setPriority(500);
         return intentFilter;
     }
 
@@ -178,8 +217,8 @@ public class BluetoothLeService extends Service {
         // Create device filter
         BluetoothLeDeviceFilter deviceFilter = new BluetoothLeDeviceFilter.Builder()
                 // Match only Bluetooth devices whose name matches the pattern
-//                .setNamePattern(Pattern.compile("Myo")).build();
-        .setNamePattern(Pattern.compile("hello")).build();
+                .setNamePattern(Pattern.compile("hello")).build();
+
 
         // Set a DeviceFilter to an AssociationRequest so the device manager can determine what type of device to seek.
         AssociationRequest pairingRequest = new AssociationRequest.Builder()
@@ -207,7 +246,7 @@ public class BluetoothLeService extends Service {
             @Override
             public void onFailure(CharSequence error) {
                 // Handle failure
-                Toast.makeText(main, "Could not find compatible Myoband device.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(main, "Failed to bond.", Toast.LENGTH_SHORT).show();
             }
         }, null);
     }

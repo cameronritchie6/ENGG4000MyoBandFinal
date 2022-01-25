@@ -18,41 +18,62 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
     private BluetoothLeService bluetoothLeService;
-    private final MyoReceiver myoReceiver = new MyoReceiver();
-    public static final int PERMISSION_CODE_FINE = 2;  // Request code for fine location permission
-    public static final int PERMISSION_CODE_BACKGROUND = 3;    // Request code for background location permission
-    public static final int SELECT_DEVICE_REQUEST_CODE = 4;    // Request code for bonding device
+    public static MyoReceiver myoReceiver = new MyoReceiver();
+//    private static final int PERMISSION_REQUEST_CODE = 1;
+//    public static final int PERMISSION_CODE_FINE = 2;  // Request code for fine location permission
+//    public static final int PERMISSION_CODE_BACKGROUND = 3;    // Request code for background location permission
+//    public static final int SELECT_DEVICE_REQUEST_CODE = 4;    // Request code for bonding device
     private static final String LOG_TAG = "MainActivity";
-    public static final String address = "CD:46:77:23:DE:11";
+//    public static final String address = "CD:46:77:23:DE:11";
 
     // Register the permissions callback, which handles the user's response to the
     // system permissions dialog. Save the return value, an instance of
     // ActivityResultLauncher, as an instance variable.
-    private ActivityResultLauncher<String> requestPermissionLauncher =
-            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                if (isGranted) {
-                    // Permission is granted. Continue the action or workflow in your
-                    // app.
-                    Log.d(LOG_TAG, "They granted the permission!");
-                } else {
-                    // Explain to the user that the feature is unavailable because the
-                    // features requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
-                    Toast.makeText(this, "Cannot find Bluetooth device without proper permissions.", Toast.LENGTH_SHORT).show();
-                }
-            });
+//    private ActivityResultLauncher<String[]> requestPermissionLauncher =
+//            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
+//
+//
+//                if (isGranted.get(Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                    // Permission is granted. Continue the action or workflow in your
+//                    // app.
+//                    Log.d(LOG_TAG, "They granted the permission!");
+//                } else {
+//                    // Explain to the user that the feature is unavailable because the
+//                    // features requires a permission that the user has denied. At the
+//                    // same time, respect the user's decision. Don't link to system
+//                    // settings in an effort to convince the user to change their
+//                    // decision.
+//                    Toast.makeText(this, "Cannot find Bluetooth device without proper permissions.", Toast.LENGTH_SHORT).show();
+//                }
+//            });
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == BluetoothLeService.PERMISSION_REQUEST_CODE) {
+            if (!(grantResults.length > 0) || !Arrays.stream(grantResults).allMatch(n -> n == PackageManager.PERMISSION_GRANTED)) {
+                // All permissions granted
+                Toast.makeText(this, "You must grant all permissions", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -66,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(BluetoothLeService.LOG_TAG, "Unable to initialize Bluetooth");
                     finish();   // destroy activity
                 }
-                // Perform device connection
-//                bluetoothLeService.connect(address);
             }
         }
 
@@ -89,18 +108,12 @@ public class MainActivity extends AppCompatActivity {
 
             if (device != null) {
                 // Bond with device
-//                if (device.createBond()) {
-//                    Log.d(LOG_TAG, "Successful bond");
-//                    bluetoothLeService.setDeviceAddress(device.getAddress());
-//                    // NEED TO FIGURE OUT
-////                    bluetoothLeService.connect(bluetoothLeService.getDeviceAddress());
-//                }
+                String address = device.getAddress();
                 device.createBond();
-                bluetoothLeService.setDeviceAddress(device.getAddress());
-                bluetoothLeService.connect(bluetoothLeService.getDeviceAddress());
-            } else
-                    Log.e(LOG_TAG, "Failed to bond");
-
+                bluetoothLeService.setDeviceAddress(address);
+                // PROBABLY WRONG RIGHT HERE
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_bondingFragment_to_menuFragment);
+            }
         } else
             super.onActivityResult(requestCode, resultCode, data);
 
@@ -112,60 +125,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        bluetoothLeService.initialize();
         // Bind Bluetooth service to activity
+        bluetoothLeService = new BluetoothLeService();
+        bluetoothLeService.setMain(MainActivity.this);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        startService(gattServiceIntent);
         bindService(gattServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
 
     }
 
-
-    // NEED TO CHECK FOR BLUETOOTH_ADVERTISE, BLUETOOTH_CONNECT, AND BLUETOOTH_SCAN
-    // https://developer.android.com/guide/topics/connectivity/bluetooth/permissions
-    // https://developer.android.com/training/permissions/requesting#allow-system-manage-request-code
-    // NEED TO FIX, IT ISN'T REQUESTING BUT IT SAYS DENIED
-    public void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // No explanation needed, we can request the permission.
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSION_CODE_FINE);
-
-        } else if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                // Should we show an explanation?
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
-                    new AlertDialog.Builder(this)
-                            .setTitle("Background Location Permission")
-                            .setMessage("Background location is required for this device.")
-                            .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(this,
-                                        new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                                        PERMISSION_CODE_BACKGROUND);
-                            })
-                            .create()
-                            .show();
-
-                } else {
-                    // No explanation needed, we can request the permission.
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                            PERMISSION_CODE_BACKGROUND);
-                }
-            }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (bluetoothLeService.getMain() == null) {
+            // Set MainActivity context in service
+            bluetoothLeService.setMain(MainActivity.this);
         }
     }
+
 
 
     public MyoReceiver getMyoReceiver() {

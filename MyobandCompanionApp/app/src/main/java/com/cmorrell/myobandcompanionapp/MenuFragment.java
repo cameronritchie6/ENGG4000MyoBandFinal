@@ -22,11 +22,18 @@ public class MenuFragment extends Fragment {
 
     Button calibrationBtn;
     Button gamesBtn;
+    MainActivity  main;
 
     public MenuFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        main = (MainActivity) requireActivity();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,8 +51,10 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Go to calibration screen
-                NavDirections action = MenuFragmentDirections.actionMenuFragmentToCalibrationFragment();
-                Navigation.findNavController(view).navigate(action);
+//                NavDirections action = MenuFragmentDirections.actionMenuFragmentToCalibrationFragment();
+//                Navigation.findNavController(view).navigate(action);
+                String address = main.getBluetoothLeService().getDeviceAddress();
+                main.getBluetoothLeService().connect(address);
             }
         });
 
