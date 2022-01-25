@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 //    public static final int PERMISSION_CODE_FINE = 2;  // Request code for fine location permission
 //    public static final int PERMISSION_CODE_BACKGROUND = 3;    // Request code for background location permission
 //    public static final int SELECT_DEVICE_REQUEST_CODE = 4;    // Request code for bonding device
-    private static final String LOG_TAG = "MainActivity";
+    private static final String LOG_TAG = "MainAc";
+
 //    public static final String address = "CD:46:77:23:DE:11";
 
     // Register the permissions callback, which handles the user's response to the
