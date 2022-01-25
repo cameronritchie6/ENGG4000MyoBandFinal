@@ -51,8 +51,6 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Go to calibration screen
-//                NavDirections action = MenuFragmentDirections.actionMenuFragmentToCalibrationFragment();
-//                Navigation.findNavController(view).navigate(action);
                 String address = main.getBluetoothLeService().getDeviceAddress();
                 main.getBluetoothLeService().connect(address);
             }
