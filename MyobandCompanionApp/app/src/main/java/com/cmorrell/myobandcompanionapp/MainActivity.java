@@ -1,30 +1,21 @@
 package com.cmorrell.myobandcompanionapp;
 
-import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanResult;
 import android.companion.CompanionDeviceManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import java.util.Arrays;
@@ -38,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 //    public static final int PERMISSION_CODE_BACKGROUND = 3;    // Request code for background location permission
 //    public static final int SELECT_DEVICE_REQUEST_CODE = 4;    // Request code for bonding device
     private static final String LOG_TAG = "MainActivity";
+
 //    public static final String address = "CD:46:77:23:DE:11";
 
     // Register the permissions callback, which handles the user's response to the
@@ -127,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Bind Bluetooth service to activity
         bluetoothLeService = new BluetoothLeService();
-        bluetoothLeService.setMain(MainActivity.this);
+//        bluetoothLeService.setMain(MainActivity.this);
+//        myoReceiver.setMain(MainActivity.this);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         startService(gattServiceIntent);
         bindService(gattServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
@@ -138,17 +131,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (bluetoothLeService.getMain() == null) {
-            // Set MainActivity context in service
-            bluetoothLeService.setMain(MainActivity.this);
-        }
+        // Set MainActivity context for broadcast receiver and service
+        bluetoothLeService.setMain(MainActivity.this);
+        myoReceiver.setMain(MainActivity.this);
+
     }
 
 
 
-    public MyoReceiver getMyoReceiver() {
-        return myoReceiver;
-    }
+//    public MyoReceiver getMyoReceiver() {
+//        return myoReceiver;
+//    }
 
     public BluetoothLeService getBluetoothLeService() {
         return bluetoothLeService;

@@ -33,12 +33,9 @@ public class BondingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_bonding, container, false);
         bondingBtn = view.findViewById(R.id.bonding_btn);
-        bondingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Bond with device
-                main.getBluetoothLeService().pairDevice();
-            }
+        bondingBtn.setOnClickListener(view1 -> {
+            // Bond with device
+            main.getBluetoothLeService().pairDevice();
         });
         return view;
     }
