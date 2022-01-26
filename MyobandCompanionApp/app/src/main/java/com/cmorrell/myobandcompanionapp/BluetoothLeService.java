@@ -205,6 +205,10 @@ public class BluetoothLeService extends Service {
             return false;
         }
 
+        if (connectionState == STATE_CONNECTED) {
+            close();
+        }
+
 
         // Check that user has the required Bluetooth permissions enabled
         if (checkForBTPermissions()) {
@@ -230,6 +234,12 @@ public class BluetoothLeService extends Service {
         sendBroadcast(intent);
     }
 
+    /**
+     * Broadcast update for broadcast receiver
+     *
+     * @param action         action to broadcast
+     * @param characteristic characteristic whose data will be read or sent
+     */
     private void broadcastUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
         final byte[] data = characteristic.getValue();

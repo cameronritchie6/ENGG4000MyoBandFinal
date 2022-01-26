@@ -13,12 +13,12 @@
         android:layout_height="wrap_content"
         android:text="@string/extension_tv_txt"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/extension_bar"
-        app:layout_constraintStart_toStartOf="@+id/extension_bar"
+        app:layout_constraintEnd_toEndOf="@+id/bar_2"
+        app:layout_constraintStart_toStartOf="@+id/bar_2"
         app:layout_constraintTop_toTopOf="@+id/flexion_tv" />
 
     <ProgressBar
-        android:id="@+id/extension_bar"
+        android:id="@+id/bar_2"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -27,7 +27,7 @@
         android:progressDrawable="@drawable/progress_drawable_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/flexion_bar" />
+        app:layout_constraintTop_toTopOf="@+id/bar_1" />
 
     <TextView
         android:id="@+id/calibration_tv"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:id="@+id/flexion_bar"
+        android:id="@+id/bar_1"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -60,7 +60,8 @@
         android:layout_marginTop="32dp"
         android:text="@string/flexion_tv_txt"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/flexion_bar"
-        app:layout_constraintStart_toStartOf="@+id/flexion_bar"
+        app:layout_constraintEnd_toEndOf="@+id/bar_1"
+        app:layout_constraintStart_toStartOf="@+id/bar_1"
         app:layout_constraintTop_toBottomOf="@+id/calibration_tv" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

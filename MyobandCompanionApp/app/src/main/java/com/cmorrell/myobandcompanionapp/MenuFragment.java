@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.unity3d.player.UnityPlayer;
 import com.unity3d.player.UnityPlayerActivity;
@@ -33,6 +34,13 @@ public class MenuFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         main = (MainActivity) requireActivity();
+
+        // Connect to device
+        String address = main.getBluetoothLeService().getDeviceAddress();
+        if (!main.getBluetoothLeService().connect(address)) {
+            Toast.makeText(main, "Failed to connect to Myoband device", Toast.LENGTH_SHORT).show();
+            // Maybe go to connection screen, handle disconnect SOMEHOW
+        }
     }
 
     @Override
@@ -51,8 +59,8 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Go to calibration screen
-                String address = main.getBluetoothLeService().getDeviceAddress();
-                main.getBluetoothLeService().connect(address);
+                NavDirections action = MenuFragmentDirections.actionMenuFragmentToCalibrationFragment();
+                Navigation.findNavController(view).navigate(action);
             }
         });
 
