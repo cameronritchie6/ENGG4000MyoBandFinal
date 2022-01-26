@@ -29,6 +29,12 @@ public class MyoReceiver extends BroadcastReceiver {
 //            System.out.print(services);
             Log.d(LOG_TAG, "GATT services discovered.");
             main.getBluetoothLeService().setCharacteristicNotification();
+        } else if (BluetoothLeService.ACTION_DATA_SENT.equals(action)) {
+            // Sent data to Myoband
+            Log.d(LOG_TAG, "SENT");
+        } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+            // Received data from Myoband
+            Log.d(LOG_TAG, "RECEIVED DATA");
         }
     }
 }

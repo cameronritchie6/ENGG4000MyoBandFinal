@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.companion.AssociationRequest;
@@ -49,7 +50,10 @@ public class BluetoothLeService extends Service {
     public static final int REQUEST_ENABLE_BT = 2;  // request code to enable Bluetooth
     public static final int PERMISSION_REQUEST_CODE = 3;    // request code for background location permission
 
-    private static final String UART_SERVICE_UUID = "B2B9D063-60D4-4511-91A8-20E2E77CFA4B";
+    private static final String UART_SERVICE_UUID = "B2B9D06E-60D4-4511-91A8-20E2E77CFA4B";
+    private static final String RX_CHARACTERISTIC_UUID = "6A67CCB0-251C-4885-A917-3A43554416CD";
+    private static final String TX_CHARACTERISTIC_UUID = "FBB0C1FD-E1DD-4FAD-8663-8BB8B3D3B717";
+    private static final String CONFIG_UUID = "00002902-0000-1000-8000-00805f9b34fb";
 
     private static final int STATE_DISCONNECTED = 0;
     private static final int STATE_CONNECTED = 2;
@@ -255,7 +259,8 @@ public class BluetoothLeService extends Service {
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_SENT);
         intentFilter.setPriority(500);
         return intentFilter;
     }
@@ -275,6 +280,38 @@ public class BluetoothLeService extends Service {
 
         // Check if the service is available on the device
         BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(UART_SERVICE_UUID));
+        if (service == null) {
+            Log.e(LOG_TAG, "Custom BLE service not found");
+            return;
+        }
+        // Get the read characteristic from the service
+        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(TX_CHARACTERISTIC_UUID));
+
+        bluetoothGatt.setCharacteristicNotification(characteristic, true);
+
+        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(CONFIG_UUID));
+        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+        bluetoothGatt.writeDescriptor(descriptor);
+    }
+
+    public void write(String value) {
+        if (bluetoothAdapter == null || bluetoothGatt == null) {
+            Log.w(LOG_TAG, "BluetoothAdapter not initialized");
+            return;
+        }
+        // Check if service is available on device
+        BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(UART_SERVICE_UUID));
+        if (service == null) {
+            Log.w(LOG_TAG, "ESP32 service not found");
+            return;
+        }
+
+        // Get read characteristic
+        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(RX_CHARACTERISTIC_UUID));
+        String data = value + "\n";
+        characteristic.setValue(data.getBytes());
+
+        bluetoothGatt.writeCharacteristic(characteristic);
     }
 
     public void pairDevice() {

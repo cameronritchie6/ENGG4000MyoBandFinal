@@ -62,8 +62,10 @@ public class MenuFragment extends Fragment {
                 // Go to training games screen
 //                Intent intent = new Intent(requireActivity(), UnityPlayerActivity.class);
 //                startActivity(intent);
-                NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
-                Navigation.findNavController(view).navigate(action);
+//                NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
+//                Navigation.findNavController(view).navigate(action);
+                main.getBluetoothLeService().write("Hello iPhone this is my app that I made.");
+
 
             }
         });
