@@ -52,6 +52,15 @@ public class MenuFragment extends Fragment {
         // Assign UI elements
         calibrationBtn = view.findViewById(R.id.calibration_btn);
         gamesBtn = view.findViewById(R.id.games_btn);
+        Button btn = view.findViewById(R.id.ble_button);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavDirections action = MenuFragmentDirections.actionMenuFragmentToBLETestFragment();
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
 
 
         // Set on click listeners
@@ -70,9 +79,9 @@ public class MenuFragment extends Fragment {
                 // Go to training games screen
 //                Intent intent = new Intent(requireActivity(), UnityPlayerActivity.class);
 //                startActivity(intent);
-//                NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
-//                Navigation.findNavController(view).navigate(action);
-                main.getBluetoothLeService().write("Hello iPhone this is my app that I made.");
+                NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
+                Navigation.findNavController(view).navigate(action);
+//                main.getBluetoothLeService().write("Hello iPhone this is my app that I made.");
 
 
             }

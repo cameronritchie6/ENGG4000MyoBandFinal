@@ -8,6 +8,8 @@ import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 
+import com.unity3d.player.UnityPlayer;
+
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class MyoReceiver extends BroadcastReceiver {
             Log.d(LOG_TAG, "Device has been connected.");
         } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
             Log.d(LOG_TAG, "Device has been disconnected.");
+//            main.getBluetoothLeService().connect(main.getBluetoothLeService().getDeviceAddress());
         } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
 //            List<BluetoothGattService> services = main.getBluetoothLeService().getSupportedGattServices();
 //            System.out.print(services);
@@ -75,8 +78,9 @@ public class MyoReceiver extends BroadcastReceiver {
                     Log.e(LOG_TAG, "Unable to parse integer.");
                 }
             } else if (isCurrentFragment(bleTestFragment)) {
-//                bleTestFragment
+                bleTestFragment.setText(dataString);
             }
+            UnityPlayer.UnitySendMessage("Canvas", "ShowMessage", dataString);
         }
     }
 

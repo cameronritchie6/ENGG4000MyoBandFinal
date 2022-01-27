@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 
+import com.unity3d.player.UnityPlayer;
+
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,29 +31,6 @@ public class MainActivity extends AppCompatActivity {
 //    public static final int PERMISSION_CODE_BACKGROUND = 3;    // Request code for background location permission
 //    public static final int SELECT_DEVICE_REQUEST_CODE = 4;    // Request code for bonding device
     private static final String LOG_TAG = "MainActivity";
-
-//    public static final String address = "CD:46:77:23:DE:11";
-
-    // Register the permissions callback, which handles the user's response to the
-    // system permissions dialog. Save the return value, an instance of
-    // ActivityResultLauncher, as an instance variable.
-//    private ActivityResultLauncher<String[]> requestPermissionLauncher =
-//            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), isGranted -> {
-//
-//
-//                if (isGranted.get(Manifest.permission.ACCESS_FINE_LOCATION)) {
-//                    // Permission is granted. Continue the action or workflow in your
-//                    // app.
-//                    Log.d(LOG_TAG, "They granted the permission!");
-//                } else {
-//                    // Explain to the user that the feature is unavailable because the
-//                    // features requires a permission that the user has denied. At the
-//                    // same time, respect the user's decision. Don't link to system
-//                    // settings in an effort to convince the user to change their
-//                    // decision.
-//                    Toast.makeText(this, "Cannot find Bluetooth device without proper permissions.", Toast.LENGTH_SHORT).show();
-//                }
-//            });
 
 
     @Override
@@ -147,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         return bluetoothLeService;
     }
 
-    //    @Override
+//        @Override
 //    public void onUserInteraction() {
 //        super.onUserInteraction();
 //        Log.d("MAIN", "You touched the screen.");

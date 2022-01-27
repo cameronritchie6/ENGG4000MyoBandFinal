@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_menuFragment_to_unityFragment"
             app:destination="@id/unityFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_BLETestFragment"
+            app:destination="@id/BLETestFragment" />
     </fragment>
     <fragment
         android:id="@+id/calibrationFragment"
@@ -45,4 +48,9 @@
             android:id="@+id/action_bondingFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/BLETestFragment"
+        android:name="com.cmorrell.myobandcompanionapp.BLETestFragment"
+        android:label="fragment_b_l_e_test"
+        tools:layout="@layout/fragment_b_l_e_test" />
 </navigation>
