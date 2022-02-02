@@ -51,10 +51,10 @@ public class BluetoothLeService extends Service {
     public static final int PERMISSION_REQUEST_CODE = 3;    // request code for background location permission
 
 //    private static final String UART_SERVICE_UUID = "B2B9D06E-60D4-4511-91A8-20E2E77CFA4B";
-private static final String UART_SERVICE_UUID = "F496C354-C81A-43E9-AED7-77BE279A5A4A";
-//    private static final String RX_CHARACTERISTIC_UUID = "6A67CCB0-251C-4885-A917-3A43554416CD";
-//    private static final String TX_CHARACTERISTIC_UUID = "FBB0C1FD-E1DD-4FAD-8663-8BB8B3D3B717";
-private static final String CHARACTERISTIC_UUID = "90B6107B-0AD4-45DC-AD35-9C1F84811ABF";
+private static final String UART_SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+    private static final String RX_CHARACTERISTIC_UUID = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
+    private static final String TX_CHARACTERISTIC_UUID = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
+//private static final String CHARACTERISTIC_UUID = "90B6107B-0AD4-45DC-AD35-9C1F84811ABF";
     private static final String CONFIG_UUID = "00002902-0000-1000-8000-00805f9b34fb";
 
     private static final int STATE_DISCONNECTED = 0;
@@ -297,8 +297,8 @@ private static final String CHARACTERISTIC_UUID = "90B6107B-0AD4-45DC-AD35-9C1F8
             return;
         }
         // Get the read characteristic from the service
-//        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(TX_CHARACTERISTIC_UUID));
-        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID));
+        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(TX_CHARACTERISTIC_UUID));
+//        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID));
         bluetoothGatt.setCharacteristicNotification(characteristic, true);
 
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(CONFIG_UUID));
@@ -319,8 +319,8 @@ private static final String CHARACTERISTIC_UUID = "90B6107B-0AD4-45DC-AD35-9C1F8
         }
 
         // Get read characteristic
-//        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(RX_CHARACTERISTIC_UUID));
-        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID));
+        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(RX_CHARACTERISTIC_UUID));
+//        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID));
         String data = value + "\n";
         characteristic.setValue(data.getBytes());
 
@@ -332,7 +332,7 @@ private static final String CHARACTERISTIC_UUID = "90B6107B-0AD4-45DC-AD35-9C1F8
         // Create device filter
         BluetoothLeDeviceFilter deviceFilter = new BluetoothLeDeviceFilter.Builder()
                 // Match only Bluetooth devices whose name matches the pattern
-                .setNamePattern(Pattern.compile("BLE")).build();
+                .setNamePattern(Pattern.compile("UART")).build();
 
 
         // Set a DeviceFilter to an AssociationRequest so the device manager can determine what type of device to seek.
