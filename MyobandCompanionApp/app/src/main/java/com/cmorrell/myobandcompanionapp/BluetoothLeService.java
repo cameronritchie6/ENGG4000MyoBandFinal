@@ -75,9 +75,6 @@ public class BluetoothLeService extends Service {
         this.main = main;
     }
 
-//    public MainActivity getMain() {
-//        return main;
-//    }
 
     public BluetoothDevice getMyoDevice() {
         return myoDevice;

@@ -32,6 +32,7 @@
         android:id="@+id/connected_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@style/MyButton"
         android:layout_marginTop="128dp"
         android:text="@string/connected_btn_txt"
         app:layout_constraintEnd_toEndOf="parent"
