@@ -1,5 +1,7 @@
 package com.cmorrell.myobandcompanionapp;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanResult;
 import android.companion.CompanionDeviceManager;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.Navigation;
 
 import com.unity3d.player.UnityPlayer;
@@ -26,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothLeService bluetoothLeService;
     public static MyoReceiver myoReceiver = new MyoReceiver();
-//    private static final int PERMISSION_REQUEST_CODE = 1;
+    //    private static final int PERMISSION_REQUEST_CODE = 1;
 //    public static final int PERMISSION_CODE_FINE = 2;  // Request code for fine location permission
 //    public static final int PERMISSION_CODE_BACKGROUND = 3;    // Request code for background location permission
 //    public static final int SELECT_DEVICE_REQUEST_CODE = 4;    // Request code for bonding device
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -77,12 +81,12 @@ public class MainActivity extends AppCompatActivity {
             ScanResult scanResult = data.getParcelableExtra(CompanionDeviceManager.EXTRA_DEVICE);
             BluetoothDevice device = scanResult.getDevice();
 
-            if (device != null) {
+            if (device != null && bluetoothLeService.checkForBTPermissions()) {
                 // Bond with device
                 String address = device.getAddress();
                 device.createBond();
                 bluetoothLeService.setDeviceAddress(address);
-                // PROBABLY WRONG RIGHT HERE
+                // Navigate to menu
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_bondingFragment_to_menuFragment);
             }
         } else

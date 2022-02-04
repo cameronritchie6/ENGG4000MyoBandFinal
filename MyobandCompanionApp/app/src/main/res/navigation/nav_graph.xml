@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_welcomeFragment_to_bondingFragment"
             app:destination="@id/bondingFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_connectionFragment"
+            app:destination="@id/connectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
@@ -53,4 +56,18 @@
         android:name="com.cmorrell.myobandcompanionapp.BLETestFragment"
         android:label="fragment_b_l_e_test"
         tools:layout="@layout/fragment_b_l_e_test" />
+    <fragment
+        android:id="@+id/connectionFragment"
+        android:name="com.cmorrell.myobandcompanionapp.ConnectionFragment"
+        android:label="fragment_connection"
+        tools:layout="@layout/fragment_connection" >
+        <action
+            android:id="@+id/action_connectionFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_connectionFragment"
+        app:destination="@id/connectionFragment"
+        app:popUpTo="@id/connectionFragment"
+        app:popUpToInclusive="true" />
 </navigation>

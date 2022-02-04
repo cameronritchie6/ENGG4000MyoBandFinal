@@ -5,7 +5,7 @@
 
    Create a BLE server that, once we receive a connection, will send periodic notifications.
    The service advertises itself as: 6E400001-B5A3-F393-E0A9-E50E24DCCA9E
-   Has a characteristic of: 6E400002-B5A3-F393-E0A9-E50E24DCCA9E - used for receiving data with "WRITE" 
+   Has a characteristic of: 6E400002-B5A3-F393-E0A9-E50E24DCCA9E - used for receiving data with "WRITE"
    Has a characteristic of: 6E400003-B5A3-F393-E0A9-E50E24DCCA9E - used to send data with  "NOTIFY"
 
    The design of creating the BLE server is:
@@ -17,7 +17,7 @@
    6. Start advertising.
 
    In this example rxValue is the data received (only accessible inside that function).
-   And txValue is the data to be sent, in this example just a byte incremented every second. 
+   And txValue is the data to be sent, in this example just a byte incremented every second.
 */
 #include <BLEDevice.h>
 #include <BLEServer.h>
@@ -62,10 +62,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
         Serial.println();
         Serial.println("*********");
-        txValue = 25;
-pTxCharacteristic->setValue(&txValue, 1);
-        pTxCharacteristic->notify();
-        
+
       }
     }
 };
@@ -88,16 +85,16 @@ void setup() {
 
   // Create a BLE Characteristic
   pTxCharacteristic = pService->createCharacteristic(
-                    CHARACTERISTIC_UUID_TX,
-                    BLECharacteristic::PROPERTY_NOTIFY
-                  );
-                      
+                        CHARACTERISTIC_UUID_TX,
+                        BLECharacteristic::PROPERTY_NOTIFY
+                      );
+
   pTxCharacteristic->addDescriptor(new BLE2902());
 
   BLECharacteristic * pRxCharacteristic = pService->createCharacteristic(
-                       CHARACTERISTIC_UUID_RX,
-                      BLECharacteristic::PROPERTY_WRITE
-                    );
+      CHARACTERISTIC_UUID_RX,
+      BLECharacteristic::PROPERTY_WRITE
+                                          );
 
   pRxCharacteristic->setCallbacks(new MyCallbacks());
 
@@ -109,31 +106,50 @@ void setup() {
   Serial.println("Waiting a client connection to notify...");
   delay(1000);
 }
+std::string str;
+void electrodeRead() {
+  electrodeValue = analogRead(electrodePin);
+  electrodeValue = electrodeValue * 100 / 4095;
+  String thisString = String(electrodeValue);
+  str = thisString.c_str();
+  Serial.println(thisString);
+  pTxCharacteristic->setValue(str);
+  pTxCharacteristic->notify();
+}
+
+void serialRead() {
+  if (Serial.available() > 0) {
+    str = Serial.readString().c_str();
+    pTxCharacteristic->setValue(str);
+    pTxCharacteristic->notify();
+  }
+
+}
+
 
 void loop() {
 
-//    txValue = 25;
-//    if (deviceConnected) {
-////        pTxCharacteristic->setValue(&txValue, 1);
-////        pTxCharacteristic->notify();
-////        txValue++;
-//        delay(10); // bluetooth stack will go into congestion, if too many packets are sent
-//  }
-//
-//    // disconnecting
-//    if (!deviceConnected && oldDeviceConnected) {
-//        delay(500); // give the bluetooth stack the chance to get things ready
-//        pServer->startAdvertising(); // restart advertising
-//        Serial.println("start advertising");
-//        oldDeviceConnected = deviceConnected;
-//    }
-//    // connecting
-//    if (deviceConnected && !oldDeviceConnected) {
-//    // do stuff here on connecting
-//        oldDeviceConnected = deviceConnected;
-//    }
 
-    electrodeValue = analogRead(electrodePin);
-    Serial.println(electrodeValue);
-    delay(500);
+
+  //    txValue = 25;
+  if (deviceConnected) {
+    serialRead();
+    delay(500); // bluetooth stack will go into congestion, if too many packets are sent
+  }
+
+  // disconnecting
+  if (!deviceConnected && oldDeviceConnected) {
+    delay(500); // give the bluetooth stack the chance to get things ready
+    pServer->startAdvertising(); // restart advertising
+    Serial.println("start advertising");
+    oldDeviceConnected = deviceConnected;
+  }
+  // connecting
+  if (deviceConnected && !oldDeviceConnected) {
+    // do stuff here on connecting
+    oldDeviceConnected = deviceConnected;
+  }
+
+
+  delay(500);
 }

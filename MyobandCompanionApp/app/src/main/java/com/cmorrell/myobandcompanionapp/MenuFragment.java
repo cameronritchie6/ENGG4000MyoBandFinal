@@ -54,37 +54,28 @@ public class MenuFragment extends Fragment {
         gamesBtn = view.findViewById(R.id.games_btn);
         Button btn = view.findViewById(R.id.ble_button);
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavDirections action = MenuFragmentDirections.actionMenuFragmentToBLETestFragment();
-                Navigation.findNavController(view).navigate(action);
-            }
+        btn.setOnClickListener(v -> {
+            NavDirections action = MenuFragmentDirections.actionMenuFragmentToBLETestFragment();
+            Navigation.findNavController(view).navigate(action);
         });
 
 
         // Set on click listeners
-        calibrationBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Go to calibration screen
-                NavDirections action = MenuFragmentDirections.actionMenuFragmentToCalibrationFragment();
-                Navigation.findNavController(view).navigate(action);
-            }
+        calibrationBtn.setOnClickListener(view1 -> {
+            // Go to calibration screen
+            NavDirections action = MenuFragmentDirections.actionMenuFragmentToCalibrationFragment();
+            Navigation.findNavController(view1).navigate(action);
         });
 
-        gamesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Go to training games screen
+        gamesBtn.setOnClickListener(view12 -> {
+            // Go to training games screen
 //                Intent intent = new Intent(requireActivity(), UnityPlayerActivity.class);
 //                startActivity(intent);
-                NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
-                Navigation.findNavController(view).navigate(action);
-//                main.getBluetoothLeService().write("Hello iPhone this is my app that I made.");
+            NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
+            Navigation.findNavController(view12).navigate(action);
 
 
-            }
+
         });
 
 

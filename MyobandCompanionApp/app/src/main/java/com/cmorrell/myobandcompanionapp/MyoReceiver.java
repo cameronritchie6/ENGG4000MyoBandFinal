@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.unity3d.player.UnityPlayer;
 
@@ -18,6 +20,7 @@ public class MyoReceiver extends BroadcastReceiver {
     private BondingFragment bondingFragment;
     private CalibrationFragment calibrationFragment;
     private BLETestFragment bleTestFragment;
+    private ConnectionFragment connectionFragment;
 
 
     private static final String LOG_TAG = "MyoReceiver";
@@ -39,6 +42,10 @@ public class MyoReceiver extends BroadcastReceiver {
         this.bleTestFragment = bleTestFragment;
     }
 
+    public void setConnectionFragment(ConnectionFragment connectionFragment) {
+        this.connectionFragment = connectionFragment;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -48,9 +55,15 @@ public class MyoReceiver extends BroadcastReceiver {
 
         if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
             Log.d(LOG_TAG, "Device has been connected.");
+            if (isCurrentFragment(connectionFragment)) {
+                connectionFragment.updateUI();
+            }
         } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
             Log.d(LOG_TAG, "Device has been disconnected.");
-//            main.getBluetoothLeService().connect(main.getBluetoothLeService().getDeviceAddress());
+            if (!isCurrentFragment(connectionFragment)) {
+                // Handle disconnect
+                Navigation.findNavController(main, R.id.nav_host_fragment).navigate(R.id.action_global_connectionFragment);
+            }
         } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
 //            List<BluetoothGattService> services = main.getBluetoothLeService().getSupportedGattServices();
 //            System.out.print(services);
@@ -69,6 +82,7 @@ public class MyoReceiver extends BroadcastReceiver {
             // Get data received by application
             data = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
             dataString = new String(data, StandardCharsets.UTF_8);
+//            dataString = dataString.substring(0, dataString.length() - 1);  // remove \n
             if (isCurrentFragment(calibrationFragment)) {
                 try {
                     // Set meter value for calibration fragment
@@ -88,7 +102,7 @@ public class MyoReceiver extends BroadcastReceiver {
      * Determines if the fragment is currently visible.
      *
      * @param fragment fragment that may be visible.
-     * @return if fragment parameter is visible or not.
+     * @return true if fragment is visible, otherwise false.
      */
     private boolean isCurrentFragment(Fragment fragment) {
         return fragment != null && fragment.isVisible();

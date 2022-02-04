@@ -47,7 +47,7 @@ public class BLETestFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 main.getBluetoothLeService().write(editText.getText().toString());
-//                editText.setText("");
+                editText.setText("");
             }
         });
 
@@ -55,10 +55,6 @@ public class BLETestFragment extends Fragment {
     }
 
     public void setText(String message) {
-        if (!message.equals(editText.getText().toString() + "\n")) {
-            editText.setText("");
-            textView.setText(message);
-        }
-
+        textView.setText(message);
     }
 }

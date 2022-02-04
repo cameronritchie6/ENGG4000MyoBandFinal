@@ -13,7 +13,8 @@ import androidx.navigation.Navigation;
 
 public class WelcomeFragment extends Fragment {
 
-    Button startBtn;
+    public Button startBtn;
+    private MainActivity main;
 
     public WelcomeFragment() {
         // Required empty public constructor
@@ -24,6 +25,7 @@ public class WelcomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        main = (MainActivity) requireActivity();
     }
 
     @Override
@@ -33,8 +35,16 @@ public class WelcomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_welcome, container, false);
         startBtn = view.findViewById(R.id.start_btn);
         startBtn.setOnClickListener(view1 -> {
-            NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToBondingFragment();
-            Navigation.findNavController(view1).navigate(action);
+            if (main.getBluetoothLeService().checkForPairedDevices()) {
+                // Go to ConnectionFragment
+                NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToConnectionFragment();
+                Navigation.findNavController(view1).navigate(action);
+            } else {
+                // Go to BondingFragment
+                NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToBondingFragment();
+                Navigation.findNavController(view1).navigate(action);
+            }
+
         });
         return view;
     }

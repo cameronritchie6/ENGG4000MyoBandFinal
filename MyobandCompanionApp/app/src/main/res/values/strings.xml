@@ -7,9 +7,13 @@
     <string name="games_btn_txt">Training Games</string>
     <string name="menu_txt">Main Menu</string>
     <string name="calibration_tv_txt">Calibration</string>
-    <string name="flexion_tv_txt">Flexion</string>
-    <string name="extension_tv_txt">Extension</string>
+    <string name="open_tv_txt">Open</string>
+    <string name="close_tv_txt">Close</string>
 
     <!--    String that fixes error in Unity player-->
     <string name="game_view_content_description">Game view</string>
+    <string name="connecting_tv_txt">Connecting…</string>
+    <string name="connected_btn_txt">Continue</string>
+    <string name="bonding_btn_txt">Find Devices</string>
+    <string name="bonding_tv_txt">Please press the FIND DEVICES button to search for available Myoband devices!</string>
 </resources>

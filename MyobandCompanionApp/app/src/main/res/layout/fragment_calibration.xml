@@ -8,14 +8,14 @@
     tools:context=".CalibrationFragment" >
 
     <TextView
-        android:id="@+id/extension_tv"
+        android:id="@+id/close_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/extension_tv_txt"
+        android:text="@string/close_tv_txt"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/bar_2"
         app:layout_constraintStart_toStartOf="@+id/bar_2"
-        app:layout_constraintTop_toTopOf="@+id/flexion_tv" />
+        app:layout_constraintTop_toTopOf="@+id/open_tv" />
 
     <ProgressBar
         android:id="@+id/bar_2"
@@ -51,14 +51,14 @@
         android:progressDrawable="@drawable/progress_drawable_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flexion_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/open_tv" />
 
     <TextView
-        android:id="@+id/flexion_tv"
+        android:id="@+id/open_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/flexion_tv_txt"
+        android:text="@string/open_tv_txt"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/bar_1"
         app:layout_constraintStart_toStartOf="@+id/bar_1"
