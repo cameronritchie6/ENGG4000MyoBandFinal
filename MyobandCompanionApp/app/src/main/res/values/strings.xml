@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Myoband Companion App</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="welcome_message">Welcome to the MyoBand Companion App!</string>
+    <string name="welcome_message">Welcome to the MyoBand Companion App!\nPlease press the START button to continue!</string>
     <string name="start_btn_txt">Start</string>
     <string name="calibration_btn_txt">Calibration</string>
     <string name="games_btn_txt">Training Games</string>
@@ -12,8 +12,11 @@
 
     <!--    String that fixes error in Unity player-->
     <string name="game_view_content_description">Game view</string>
-    <string name="connecting_tv_txt">Connecting…</string>
+    <string name="connecting_tv_txt">Searching for previously paired Myoband device…</string>
+    <string name="connected_tv_txt">Connected!\nPlease press the CONTINUE button to proceed to the main menu!</string>
     <string name="connected_btn_txt">Continue</string>
     <string name="bonding_btn_txt">Find Devices</string>
     <string name="bonding_tv_txt">Please press the FIND DEVICES button to search for available Myoband devices!</string>
+    <string name="logo_description">Logo of IBME</string>
+    <string name="connection_tv_txt">Connect to Myoband device</string>
 </resources>
