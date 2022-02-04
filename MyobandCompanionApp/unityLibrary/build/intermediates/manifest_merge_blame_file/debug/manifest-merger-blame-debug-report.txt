@@ -11,97 +11,108 @@
 9-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml
 10
 11    <uses-feature android:glEsVersion="0x00030000" />
-11-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:15:3-52
-11-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:15:17-49
+11-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:3-52
+11-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:17-49
 12    <uses-feature
-12-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:3-91
+12-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:21:3-91
 13        android:name="android.hardware.vulkan.version"
-13-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:17-63
+13-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:21:17-63
 14        android:required="false" />
-14-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:64-88
+14-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:21:64-88
 15    <uses-feature
-15-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:3-88
+15-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:22:3-88
 16        android:name="android.hardware.touchscreen"
-16-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:17-60
+16-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:22:17-60
 17        android:required="false" />
-17-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:61-85
+17-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:22:61-85
 18    <uses-feature
-18-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:3-99
+18-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:23:3-99
 19        android:name="android.hardware.touchscreen.multitouch"
-19-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:17-71
+19-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:23:17-71
 20        android:required="false" />
-20-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:72-96
+20-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:23:72-96
 21    <uses-feature
-21-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:3-108
+21-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:24:3-108
 22        android:name="android.hardware.touchscreen.multitouch.distinct"
-22-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:17-80
+22-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:24:17-80
 23        android:required="false" />
-23-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:81-105
+23-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:24:81-105
 24
 25    <application>
-25-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:4:3-14:17
+25-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:4:3-19:17
 26        <activity
-26-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:5-8:16
+26-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:5-13:16
 27            android:name="com.unity3d.player.UnityPlayerActivity"
 27-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:15-68
 28            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
-28-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:206-387
+28-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:182-363
 29            android:exported="true"
-29-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:69-92
+29-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:6:9-32
 30            android:hardwareAccelerated="false"
-30-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:423-458
+30-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:399-434
 31            android:launchMode="singleTask"
-31-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:174-205
+31-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:150-181
 32            android:resizeableActivity="false"
-32-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:388-422
+32-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:364-398
 33            android:screenOrientation="fullSensor"
-33-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:135-173
+33-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:111-149
 34            android:theme="@style/UnityThemeSelector" >
-34-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:93-134
-35            <meta-data
-35-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:6:7-82
-36                android:name="unityplayer.UnityActivity"
-36-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:6:18-58
-37                android:value="true" />
-37-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:6:59-79
-38            <meta-data
-38-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:7-78
-39                android:name="android.notch_support"
-39-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:18-54
-40                android:value="true" />
-40-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:55-75
-41        </activity>
-42
-43        <meta-data
-43-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:9:5-69
-44            android:name="unity.splash-mode"
-44-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:9:16-48
-45            android:value="0" />
-45-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:9:49-66
-46        <meta-data
-46-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:10:5-74
-47            android:name="unity.splash-enable"
-47-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:10:16-50
-48            android:value="True" />
-48-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:10:51-71
+34-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:69-110
+35            <intent-filter>
+35-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:7-10:23
+36                <action android:name="android.intent.action.MAIN" />
+36-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:8:9-61
+36-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:8:17-58
+37
+38                <category android:name="android.intent.category.LAUNCHER" />
+38-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:9:9-69
+38-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:9:19-66
+39            </intent-filter>
+40
+41            <meta-data
+41-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:7-82
+42                android:name="unityplayer.UnityActivity"
+42-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:18-58
+43                android:value="true" />
+43-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:59-79
+44            <meta-data
+44-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:7-78
+45                android:name="android.notch_support"
+45-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:18-54
+46                android:value="true" />
+46-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:55-75
+47        </activity>
+48
 49        <meta-data
-49-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:5-84
-50            android:name="unity.allow-resizable-window"
-50-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:16-59
-51            android:value="False" />
-51-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:60-81
+49-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:5-69
+50            android:name="unity.splash-mode"
+50-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:16-48
+51            android:value="0" />
+51-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:49-66
 52        <meta-data
-52-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:5-81
-53            android:name="notch.config"
-53-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:16-43
-54            android:value="portrait|landscape" />
-54-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:44-78
+52-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:15:5-74
+53            android:name="unity.splash-enable"
+53-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:15:16-50
+54            android:value="True" />
+54-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:15:51-71
 55        <meta-data
-55-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:13:5-101
-56            android:name="unity.build-id"
-56-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:13:16-45
-57            android:value="5b2e73de-658c-403d-9a85-1b850f2b540c" />
-57-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:13:46-98
-58    </application>
-59
-60</manifest>
+55-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:5-84
+56            android:name="unity.allow-resizable-window"
+56-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:16-59
+57            android:value="False" />
+57-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:60-81
+58        <meta-data
+58-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:5-81
+59            android:name="notch.config"
+59-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:16-43
+60            android:value="portrait|landscape" />
+60-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:44-78
+61        <meta-data
+61-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:5-101
+62            android:name="unity.build-id"
+62-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:16-45
+63            android:value="21b94c17-72f9-43d8-94bf-f3a8c3245d4d" />
+63-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:46-98
+64    </application>
+65
+66</manifest>
