@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 import com.unity3d.player.UnityPlayer;
 
 import java.util.Arrays;
+import java.util.function.ToDoubleBiFunction;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
 //    public static final int PERMISSION_CODE_BACKGROUND = 3;    // Request code for background location permission
 //    public static final int SELECT_DEVICE_REQUEST_CODE = 4;    // Request code for bonding device
     private static final String LOG_TAG = "MainActivity";
+
+
+    /*
+    Todo: Fix BLE permissions
+     Todo: Nicholas Unity game implementation (SpikeMovement.cs script error)
+    */
+
 
 
     @Override
