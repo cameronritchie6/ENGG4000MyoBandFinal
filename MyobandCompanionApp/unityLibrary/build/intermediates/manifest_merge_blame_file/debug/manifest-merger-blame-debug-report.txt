@@ -100,7 +100,7 @@
 55-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:5-101
 56            android:name="unity.build-id"
 56-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:16-45
-57            android:value="21b94c17-72f9-43d8-94bf-f3a8c3245d4d" />
+57            android:value="ff00901b-8484-49f0-aa3c-1dac0d73d97f" />
 57-->F:\GitHub\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:46-98
 58    </application>
 59

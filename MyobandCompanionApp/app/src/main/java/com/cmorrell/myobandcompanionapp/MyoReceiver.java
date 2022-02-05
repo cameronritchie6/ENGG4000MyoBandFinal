@@ -15,12 +15,15 @@ import com.unity3d.player.UnityPlayer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import kotlin.Unit;
+
 public class MyoReceiver extends BroadcastReceiver {
 
     private BondingFragment bondingFragment;
     private CalibrationFragment calibrationFragment;
     private BLETestFragment bleTestFragment;
     private ConnectionFragment connectionFragment;
+    private UnityFragment unityFragment;
 
 
     private static final String LOG_TAG = "MyoReceiver";
@@ -44,6 +47,10 @@ public class MyoReceiver extends BroadcastReceiver {
 
     public void setConnectionFragment(ConnectionFragment connectionFragment) {
         this.connectionFragment = connectionFragment;
+    }
+
+    public void setUnityFragment(UnityFragment unityFragment) {
+        this.unityFragment = unityFragment;
     }
 
     @Override

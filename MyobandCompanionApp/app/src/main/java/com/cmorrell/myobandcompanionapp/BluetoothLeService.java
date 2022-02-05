@@ -130,7 +130,7 @@ public class BluetoothLeService extends Service {
         try {
 //            MyoReceiver myoReceiver = main.getMyoReceiver();
             MyoReceiver myoReceiver = MainActivity.myoReceiver;
-            registerReceiver(myoReceiver, makeGattUpdateIntentFilter());
+            registerReceiver(myoReceiver, makeMyoReceiverFilter());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -288,7 +288,7 @@ public class BluetoothLeService extends Service {
         return deviceAddress;
     }
 
-    private static IntentFilter makeGattUpdateIntentFilter() {
+    private static IntentFilter makeMyoReceiverFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);

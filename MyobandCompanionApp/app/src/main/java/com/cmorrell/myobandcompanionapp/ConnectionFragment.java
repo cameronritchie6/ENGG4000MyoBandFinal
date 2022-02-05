@@ -49,7 +49,7 @@ public class ConnectionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Go to menu fragment
-                NavDirections action = ConnectionFragmentDirections.actionConnectionFragmentToMenuFragment();
+                NavDirections action = ConnectionFragmentDirections.actionGlobalMenuFragment();
                 Navigation.findNavController(v).navigate(action);
             }
         });
