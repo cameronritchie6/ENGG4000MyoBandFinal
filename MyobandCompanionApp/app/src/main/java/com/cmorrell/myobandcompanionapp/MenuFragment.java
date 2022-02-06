@@ -1,0 +1,87 @@
+package com.cmorrell.myobandcompanionapp;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.unity3d.player.UnityPlayer;
+import com.unity3d.player.UnityPlayerActivity;
+
+
+public class MenuFragment extends Fragment {
+
+    Button calibrationBtn;
+    Button gamesBtn;
+    MainActivity  main;
+
+    public MenuFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        main = (MainActivity) requireActivity();
+
+        // Connect to device
+        String address = main.getBluetoothLeService().getDeviceAddress();
+        if (!main.getBluetoothLeService().connect(address)) {
+            Toast.makeText(main, "Failed to connect to Myoband device", Toast.LENGTH_SHORT).show();
+            // Maybe go to connection screen, handle disconnect SOMEHOW
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+
+        // Assign UI elements
+        calibrationBtn = view.findViewById(R.id.calibration_btn);
+        gamesBtn = view.findViewById(R.id.games_btn);
+        Button btn = view.findViewById(R.id.ble_button);
+
+        btn.setOnClickListener(v -> {
+            NavDirections action = MenuFragmentDirections.actionMenuFragmentToBLETestFragment();
+            Navigation.findNavController(view).navigate(action);
+        });
+
+
+        // Set on click listeners
+        calibrationBtn.setOnClickListener(view1 -> {
+            // Go to calibration screen
+            NavDirections action = MenuFragmentDirections.actionMenuFragmentToCalibrationFragment();
+            Navigation.findNavController(view1).navigate(action);
+        });
+
+        gamesBtn.setOnClickListener(view12 -> {
+            // Go to training games screen
+//                Intent intent = new Intent(requireActivity(), UnityPlayerActivity.class);
+//                startActivity(intent);
+            NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
+            Navigation.findNavController(view12).navigate(action);
+
+
+
+        });
+
+
+        return view;
+    }
+
+
+
+}
