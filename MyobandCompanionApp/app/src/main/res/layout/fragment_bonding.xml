@@ -11,6 +11,7 @@
         android:id="@+id/bonding_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/button_txt_size"
         android:text="@string/bonding_btn_txt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

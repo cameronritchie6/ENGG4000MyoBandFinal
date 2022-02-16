@@ -49,7 +49,7 @@ public class ConnectionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Go to menu fragment
-                NavDirections action = ConnectionFragmentDirections.actionConnectionFragmentToMenuFragment();
+                NavDirections action = ConnectionFragmentDirections.actionGlobalMenuFragment();
                 Navigation.findNavController(v).navigate(action);
             }
         });
@@ -61,12 +61,15 @@ public class ConnectionFragment extends Fragment {
 
     public void updateUI() {
         if (main.getBluetoothLeService().getConnected()) {
+            // Successful BLE connection
             progressBar.setVisibility(View.INVISIBLE);
-            connectingTv.setVisibility(View.INVISIBLE);
+//            connectingTv.setVisibility(View.INVISIBLE);
+            connectingTv.setText(R.string.connected_tv_txt);
             connectedBtn.setVisibility(View.VISIBLE);
         } else {
+            // BLE peripheral not connected
             progressBar.setVisibility(View.VISIBLE);
-            connectingTv.setVisibility(View.VISIBLE);
+            connectingTv.setText(R.string.connecting_tv_txt);
             connectedBtn.setVisibility(View.INVISIBLE);
         }
     }

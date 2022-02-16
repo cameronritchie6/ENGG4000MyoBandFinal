@@ -13,17 +13,22 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.unity3d.player.UnityPlayer;
 
 import java.util.Arrays;
+import java.util.function.ToDoubleBiFunction;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +39,18 @@ public class MainActivity extends AppCompatActivity {
 //    public static final int PERMISSION_CODE_BACKGROUND = 3;    // Request code for background location permission
 //    public static final int SELECT_DEVICE_REQUEST_CODE = 4;    // Request code for bonding device
     private static final String LOG_TAG = "MainActivity";
+    public static final String ACTION_QUIT_UNITY = "com.cmorrell.myobandcompanionapp.ACTION_QUIT_UNITY";
+
+    public UnityPlayer unityPlayer;
+
+
+    /*
+    Todo: Fix BLE permissions
+     Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
+     Todo: Fix orientation change (turning screen sideways)
+     Todo: Possibly change scan filter to find service UUID instead of device name.
+    */
+
 
 
     @Override
@@ -86,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
                 String address = device.getAddress();
                 device.createBond();
                 bluetoothLeService.setDeviceAddress(address);
-                // Navigate to menu
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_bondingFragment_to_menuFragment);
+                // Navigate to main menu
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
             }
         } else
             super.onActivityResult(requestCode, resultCode, data);
@@ -95,6 +112,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Unity method
+     * @param message message from Unity
+     */
+    public void quitUnity(String message) {
+        Log.d("UNITY", message);
+
+        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         startService(gattServiceIntent);
         bindService(gattServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+        unityPlayer = new UnityPlayer(this);
 
 
     }
