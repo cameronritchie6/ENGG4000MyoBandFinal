@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     /*
     Todo: Fix BLE permissions
      Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
+     Todo: Fix orientation change (turning screen sideways)
+     Todo: Possibly change scan filter to find service UUID instead of device name.
     */
 
 

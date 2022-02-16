@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.bluetooth.le.ScanFilter;
 import android.companion.AssociationRequest;
 import android.companion.BluetoothLeDeviceFilter;
 import android.companion.CompanionDeviceManager;
@@ -24,10 +25,12 @@ import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.ParcelUuid;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -313,7 +316,7 @@ public class BluetoothLeService extends Service {
             if (pairedDevices.size() > 0) {
                 for (BluetoothDevice device : pairedDevices) {
                     String deviceName = device.getName();
-                    if (deviceName.contains("UART")) {
+                    if (deviceName.contains("Myo")) {
                         close();    // Prevent multiple Bluetooth connections
                         if (connect(device.getAddress())) {
                             // Successful pairing
@@ -388,12 +391,16 @@ public class BluetoothLeService extends Service {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void pairDevice() {
 
         // Create device filter
+//        ScanFilter.Builder scanFilter = new ScanFilter.Builder();
+//        scanFilter.setServiceUuid(ParcelUuid.fromString(UART_SERVICE_UUID));
         BluetoothLeDeviceFilter deviceFilter = new BluetoothLeDeviceFilter.Builder()
                 // Match only Bluetooth devices whose name matches the pattern
-                .setNamePattern(Pattern.compile("UART")).build();
+//                .setScanFilter(new ScanFilter.Builder().setServiceSolicitationUuid(ParcelUuid.fromString(UART_SERVICE_UUID)).build())
+                .setNamePattern(Pattern.compile("Myoband")).build();
 
 
         // Set a DeviceFilter to an AssociationRequest so the device manager can determine what type of device to seek.

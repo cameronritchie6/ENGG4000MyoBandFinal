@@ -59,12 +59,12 @@ public class MenuFragment extends Fragment {
         // Assign UI elements
         calibrationBtn = view.findViewById(R.id.calibration_btn);
         gamesBtn = view.findViewById(R.id.games_btn);
-        Button btn = view.findViewById(R.id.ble_button);
-
-        btn.setOnClickListener(v -> {
-            NavDirections action = MenuFragmentDirections.actionMenuFragmentToBLETestFragment();
-            Navigation.findNavController(view).navigate(action);
-        });
+//        Button btn = view.findViewById(R.id.ble_button);
+//
+//        btn.setOnClickListener(v -> {
+//            NavDirections action = MenuFragmentDirections.actionMenuFragmentToBLETestFragment();
+//            Navigation.findNavController(view).navigate(action);
+//        });
 
 
         // Set on click listeners
