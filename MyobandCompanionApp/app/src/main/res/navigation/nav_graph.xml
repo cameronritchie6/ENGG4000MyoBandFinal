@@ -72,4 +72,29 @@
         app:destination="@id/menuFragment"
         app:popUpTo="@id/unityFragment"
         app:popUpToInclusive="false" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.cmorrell.myobandcompanionapp.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <argument
+            android:name="correctPassCode"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_settingsFragment_to_developerDialogFragment"
+            app:destination="@id/developerDialogFragment"
+            app:popUpTo="@id/developerDialogFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/developerDialogFragment"
+        android:name="com.cmorrell.myobandcompanionapp.DeveloperDialogFragment"
+        android:label="fragment_developer_dialog"
+        tools:layout="@layout/fragment_developer_dialog" />
+    <action
+        android:id="@+id/action_global_settingsFragment"
+        app:destination="@id/settingsFragment"
+        app:popUpTo="@id/settingsFragment"
+        app:popUpToInclusive="true" />
 </navigation>

@@ -100,8 +100,10 @@ public class MyoReceiver extends BroadcastReceiver {
                 }
             } else if (isCurrentFragment(bleTestFragment)) {
                 bleTestFragment.setText(dataString);
+            } else if (dataString.equals(BluetoothLeService.TIME)) {
+                main.getBluetoothLeService().write("T");
             }
-            UnityPlayer.UnitySendMessage("Canvas", "ShowMessage", dataString);
+//            UnityPlayer.UnitySendMessage("Canvas", "ShowMessage", dataString);
         }
     }
 

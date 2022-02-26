@@ -50,25 +50,37 @@ class MyServerCallbacks: public BLEServerCallbacks {
     }
 };
 
+const int electrodePin = 36;
+int electrodeValue = 0;
+unsigned long startTime;
+
 class MyCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
       std::string rxValue = pCharacteristic->getValue();
 
-      if (rxValue.length() > 0) {
-        Serial.println("*********");
-        Serial.print("Received Value: ");
-        for (int i = 0; i < rxValue.length(); i++)
-          Serial.print(rxValue[i]);
+//      if (rxValue.length() > 0) {
+//        Serial.println("*********");
+//        Serial.print("Received Value: ");
+//        for (int i = 0; i < rxValue.length(); i++)
+//          Serial.print(rxValue[i]);
+//
+//        Serial.println();
+//        Serial.println("*********");
+//
+//      }
 
-        Serial.println();
-        Serial.println("*********");
-
+      if (rxValue[0] == 'T') {
+        unsigned long endTime = millis();
+        unsigned long elapsedTime = (endTime - startTime) / 2;
+        Serial.print("ELAPSED TIME: ");
+        Serial.println(elapsedTime);
       }
+      
+      
     }
 };
 
-const int electrodePin = 36;
-int electrodeValue = 0;
+
 
 void setup() {
   Serial.begin(115200);
@@ -109,8 +121,9 @@ void setup() {
 std::string str;
 void electrodeRead() {
   electrodeValue = analogRead(electrodePin);
-  electrodeValue = electrodeValue * 100 / 4095;
-  String thisString = String(electrodeValue);
+//  electrodeValue = electrodeValue * 100 / 4095;
+double test = electrodeValue * 3.3 / 4095;
+  String thisString = String(test);
   str = thisString.c_str();
   Serial.println(thisString);
   pTxCharacteristic->setValue(str);
@@ -120,8 +133,12 @@ void electrodeRead() {
 void serialRead() {
   if (Serial.available() > 0) {
     str = Serial.readString().c_str();
-    pTxCharacteristic->setValue(str);
-    pTxCharacteristic->notify();
+    if (str[0] == 'h') {
+      pTxCharacteristic->setValue("TIME");
+      pTxCharacteristic->notify();
+      startTime = millis();
+    }
+    
   }
 
 }
@@ -149,6 +166,8 @@ void loop() {
     // do stuff here on connecting
     oldDeviceConnected = deviceConnected;
   }
+
+//  electrodeRead();
 
 
   delay(500);

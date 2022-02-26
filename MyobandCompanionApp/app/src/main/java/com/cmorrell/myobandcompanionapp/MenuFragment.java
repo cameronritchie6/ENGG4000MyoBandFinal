@@ -23,9 +23,10 @@ import com.unity3d.player.UnityPlayerActivity;
 
 public class MenuFragment extends Fragment {
 
-    Button calibrationBtn;
-    Button gamesBtn;
-    MainActivity  main;
+    public Button calibrationBtn;
+    public Button gamesBtn;
+    public Button settingsBtn;
+    private MainActivity  main;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -59,12 +60,14 @@ public class MenuFragment extends Fragment {
         // Assign UI elements
         calibrationBtn = view.findViewById(R.id.calibration_btn);
         gamesBtn = view.findViewById(R.id.games_btn);
+        settingsBtn = view.findViewById(R.id.settings_btn);
 //        Button btn = view.findViewById(R.id.ble_button);
 //
 //        btn.setOnClickListener(v -> {
 //            NavDirections action = MenuFragmentDirections.actionMenuFragmentToBLETestFragment();
 //            Navigation.findNavController(view).navigate(action);
 //        });
+
 
 
         // Set on click listeners
@@ -81,10 +84,12 @@ public class MenuFragment extends Fragment {
             NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
             Navigation.findNavController(view12).navigate(action);
 
-
-
         });
 
+        settingsBtn.setOnClickListener(v -> {
+            NavDirections action = MenuFragmentDirections.actionGlobalSettingsFragment();
+            Navigation.findNavController(v).navigate(action);
+        });
 
         return view;
     }
