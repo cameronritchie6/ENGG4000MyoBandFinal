@@ -33,10 +33,10 @@
 
     <Button
         android:id="@+id/connected_btn"
+        style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/connected_btn_txt"
-        android:textSize="@dimen/button_txt_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -9,9 +9,9 @@
 
     <Button
         android:id="@+id/calibration_btn"
+        style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/button_txt_size"
         android:layout_marginTop="100dp"
         android:text="@string/calibration_btn_txt"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,9 +20,9 @@
 
     <Button
         android:id="@+id/games_btn"
+        style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/button_txt_size"
         android:layout_marginTop="100dp"
         android:text="@string/games_btn_txt"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,12 +42,12 @@
 
     <Button
         android:id="@+id/settings_btn"
+        style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="Settings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/games_btn" />
 

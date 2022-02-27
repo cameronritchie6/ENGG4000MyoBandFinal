@@ -21,9 +21,10 @@
 
     <Button
         android:id="@+id/theme_btn"
+        style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="theme"
+        android:text="Theme"
         android:layout_margin="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +32,7 @@
 
     <Button
         android:id="@+id/developer_btn"
+        style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
@@ -41,6 +43,7 @@
 
     <Button
         android:id="@+id/time_btn"
+        style="@style/IBMEButtonStyle"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,6 +55,7 @@
 
     <Button
         android:id="@+id/usb_btn"
+        style="@style/IBMEButtonStyle"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
