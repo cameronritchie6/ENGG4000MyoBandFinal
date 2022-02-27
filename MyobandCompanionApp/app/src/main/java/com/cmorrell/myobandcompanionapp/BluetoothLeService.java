@@ -1,6 +1,5 @@
 package com.cmorrell.myobandcompanionapp;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -11,6 +10,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.bluetooth.le.ScanFilter;
 import android.companion.AssociationRequest;
 import android.companion.BluetoothLeDeviceFilter;
 import android.companion.CompanionDeviceManager;
@@ -18,18 +18,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
+import android.os.ParcelUuid;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import java.util.List;
 import java.util.Set;
@@ -46,7 +41,7 @@ public class BluetoothLeService extends Service {
     public static final String EXTRA_DATA = "com.cmorrell.myobandcompanionapp.EXTRA_DATA";
 
     //    private static final String UART_SERVICE_UUID = "B2B9D06E-60D4-4511-91A8-20E2E77CFA4B";
-    private static final String UART_SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+    private static final String SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String RX_CHARACTERISTIC_UUID = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String TX_CHARACTERISTIC_UUID = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
     //private static final String CHARACTERISTIC_UUID = "90B6107B-0AD4-45DC-AD35-9C1F84811ABF";
@@ -282,7 +277,7 @@ public class BluetoothLeService extends Service {
         }
 
         // Check if the service is available on the device
-        BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(UART_SERVICE_UUID));
+        BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(SERVICE_UUID));
         if (service == null) {
             Log.e(LOG_TAG, "Custom BLE service not found");
             return;
@@ -310,7 +305,7 @@ public class BluetoothLeService extends Service {
             return;
         }
         // Check if service is available on device
-        BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(UART_SERVICE_UUID));
+        BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(SERVICE_UUID));
         if (service == null) {
             Log.w(LOG_TAG, "ESP32 service not found");
             return;
@@ -327,23 +322,22 @@ public class BluetoothLeService extends Service {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void pairDevice() {
 
-        // Create device filter
-//        ScanFilter.Builder scanFilter = new ScanFilter.Builder();
-//        scanFilter.setServiceUuid(ParcelUuid.fromString(UART_SERVICE_UUID));
+        // Create device filter based on UUID
+        ScanFilter scanFilter = new ScanFilter.Builder()
+                .setServiceUuid(ParcelUuid.fromString(SERVICE_UUID))
+                .build();
+
         BluetoothLeDeviceFilter deviceFilter = new BluetoothLeDeviceFilter.Builder()
-                // Match only Bluetooth devices whose name matches the pattern
-//                .setScanFilter(new ScanFilter.Builder().setServiceSolicitationUuid(ParcelUuid.fromString(UART_SERVICE_UUID)).build())
-                .setNamePattern(Pattern.compile("Myoband")).build();
+                .setNamePattern(Pattern.compile("Myo"))
+                .setScanFilter(scanFilter).build();
 
 
         // Set a DeviceFilter to an AssociationRequest so the device manager can determine what type of device to seek.
         AssociationRequest pairingRequest = new AssociationRequest.Builder()
                 // Find only devices that match this filter
                 .addDeviceFilter(deviceFilter)
-                // Stop scanning as soon as one device matching the filter is found
                 .setSingleDevice(false).build();
 
 

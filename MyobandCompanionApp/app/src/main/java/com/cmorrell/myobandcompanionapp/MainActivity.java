@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.ParcelUuid;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -38,13 +39,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.ToDoubleBiFunction;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int SELECT_DEVICE_REQUEST_CODE = 1;    // request code for BLE bonding
     public static final int REQUEST_ENABLE_BT = 2;  // request code to enable Bluetooth
-    public static final int PERMISSION_REQUEST_CODE = 17;    // request code for background location permission
 
 
     private BluetoothLeService bluetoothLeService;
@@ -58,10 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*
-    Todo: Fix BLE permissions
      Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
      Todo: Fix orientation change (turning screen sideways)
-     Todo: Possibly change scan filter to find service UUID instead of device name.
     */
 
 
