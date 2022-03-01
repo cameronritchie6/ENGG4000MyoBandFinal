@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothHidDevice;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.ScanFilter;
 import android.companion.AssociationRequest;
@@ -19,12 +20,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.ParcelUuid;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import java.util.List;
 import java.util.Set;
@@ -41,10 +44,10 @@ public class BluetoothLeService extends Service {
     public static final String EXTRA_DATA = "com.cmorrell.myobandcompanionapp.EXTRA_DATA";
 
     //    private static final String UART_SERVICE_UUID = "B2B9D06E-60D4-4511-91A8-20E2E77CFA4B";
+    private static final String GAMEPAD_SERVICE_UUID = "4A981812-1CC4-E7C1-C757-F1267DD021E8";
     private static final String SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String RX_CHARACTERISTIC_UUID = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String TX_CHARACTERISTIC_UUID = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
-    //private static final String CHARACTERISTIC_UUID = "90B6107B-0AD4-45DC-AD35-9C1F84811ABF";
     private static final String CONFIG_UUID = "00002902-0000-1000-8000-00805f9b34fb";
 
     public static final String TIME = "TIME";
@@ -326,12 +329,13 @@ public class BluetoothLeService extends Service {
 
         // Create device filter based on UUID
         ScanFilter scanFilter = new ScanFilter.Builder()
-                .setServiceUuid(ParcelUuid.fromString(SERVICE_UUID))
+                .setServiceUuid(ParcelUuid.fromString(GAMEPAD_SERVICE_UUID))
                 .build();
 
         BluetoothLeDeviceFilter deviceFilter = new BluetoothLeDeviceFilter.Builder()
-                .setNamePattern(Pattern.compile("Myo"))
-                .setScanFilter(scanFilter).build();
+                .setNamePattern(Pattern.compile("GAME"))
+                .build();
+//                .setScanFilter(scanFilter).build();
 
 
         // Set a DeviceFilter to an AssociationRequest so the device manager can determine what type of device to seek.
