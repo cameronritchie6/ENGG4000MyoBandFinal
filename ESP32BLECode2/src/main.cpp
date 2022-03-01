@@ -50,6 +50,7 @@ int SqeezeFlag=0;
 double signalCheck(int Pin);
 boolean changeDetection(int checkedPin);
 int tolleraceCheck(double voltageIn);
+int buttonPress(int voltageIn, int voltageIn2);
 
 //pin that goes high while there's a device connected
 #define CONNECTED_LED_INDICATOR_PIN 2
@@ -160,7 +161,7 @@ delay(portMAX_DELAY);
 void setup() {
   Serial.begin(115200);
   xTaskCreate(taskServer, "server", 20000, NULL, 5, NULL);
-inputValues[0] |= 00000001;
+inputValues[0] |= 0b00000001;
   inputValues[1] = analogRead(ANALOGSTICK); //DELETE IF NOT WORKING
    inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
 }
@@ -175,6 +176,7 @@ void loop() {
 
 //inputValues[0] |= 00000001;
     if((changeDetection(potPin1)||changeDetection(potPin2))&&connected){
+      inputValues[0] = buttonPress(analogRead(potPin1), analogRead(potPin2));
       inputValues[1] = analogRead(potPin1);
        inputValues[2] = analogRead(potPin2);
     input->setValue(inputValues, sizeof(inputValues));
@@ -247,6 +249,42 @@ return SqeezeFlag;
 
 
 //*****************  END Signal Tollerance Check *******************//
+
+int buttonPress(int voltageIn, int voltageIn2){
+     int signal1 = tolleraceCheck(voltageIn);
+     int signal2 = tolleraceCheck(voltageIn2);
+
+    
+      if(signal1 ==1 && signal2 ==0 ){ //contraction on electrode 1
+      Serial.println("CONTRACTION ELECTRODE 1");
+      return 0b00000001;
+
+       
+      }
+      else if(signal1 ==0 && signal2 ==1 ){ //contraction on electrode 2
+      Serial.println("CONTRACTION ELECTRODE 2");
+      return 0b00000010;
+        
+      }
+      else if(signal1 ==1 && signal2 ==1 ){ //co-contraction
+      Serial.println("CO-CONTRACTION");
+      return 0b00000100;
+
+        
+      }
+      else if(signal1 ==0 && signal2 ==0 ){ //no contraction
+      Serial.println("NO CONTRACTION");
+      return 0b00000000;   
+
+      }
+      else{ //is there is an error
+      //Serial.println("CONTRACTION ERROR");
+      return 0b00000000;  
+      }//end else
+      
+    }//end change detection
+
+      
 
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
