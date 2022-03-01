@@ -6,102 +6,102 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="19"
-8-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml
+8-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="31" />
-9-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml
+9-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml
 10
 11    <uses-feature android:glEsVersion="0x00030000" />
-11-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:3-52
-11-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:17-49
+11-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:3-52
+11-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:16:17-49
 12    <uses-feature
-12-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:3-91
+12-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:3-91
 13        android:name="android.hardware.vulkan.version"
-13-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:17-63
+13-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:17-63
 14        android:required="false" />
-14-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:64-88
+14-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:64-88
 15    <uses-feature
-15-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:3-88
+15-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:3-88
 16        android:name="android.hardware.touchscreen"
-16-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:17-60
+16-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:17-60
 17        android:required="false" />
-17-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:61-85
+17-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:61-85
 18    <uses-feature
-18-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:3-99
+18-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:3-99
 19        android:name="android.hardware.touchscreen.multitouch"
-19-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:17-71
+19-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:17-71
 20        android:required="false" />
-20-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:72-96
+20-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:72-96
 21    <uses-feature
-21-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:3-108
+21-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:3-108
 22        android:name="android.hardware.touchscreen.multitouch.distinct"
-22-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:17-80
+22-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:17-80
 23        android:required="false" />
-23-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:81-105
+23-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:81-105
 24
 25    <application>
-25-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:4:3-15:17
+25-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:4:3-15:17
 26        <activity
-26-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:5-9:16
+26-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:5-9:16
 27            android:name="com.unity3d.player.UnityPlayerActivity"
-27-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:15-68
+27-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:15-68
 28            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
-28-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:182-363
+28-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:182-363
 29            android:exported="true"
-29-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:6:9-32
+29-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:6:9-32
 30            android:hardwareAccelerated="false"
-30-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:399-434
+30-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:399-434
 31            android:launchMode="singleTask"
-31-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:150-181
+31-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:150-181
 32            android:resizeableActivity="false"
-32-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:364-398
+32-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:364-398
 33            android:screenOrientation="fullSensor"
-33-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:111-149
+33-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:111-149
 34            android:theme="@style/UnityThemeSelector" >
-34-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:69-110
+34-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:69-110
 35            <meta-data
-35-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:7-82
+35-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:7-82
 36                android:name="unityplayer.UnityActivity"
-36-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:18-58
+36-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:18-58
 37                android:value="true" />
-37-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:59-79
+37-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:7:59-79
 38            <meta-data
-38-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:8:7-78
+38-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:8:7-78
 39                android:name="android.notch_support"
-39-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:8:18-54
+39-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:8:18-54
 40                android:value="true" />
-40-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:8:55-75
+40-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:8:55-75
 41        </activity>
 42
 43        <meta-data
-43-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:10:5-69
+43-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:10:5-69
 44            android:name="unity.splash-mode"
-44-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:10:16-48
+44-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:10:16-48
 45            android:value="0" />
-45-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:10:49-66
+45-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:10:49-66
 46        <meta-data
-46-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:5-74
+46-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:5-74
 47            android:name="unity.splash-enable"
-47-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:16-50
+47-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:16-50
 48            android:value="True" />
-48-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:51-71
+48-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:11:51-71
 49        <meta-data
-49-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:5-84
+49-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:5-84
 50            android:name="unity.allow-resizable-window"
-50-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:16-59
+50-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:16-59
 51            android:value="False" />
-51-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:60-81
+51-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:12:60-81
 52        <meta-data
-52-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:13:5-81
+52-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:13:5-81
 53            android:name="notch.config"
-53-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:13:16-43
+53-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:13:16-43
 54            android:value="portrait|landscape" />
-54-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:13:44-78
+54-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:13:44-78
 55        <meta-data
-55-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:5-101
+55-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:5-101
 56            android:name="unity.build-id"
-56-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:16-45
+56-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:16-45
 57            android:value="ff00901b-8484-49f0-aa3c-1dac0d73d97f" />
-57-->C:\Users\user\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:46-98
+57-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:46-98
 58    </application>
 59
 60</manifest>

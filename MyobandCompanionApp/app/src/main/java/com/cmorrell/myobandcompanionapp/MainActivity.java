@@ -59,8 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*
+    Todo: Saving data in a database
      Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
      Todo: Fix orientation change (turning screen sideways)
+     Todo: Look at putting calibration screen progress bars on separate thread
     */
 
 
