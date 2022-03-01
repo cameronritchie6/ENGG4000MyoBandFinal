@@ -27,6 +27,30 @@ bool connected = false;
 #define ANALOGSTICK 4 //the analog stick
 #define ANALOGSTICK2 15 //pot 2
 
+
+const int potPin1 = 4; //analog pin on esp 32
+const int potPin2 = 15; //analog pin 2 on esp 32 
+double VoltageMax = 3.3; //max vltage applied to POT
+float ADCResolution = 12; //The ESP32 has a 12bit approximation register for 
+bool clientWrite;
+bool clientRead;
+bool deviceConnected;
+int outputCode;
+
+double oldVoltage1;
+double oldVoltage2;
+double voltageIn;
+double voltageIn2;
+double ThresholdVoltage =2.0; //Threshold voltage in (V) to declare a contraction or not on the EMG signal
+double emgTollerance = 0.1; // the tollerance of fluctuation that the emg signal can have around the threshold voltage before a change state
+int tolleranceFlag =0;
+int SqeezeFlag=0;
+
+
+double signalCheck(int Pin);
+boolean changeDetection(int checkedPin);
+int tolleraceCheck(double voltageIn);
+
 //pin that goes high while there's a device connected
 #define CONNECTED_LED_INDICATOR_PIN 2
 
@@ -133,80 +157,20 @@ delay(portMAX_DELAY);
 
 };
 
-/*
-void buttonOne(){
-  if (digitalRead(BUTTON1) == 0){
-    inputValues[0] |= 00000001;
-  }
-  else{
-    inputValues[0] &= 11111110;
-  }
-}
-
-void buttonTwo(){
-  if (digitalRead(BUTTON2) == 0){
-    inputValues[0] |= 00000010;
-  }
-  else{
-    inputValues[0] &= 11111101;
-  }
-}
-
-void buttonThree(){
-  if (digitalRead(BUTTON3) == 0){
-    inputValues[0] |= 00000100;
-  }
-  else{
-    inputValues[0] &= 11111011;
-  }
-}
-
-void buttonFour(){
-  if (digitalRead(BUTTON4) == 0){
-    inputValues[0] |= 00001000;
-  }
-  else{
-    inputValues[0] &= 11110111;
-  }
-}
-
-void analogInput(){
-  inputValues[2] = analogRead(ANALOGSTICK);
-  // inputValues[3] = analogRead(ANALOGSTICK2);//delete this
-}
-
-*/
-
 void setup() {
   Serial.begin(115200);
-
-  /*
-
-  pinMode(BUTTON1, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(BUTTON1), buttonOne, CHANGE);
-
-  pinMode(BUTTON2, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(BUTTON1), buttonTwo, CHANGE);
-
-  pinMode(BUTTON3, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(BUTTON3), buttonThree, CHANGE);
-
-  pinMode(BUTTON4, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(BUTTON4), buttonFour, CHANGE);
-*/
-/*
-  pinMode(ANALOGSTICK, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(ANALOGSTICK), analogInput, CHANGE);
-  */
-
   xTaskCreate(taskServer, "server", 20000, NULL, 5, NULL);
+
+  inputValues[1] = analogRead(ANALOGSTICK); //DELETE IF NOT WORKING
+   inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
 }
 
 void loop() {
- // inputValues[2] = analogRead(ANALOGSTICK);
- //  inputValues[3] = analogRead(ANALOGSTICK2);
- inputValues[1] = analogRead(ANALOGSTICK);
-   inputValues[2] = analogRead(ANALOGSTICK2);
+
+// inputValues[1] = analogRead(ANALOGSTICK); 
+ //  inputValues[2] = analogRead(ANALOGSTICK2);
+
+   /*
 
   if(analogRead(ANALOGSTICK)>200){
     inputValues[0] |= 00000001;
@@ -215,15 +179,85 @@ void loop() {
   else{
     inputValues[0] &= 11111110;
   }
-
+  */
+ 
+    if(changeDetection(potPin1)||changeDetection(potPin2)||connected){
+      inputValues[1] = analogRead(ANALOGSTICK);
+       inputValues[2] = analogRead(ANALOGSTICK2);
+       Serial.println(analogRead(ANALOGSTICK) +" "+analogRead(ANALOGSTICK2));
+    input->setValue(inputValues, sizeof(inputValues));
+    input->notify();
+    }
+    /*
   Serial.println(inputValues[2]);
   if (connected){
     input->setValue(inputValues, sizeof(inputValues));
     input->notify();
     delay(200);
   }
+*/
+}
+
+
+double signalCheck(int Pin){
+int potValue = analogRead(Pin);
+double ADCRatio= VoltageMax/(pow(2,ADCResolution)-1);
+ double voltageMeasurement = ADCRatio*potValue;
+ 
+return voltageMeasurement ;
+}
+
+
+
+boolean changeDetection(int checkedPin){
+
+  if(checkedPin == potPin1){
+   voltageIn=signalCheck(checkedPin); //probe the voltage
+  oldVoltage1 = round( oldVoltage1 * 100.0 ) / 100.0; //round to two didgits to compare if there is a change
+  voltageIn = round( voltageIn * 100.0 ) / 100.0; //round to two didgits to compare if there is a change from previous value
+
+  if(oldVoltage1 !=voltageIn){
+    oldVoltage1 = voltageIn;
+    return true;
+  } //end if
+  else {
+oldVoltage1 = voltageIn;
+    return false;
+  } //end else
 
 }
+else if(checkedPin == potPin2){
+  voltageIn2=signalCheck(checkedPin); //probe the voltage
+  oldVoltage2 = round( oldVoltage2 * 100.0 ) / 100.0; //round to two didgits to compare if there is a change
+  voltageIn2 = round( voltageIn2 * 100.0 ) / 100.0; //round to two didgits to compare if there is a change from previous value
+  if(oldVoltage2 !=voltageIn2){
+    oldVoltage2 = voltageIn2;
+    return true;
+  } //end if
+  else {
+oldVoltage2 = voltageIn2;
+    return false;
+  } //end else
+} //end elseif
+} //end changeDetection
+
+//***************** Signal Tollerance Check *********************//
+//Recieved the voltage of the signal, then checks to see if its a contraction or not
+
+
+int tolleraceCheck(double voltageInCheck){
+if(voltageInCheck>ThresholdVoltage&&SqeezeFlag==0){ //Begin the squeeze
+  SqeezeFlag=1;
+}
+else if (voltageInCheck<ThresholdVoltage&&SqeezeFlag==1){ //End the squeeze &check fluctation
+  SqeezeFlag=0; 
+}
+return SqeezeFlag;
+} //end tollerance check
+
+
+
+//*****************  END Signal Tollerance Check *******************//
 
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
