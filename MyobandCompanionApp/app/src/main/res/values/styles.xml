@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="IBMEButtonStyle" >
+        <item name="android:background" >
+            @drawable/button_style
+        </item>
+        <item name="android:textSize" >
+            @dimen/button_txt_size
+        </item>
+        <item name="android:fontFamily" >
+            @font/anonymous_pro
+        </item>
+    </style>
+    <style name="IBMETextViewStyle" >
+
+    </style>
+</resources>

@@ -12,10 +12,9 @@
         tools:layout="@layout/fragment_welcome" >
         <action
             android:id="@+id/action_welcomeFragment_to_bondingFragment"
-            app:destination="@id/bondingFragment" />
-        <action
-            android:id="@+id/action_welcomeFragment_to_connectionFragment"
-            app:destination="@id/connectionFragment" />
+            app:destination="@id/bondingFragment"
+            app:popUpTo="@id/bondingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
@@ -24,13 +23,19 @@
         tools:layout="@layout/fragment_menu" >
         <action
             android:id="@+id/action_menuFragment_to_calibrationFragment"
-            app:destination="@id/calibrationFragment" />
+            app:destination="@id/calibrationFragment"
+            app:popUpTo="@id/calibrationFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_menuFragment_to_unityFragment"
-            app:destination="@id/unityFragment" />
+            app:destination="@id/unityFragment"
+            app:popUpTo="@id/unityFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_menuFragment_to_BLETestFragment"
-            app:destination="@id/BLETestFragment" />
+            app:destination="@id/BLETestFragment"
+            app:popUpTo="@id/BLETestFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/calibrationFragment"
@@ -46,11 +51,7 @@
         android:id="@+id/bondingFragment"
         android:name="com.cmorrell.myobandcompanionapp.BondingFragment"
         android:label="fragment_bonding"
-        tools:layout="@layout/fragment_bonding" >
-        <action
-            android:id="@+id/action_bondingFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_bonding" />
     <fragment
         android:id="@+id/BLETestFragment"
         android:name="com.cmorrell.myobandcompanionapp.BLETestFragment"
@@ -60,14 +61,40 @@
         android:id="@+id/connectionFragment"
         android:name="com.cmorrell.myobandcompanionapp.ConnectionFragment"
         android:label="fragment_connection"
-        tools:layout="@layout/fragment_connection" >
-        <action
-            android:id="@+id/action_connectionFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_connection" />
     <action
         android:id="@+id/action_global_connectionFragment"
         app:destination="@id/connectionFragment"
         app:popUpTo="@id/connectionFragment"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_menuFragment"
+        app:destination="@id/menuFragment"
+        app:popUpTo="@id/unityFragment"
+        app:popUpToInclusive="false" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.cmorrell.myobandcompanionapp.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <argument
+            android:name="correctPassCode"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_settingsFragment_to_developerDialogFragment"
+            app:destination="@id/developerDialogFragment"
+            app:popUpTo="@id/developerDialogFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/developerDialogFragment"
+        android:name="com.cmorrell.myobandcompanionapp.DeveloperDialogFragment"
+        android:label="fragment_developer_dialog"
+        tools:layout="@layout/fragment_developer_dialog" />
+    <action
+        android:id="@+id/action_global_settingsFragment"
+        app:destination="@id/settingsFragment"
+        app:popUpTo="@id/settingsFragment"
         app:popUpToInclusive="true" />
 </navigation>

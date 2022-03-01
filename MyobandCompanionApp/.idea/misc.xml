@@ -12,17 +12,26 @@
         <entry key="..\:/AndroidStudioProjects/MyobandCompanionApp/app/src/main/res/layout/fragment_unity.xml" value="0.17873892652423137" />
         <entry key="..\:/AndroidStudioProjects/MyobandCompanionApp/app/src/main/res/layout/fragment_welcome.xml" value="0.33611255862428346" />
         <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/drawable/ic_ibme_launcher_background.xml" value="0.264" />
+        <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/drawable/ic_ibme_launcher_foreground.xml" value="0.221" />
+        <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/drawable/ic_ibme_logo.xml" value="0.221" />
+        <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/drawable/ic_ibme_logo_cropped.xml" value="0.221" />
+        <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/drawable/progress_drawable_vertical.xml" value="0.252" />
+        <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/drawable/test.xml" value="0.221" />
         <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/activity_main.xml" value="0.16935904116727463" />
         <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_b_l_e_test.xml" value="0.33611255862428346" />
         <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_bonding.xml" value="0.3359375" />
         <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_calibration.xml" value="0.33" />
         <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_connection.xml" value="0.33611255862428346" />
-        <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_menu.xml" value="0.16927083333333334" />
+        <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_developer_dialog.xml" value="0.33" />
+        <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_menu.xml" value="0.25" />
+        <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_settings.xml" value="0.31891610213652943" />
         <entry key="..\:/GitHub/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_welcome.xml" value="0.5" />
+        <entry key="..\:/Users/user/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/drawable/button_shape.xml" value="0.251" />
+        <entry key="..\:/Users/user/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/MyobandCompanionApp/app/src/main/res/layout/fragment_welcome.xml" value="0.67" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

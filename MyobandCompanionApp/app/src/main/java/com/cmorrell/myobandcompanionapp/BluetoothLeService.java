@@ -1,8 +1,5 @@
 package com.cmorrell.myobandcompanionapp;
 
-import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
-
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -13,6 +10,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.bluetooth.le.ScanFilter;
 import android.companion.AssociationRequest;
 import android.companion.BluetoothLeDeviceFilter;
 import android.companion.CompanionDeviceManager;
@@ -20,17 +18,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
+import android.os.ParcelUuid;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import java.util.List;
 import java.util.Set;
@@ -45,19 +39,16 @@ public class BluetoothLeService extends Service {
     public static final String ACTION_DATA_SENT = "com.cmorrell.myobandcompanionapp.ACTION_DATA_SENT";
     public static final String ACTION_DATA_AVAILABLE = "com.cmorrell.myobandcompanionapp.ACTION_DATA_AVAILABLE";
     public static final String EXTRA_DATA = "com.cmorrell.myobandcompanionapp.EXTRA_DATA";
-    public static final int SELECT_DEVICE_REQUEST_CODE = 1;    // request code for BLE bonding
-    public static final int REQUEST_ENABLE_BT = 2;  // request code to enable Bluetooth
-    public static final int PERMISSION_REQUEST_CODE = 3;    // request code for background location permission
 
     //    private static final String UART_SERVICE_UUID = "B2B9D06E-60D4-4511-91A8-20E2E77CFA4B";
-    private static final String UART_SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+    private static final String SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String RX_CHARACTERISTIC_UUID = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String TX_CHARACTERISTIC_UUID = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
     //private static final String CHARACTERISTIC_UUID = "90B6107B-0AD4-45DC-AD35-9C1F84811ABF";
     private static final String CONFIG_UUID = "00002902-0000-1000-8000-00805f9b34fb";
 
-//    public static final int STATE_DISCONNECTED = 0;
-//    public static final int STATE_CONNECTED = 2;
+    public static final String TIME = "TIME";
+
 
     private boolean connected;    // current connection state
 
@@ -75,12 +66,13 @@ public class BluetoothLeService extends Service {
         this.main = main;
     }
 
-//    public MainActivity getMain() {
-//        return main;
-//    }
 
     public BluetoothDevice getMyoDevice() {
         return myoDevice;
+    }
+
+    public BluetoothAdapter getBluetoothAdapter() {
+        return bluetoothAdapter;
     }
 
     private final BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
@@ -92,7 +84,7 @@ public class BluetoothLeService extends Service {
                 connected = true;
                 broadcastUpdate(ACTION_GATT_CONNECTED);
                 // Attempts to discover services after successful connection
-                if (checkForBTPermissions()) {
+                if (main.checkForBTPermissions()) {
                     bluetoothGatt.discoverServices();
                 }
 
@@ -131,9 +123,8 @@ public class BluetoothLeService extends Service {
     public void onCreate() {
         super.onCreate();
         try {
-//            MyoReceiver myoReceiver = main.getMyoReceiver();
             MyoReceiver myoReceiver = MainActivity.myoReceiver;
-            registerReceiver(myoReceiver, makeGattUpdateIntentFilter());
+            registerReceiver(myoReceiver, makeMyoReceiverFilter());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,69 +152,8 @@ public class BluetoothLeService extends Service {
         return true;
     }
 
-    private boolean hasPermission(String permission) {
-        return ContextCompat.checkSelfPermission(main, permission) == PackageManager.PERMISSION_GRANTED;
-    }
 
 
-    @SuppressLint("MissingPermission")
-    public boolean checkForBTPermissions() {
-
-        boolean noPermissions;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            noPermissions = !hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) ||
-                    !hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
-                    !hasPermission(Manifest.permission.BLUETOOTH_CONNECT);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            noPermissions = !hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) ||
-                    !hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        } else {
-            noPermissions = !hasPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-
-        if (noPermissions) {
-            // Need to request permission
-            String[] permissions;
-            String message;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                permissions = new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.BLUETOOTH_CONNECT};
-                message = "Background location is required for Bluetooth connections on this device. Please select \"Allow all the time\"";
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                permissions = new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION};
-                message = "Background location is required for Bluetooth connections on this device. Please select \"Allow all the time\"";
-            } else {
-                permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
-                message = "Fine location is required for Bluetooth connections on this device. Please select \"Allow while using\"";
-            }
-
-            new AlertDialog.Builder(main)
-                    .setTitle("Location Permission")
-                    .setMessage(message)
-                    .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-                        // Prompt the user once explanation has been shown
-//                                main.requestPermissions(permissions, PERMISSION_REQUEST_CODE);
-                        ActivityCompat.requestPermissions(main, permissions, PERMISSION_REQUEST_CODE);
-                    })
-                    .setNegativeButton("No thanks", (dialog, which) -> {
-                        // Close dialog
-                        dialog.dismiss();
-                    })
-                    .create()
-                    .show();
-            return false;
-        }
-
-        if (!bluetoothAdapter.isEnabled()) {
-            // Ask user to enable Bluetooth
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            main.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            return false;
-        }
-
-        return true;
-    }
 
     @SuppressLint("MissingPermission")
     public boolean connect(final String address) {
@@ -238,7 +168,7 @@ public class BluetoothLeService extends Service {
 
 
         // Check that user has the required Bluetooth permissions enabled
-        if (checkForBTPermissions()) {
+        if (main.checkForBTPermissions()) {
             try {
                 final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
                 // Connect to the GATT server on the device
@@ -291,7 +221,7 @@ public class BluetoothLeService extends Service {
         return deviceAddress;
     }
 
-    private static IntentFilter makeGattUpdateIntentFilter() {
+    private static IntentFilter makeMyoReceiverFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
@@ -311,13 +241,13 @@ public class BluetoothLeService extends Service {
      */
     @SuppressLint("MissingPermission")
     public boolean checkForPairedDevices() {
-        if (checkForBTPermissions()) {
+        if (main.checkForBTPermissions()) {
             Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
             if (pairedDevices.size() > 0) {
                 for (BluetoothDevice device : pairedDevices) {
                     String deviceName = device.getName();
-                    if (deviceName.contains("UART")) {
-                        close();    // Prevent multiple Bluetooth connections
+                    if (deviceName.contains("Myo")) {
+                        close();    // prevent multiple Bluetooth connections
                         if (connect(device.getAddress())) {
                             // Successful pairing
                             myoDevice = device;
@@ -347,13 +277,14 @@ public class BluetoothLeService extends Service {
         }
 
         // Check if the service is available on the device
-        BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(UART_SERVICE_UUID));
+        BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(SERVICE_UUID));
         if (service == null) {
             Log.e(LOG_TAG, "Custom BLE service not found");
             return;
         }
 
-        if (checkForBTPermissions()) {
+        if (main.checkForBTPermissions()) {
+            // Get the read characteristic from the service
             BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(TX_CHARACTERISTIC_UUID));
 //        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID));
 
@@ -363,7 +294,7 @@ public class BluetoothLeService extends Service {
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             bluetoothGatt.writeDescriptor(descriptor);
         }
-        // Get the read characteristic from the service
+
 
     }
 
@@ -374,13 +305,13 @@ public class BluetoothLeService extends Service {
             return;
         }
         // Check if service is available on device
-        BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(UART_SERVICE_UUID));
+        BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(SERVICE_UUID));
         if (service == null) {
             Log.w(LOG_TAG, "ESP32 service not found");
             return;
         }
 
-        if (checkForBTPermissions()) {
+        if (main.checkForBTPermissions()) {
             // Get read characteristic
             BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(RX_CHARACTERISTIC_UUID));
 //        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID));
@@ -393,17 +324,20 @@ public class BluetoothLeService extends Service {
 
     public void pairDevice() {
 
-        // Create device filter
+        // Create device filter based on UUID
+        ScanFilter scanFilter = new ScanFilter.Builder()
+                .setServiceUuid(ParcelUuid.fromString(SERVICE_UUID))
+                .build();
+
         BluetoothLeDeviceFilter deviceFilter = new BluetoothLeDeviceFilter.Builder()
-                // Match only Bluetooth devices whose name matches the pattern
-                .setNamePattern(Pattern.compile("UART")).build();
+                .setNamePattern(Pattern.compile("Myo"))
+                .setScanFilter(scanFilter).build();
 
 
         // Set a DeviceFilter to an AssociationRequest so the device manager can determine what type of device to seek.
         AssociationRequest pairingRequest = new AssociationRequest.Builder()
                 // Find only devices that match this filter
                 .addDeviceFilter(deviceFilter)
-                // Stop scanning as soon as one device matching the filter is found
                 .setSingleDevice(false).build();
 
 
@@ -415,7 +349,7 @@ public class BluetoothLeService extends Service {
             public void onDeviceFound(IntentSender chooserLauncher) {
                 try {
                     main.startIntentSenderForResult(
-                            chooserLauncher, SELECT_DEVICE_REQUEST_CODE, null, 0,
+                            chooserLauncher, MainActivity.SELECT_DEVICE_REQUEST_CODE, null, 0,
                             0, 0);
                 } catch (IntentSender.SendIntentException e) {
                     Log.e(LOG_TAG, "Failed to send intent");
@@ -439,7 +373,7 @@ public class BluetoothLeService extends Service {
     private void close() {
         if (bluetoothGatt == null)
             return;
-        if (checkForBTPermissions()) {
+        if (main.checkForBTPermissions()) {
             bluetoothGatt.close();
         }
         bluetoothGatt = null;

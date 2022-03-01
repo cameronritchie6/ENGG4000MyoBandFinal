@@ -37,7 +37,7 @@ public class WelcomeFragment extends Fragment {
         startBtn.setOnClickListener(view1 -> {
             if (main.getBluetoothLeService().checkForPairedDevices()) {
                 // Go to ConnectionFragment
-                NavDirections action = WelcomeFragmentDirections.actionWelcomeFragmentToConnectionFragment();
+                NavDirections action = WelcomeFragmentDirections.actionGlobalConnectionFragment();
                 Navigation.findNavController(view1).navigate(action);
             } else {
                 // Go to BondingFragment

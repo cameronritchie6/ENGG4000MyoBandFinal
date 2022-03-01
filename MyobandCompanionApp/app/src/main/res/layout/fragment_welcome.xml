@@ -13,12 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:text="@string/welcome_message"
+        android:textSize="@dimen/normal_tv_txt_size"
         app:layout_constraintBottom_toTopOf="@+id/start_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/start_btn"
+        style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_btn_txt"
@@ -26,5 +28,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="399dp"
+        android:layout_height="134dp"
+        android:src="@drawable/ic_ibme_logo"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6"
+        android:contentDescription="@string/logo_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
