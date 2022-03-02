@@ -127,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 // Bond with device
                 String address = device.getAddress();
                 device.createBond();
-                bluetoothLeService.setDeviceAddress(address);
+//                bluetoothLeService.setDeviceAddress(address);
+                bluetoothLeService.setMyoDevice(device);
                 // Navigate to main menu
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
             }

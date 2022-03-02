@@ -49,20 +49,21 @@ public class BluetoothLeService extends Service {
     private static final String RX_CHARACTERISTIC_UUID = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String TX_CHARACTERISTIC_UUID = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String CONFIG_UUID = "00002902-0000-1000-8000-00805f9b34fb";
+    private static final String defaultDeviceName = "G";
 
     public static final String TIME = "TIME";
-
 
     private boolean connected;    // current connection state
 
     private final Binder binder = new LocalBinder();
     public static final String LOG_TAG = "BluetoothLeService";
     private BluetoothAdapter bluetoothAdapter;
-    private String deviceAddress;    // address of connected BLE device
+//    private String deviceAddress;    // address of connected BLE device
     private BluetoothDevice myoDevice;
     private BluetoothGatt bluetoothGatt;
     private MainActivity main;
     private List<BluetoothGattService> services;
+    private BluetoothHidDevice bluetoothHidDevice;
 
 
     public void setMain(MainActivity main) {
@@ -72,6 +73,10 @@ public class BluetoothLeService extends Service {
 
     public BluetoothDevice getMyoDevice() {
         return myoDevice;
+    }
+
+    public void setMyoDevice(BluetoothDevice myoDevice) {
+        this.myoDevice = myoDevice;
     }
 
     public BluetoothAdapter getBluetoothAdapter() {
@@ -119,6 +124,20 @@ public class BluetoothLeService extends Service {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+        }
+    };
+
+    private BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
+        @RequiresApi(api = Build.VERSION_CODES.P)
+        public void onServiceConnected(int profile, BluetoothProfile proxy) {
+            if (profile == BluetoothProfile.HEADSET) {
+                bluetoothHidDevice = (BluetoothHidDevice) proxy;
+            }
+        }
+        public void onServiceDisconnected(int profile) {
+            if (profile == BluetoothProfile.HEADSET) {
+                bluetoothHidDevice = null;
+            }
         }
     };
 
@@ -175,7 +194,13 @@ public class BluetoothLeService extends Service {
             try {
                 final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
                 // Connect to the GATT server on the device
-                bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback, BluetoothDevice.TRANSPORT_LE);
+//                bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback, BluetoothDevice.TRANSPORT_LE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    bluetoothAdapter.getProfileProxy(main, profileListener, BluetoothProfile.HID_DEVICE);
+                    if (bluetoothHidDevice != null) {
+                        bluetoothHidDevice.connect(device);
+                    }
+                }
                 return true;
             } catch (IllegalArgumentException exception) {
                 Log.e(LOG_TAG, "Device not found with provided address.");
@@ -212,16 +237,16 @@ public class BluetoothLeService extends Service {
     }
 
 
-    public void setDeviceAddress(final String deviceAddress) {
-        this.deviceAddress = deviceAddress;
-    }
+//    public void setDeviceAddress(final String deviceAddress) {
+//        this.deviceAddress = deviceAddress;
+//    }
 
     public boolean getConnected() {
         return connected;
     }
 
     public String getDeviceAddress() {
-        return deviceAddress;
+        return myoDevice.getAddress();
     }
 
     private static IntentFilter makeMyoReceiverFilter() {
@@ -249,12 +274,12 @@ public class BluetoothLeService extends Service {
             if (pairedDevices.size() > 0) {
                 for (BluetoothDevice device : pairedDevices) {
                     String deviceName = device.getName();
-                    if (deviceName.contains("Myo")) {
+                    if (deviceName.contains(defaultDeviceName)) {
                         close();    // prevent multiple Bluetooth connections
                         if (connect(device.getAddress())) {
                             // Successful pairing
                             myoDevice = device;
-                            deviceAddress = device.getAddress();
+//                            deviceAddress = device.getAddress();
                             return true;
                         }
                     }
@@ -289,7 +314,6 @@ public class BluetoothLeService extends Service {
         if (main.checkForBTPermissions()) {
             // Get the read characteristic from the service
             BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(TX_CHARACTERISTIC_UUID));
-//        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID));
 
             bluetoothGatt.setCharacteristicNotification(characteristic, true);
 
@@ -317,7 +341,6 @@ public class BluetoothLeService extends Service {
         if (main.checkForBTPermissions()) {
             // Get read characteristic
             BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(RX_CHARACTERISTIC_UUID));
-//        BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID));
             String data = value + "\n";
             characteristic.setValue(data.getBytes());
 
@@ -333,7 +356,7 @@ public class BluetoothLeService extends Service {
                 .build();
 
         BluetoothLeDeviceFilter deviceFilter = new BluetoothLeDeviceFilter.Builder()
-                .setNamePattern(Pattern.compile("GAME"))
+                .setNamePattern(Pattern.compile(defaultDeviceName))
                 .build();
 //                .setScanFilter(scanFilter).build();
 
@@ -379,6 +402,8 @@ public class BluetoothLeService extends Service {
             return;
         if (main.checkForBTPermissions()) {
             bluetoothGatt.close();
+            // https://developer.android.com/guide/topics/connectivity/bluetooth/profiles
+//            bluetoothAdapter.closeProfileProxy(0, bluetoothHidDevice);
         }
         bluetoothGatt = null;
     }

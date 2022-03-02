@@ -24,6 +24,8 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
+// hello there friend
+
 BLEServer *pServer = NULL;
 BLECharacteristic * pTxCharacteristic;
 bool deviceConnected = false;
