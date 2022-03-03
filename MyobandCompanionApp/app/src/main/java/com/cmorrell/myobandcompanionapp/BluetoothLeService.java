@@ -404,6 +404,7 @@ public class BluetoothLeService extends Service {
             bluetoothGatt.close();
             // https://developer.android.com/guide/topics/connectivity/bluetooth/profiles
 //            bluetoothAdapter.closeProfileProxy(0, bluetoothHidDevice);
+            // hey now
         }
         bluetoothGatt = null;
     }
