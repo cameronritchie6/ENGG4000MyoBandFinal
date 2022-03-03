@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
+import android.view.InputDevice;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import android.widget.Toast;
 
 import com.unity3d.player.UnityPlayer;
 import com.unity3d.player.UnityPlayerActivity;
+
+import java.util.ArrayList;
 
 
 public class MenuFragment extends Fragment {
@@ -44,6 +47,7 @@ public class MenuFragment extends Fragment {
             Toast.makeText(main, "Failed to connect to Myoband device", Toast.LENGTH_SHORT).show();
             // Maybe go to connection screen, handle disconnect SOMEHOW
         }
+
     }
 
 
@@ -73,6 +77,23 @@ public class MenuFragment extends Fragment {
         // Set on click listeners
         calibrationBtn.setOnClickListener(view1 -> {
             // Go to calibration screen
+            ArrayList<Integer> gameControllerDeviceIds = new ArrayList<Integer>();
+            int[] deviceIds = InputDevice.getDeviceIds();
+            for (int deviceId : deviceIds) {
+                InputDevice dev = InputDevice.getDevice(deviceId);
+                int sources = dev.getSources();
+
+                // Verify that the device has gamepad buttons, control sticks, or both.
+                if (((sources & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
+                        || ((sources & InputDevice.SOURCE_JOYSTICK)
+                        == InputDevice.SOURCE_JOYSTICK)) {
+                    // This device is a game controller. Store its device ID.
+                    if (!gameControllerDeviceIds.contains(deviceId)) {
+                        gameControllerDeviceIds.add(deviceId);
+                    }
+                }
+            }
+
             NavDirections action = MenuFragmentDirections.actionMenuFragmentToCalibrationFragment();
             Navigation.findNavController(view1).navigate(action);
         });
@@ -93,7 +114,5 @@ public class MenuFragment extends Fragment {
 
         return view;
     }
-
-
 
 }

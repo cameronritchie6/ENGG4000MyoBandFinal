@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
+        android:fontFamily="@font/montserrat_alternates_medium"
         android:text="@string/bonding_tv_txt"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/bonding_btn"

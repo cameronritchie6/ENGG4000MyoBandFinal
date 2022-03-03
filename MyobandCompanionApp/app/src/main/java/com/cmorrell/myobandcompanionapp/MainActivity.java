@@ -121,7 +121,13 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == SELECT_DEVICE_REQUEST_CODE && data != null) {
             ScanResult scanResult = data.getParcelableExtra(CompanionDeviceManager.EXTRA_DEVICE);
             BluetoothDevice device = scanResult.getDevice();
-            ParcelUuid[] uuids = device.getUuids();
+//            ParcelUuid[] uuids;
+//            if (device.fetchUuidsWithSdp()) {
+//                uuids = device.getUuids();
+//            }
+//            device.getType();
+
+//            device.fetchUuidsWithSdp()
 
             if (device != null && checkForBTPermissions()) {
                 // Bond with device
