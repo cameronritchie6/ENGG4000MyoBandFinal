@@ -5,7 +5,7 @@
 5    package="com.unity3d.player" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="19"
+8        android:minSdkVersion="28"
 8-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="31" />
 9-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml
