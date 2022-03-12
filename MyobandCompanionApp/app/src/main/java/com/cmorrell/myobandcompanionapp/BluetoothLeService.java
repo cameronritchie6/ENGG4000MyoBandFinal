@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothHidDevice;
+import android.bluetooth.BluetoothHidDeviceAppSdpSettings;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.ScanFilter;
 import android.companion.AssociationRequest;
@@ -29,9 +30,11 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 import java.util.regex.Pattern;
 
 public class BluetoothLeService extends Service {
@@ -45,10 +48,14 @@ public class BluetoothLeService extends Service {
 
     //    private static final String UART_SERVICE_UUID = "B2B9D06E-60D4-4511-91A8-20E2E77CFA4B";
     private static final String GAMEPAD_SERVICE_UUID = "4A981812-1CC4-E7C1-C757-F1267DD021E8";
-    private static final String SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+    //    private static final String SERVICE_UUID = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+    private static final String SERVICE_UUID = "00001812-0000-1000-8000-00805f9b34fb";
     private static final String RX_CHARACTERISTIC_UUID = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
     private static final String TX_CHARACTERISTIC_UUID = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
-    private static final String CONFIG_UUID = "00002902-0000-1000-8000-00805f9b34fb";
+    private static final String NOTIFY_UUID = "00002a4d-0000-1000-8000-00805f9b34fb";
+    //    private static final String WRITE_UUID = ""   // same as NOTIFY_UUID???
+    private static final String UUID_2902 = "00002902-0000-1000-8000-00805f9b34fb";
+    private static final String CONFIG2 = "00002908-0000-1000-8000-00805f9b34fb";
     private static final String defaultDeviceName = "G";
 
     public static final String TIME = "TIME";
@@ -58,7 +65,7 @@ public class BluetoothLeService extends Service {
     private final Binder binder = new LocalBinder();
     public static final String LOG_TAG = "BluetoothLeService";
     private BluetoothAdapter bluetoothAdapter;
-//    private String deviceAddress;    // address of connected BLE device
+    //    private String deviceAddress;    // address of connected BLE device
     private BluetoothDevice myoDevice;
     private BluetoothGatt bluetoothGatt;
     private MainActivity main;
@@ -112,6 +119,7 @@ public class BluetoothLeService extends Service {
             }
         }
 
+
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -127,19 +135,7 @@ public class BluetoothLeService extends Service {
         }
     };
 
-    private BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
-        @RequiresApi(api = Build.VERSION_CODES.P)
-        public void onServiceConnected(int profile, BluetoothProfile proxy) {
-            if (profile == BluetoothProfile.HEADSET) {
-                bluetoothHidDevice = (BluetoothHidDevice) proxy;
-            }
-        }
-        public void onServiceDisconnected(int profile) {
-            if (profile == BluetoothProfile.HEADSET) {
-                bluetoothHidDevice = null;
-            }
-        }
-    };
+
 
     @Override
     public void onCreate() {
@@ -163,6 +159,7 @@ public class BluetoothLeService extends Service {
 
     /**
      * Setup BluetoothAdapter for Bluetooth connection.
+     *
      * @return false if BluetoothAdapter could not be found, otherwise true.
      */
     public boolean initialize() {
@@ -173,8 +170,6 @@ public class BluetoothLeService extends Service {
         }
         return true;
     }
-
-
 
 
     @SuppressLint("MissingPermission")
@@ -194,13 +189,8 @@ public class BluetoothLeService extends Service {
             try {
                 final BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
                 // Connect to the GATT server on the device
-//                bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback, BluetoothDevice.TRANSPORT_LE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    bluetoothAdapter.getProfileProxy(main, profileListener, BluetoothProfile.HID_DEVICE);
-                    if (bluetoothHidDevice != null) {
-                        bluetoothHidDevice.connect(device);
-                    }
-                }
+                bluetoothGatt = device.connectGatt(this, true, bluetoothGattCallback, BluetoothDevice.TRANSPORT_LE);
+
                 return true;
             } catch (IllegalArgumentException exception) {
                 Log.e(LOG_TAG, "Device not found with provided address.");
@@ -212,6 +202,7 @@ public class BluetoothLeService extends Service {
 
     /**
      * Broadcasts update to send information from service to activity.
+     *
      * @param action - String that describes the action that has occurred.
      */
     private void broadcastUpdate(final String action) {
@@ -237,9 +228,6 @@ public class BluetoothLeService extends Service {
     }
 
 
-//    public void setDeviceAddress(final String deviceAddress) {
-//        this.deviceAddress = deviceAddress;
-//    }
 
     public boolean getConnected() {
         return connected;
@@ -297,6 +285,7 @@ public class BluetoothLeService extends Service {
 //        return bluetoothGatt.getServices();
 //    }
 
+
     @SuppressLint("MissingPermission")
     public void setCharacteristicNotification() {
         if (bluetoothGatt == null) {
@@ -305,21 +294,34 @@ public class BluetoothLeService extends Service {
         }
 
         // Check if the service is available on the device
+        ParcelUuid[] uuids = myoDevice.getUuids();
+        List<BluetoothGattService> services = bluetoothGatt.getServices();
         BluetoothGattService service = bluetoothGatt.getService(UUID.fromString(SERVICE_UUID));
+        List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
         if (service == null) {
             Log.e(LOG_TAG, "Custom BLE service not found");
             return;
         }
 
+        //----------------------------------ERROR HERE WITH UUIDS-------------------
+        // FOUND 2 CHARACTERISTICS WITH THE SAME UUID BUT THEYRE THE READ AND WRITE
+
         if (main.checkForBTPermissions()) {
             // Get the read characteristic from the service
-            BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(TX_CHARACTERISTIC_UUID));
+            BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(NOTIFY_UUID));
 
+            if (characteristic == null) {
+                Log.e(LOG_TAG, "Custom BLE characteristic not found");
+                return;
+            }
             bluetoothGatt.setCharacteristicNotification(characteristic, true);
 
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(CONFIG_UUID));
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            bluetoothGatt.writeDescriptor(descriptor);
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(UUID_2902));
+            if (descriptor != null) {
+                descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+                Log.d(LOG_TAG, String.valueOf(bluetoothGatt.writeDescriptor(descriptor)));
+            }
+
         }
 
 
@@ -340,11 +342,14 @@ public class BluetoothLeService extends Service {
 
         if (main.checkForBTPermissions()) {
             // Get read characteristic
-            BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(RX_CHARACTERISTIC_UUID));
+            BluetoothGattCharacteristic characteristic = service.getCharacteristic(UUID.fromString(NOTIFY_UUID));
             String data = value + "\n";
             characteristic.setValue(data.getBytes());
 
-            bluetoothGatt.writeCharacteristic(characteristic);
+
+            boolean pls = characteristic.getProperties() == BluetoothGatt.GATT_WRITE_NOT_PERMITTED;
+            boolean hi = bluetoothGatt.writeCharacteristic(characteristic);
+            System.out.println(hi);
         }
     }
 
@@ -392,7 +397,6 @@ public class BluetoothLeService extends Service {
     }
 
 
-
     /**
      * Close the BluetoothGatt connection.
      */
@@ -402,8 +406,6 @@ public class BluetoothLeService extends Service {
             return;
         if (main.checkForBTPermissions()) {
             bluetoothGatt.close();
-            // https://developer.android.com/guide/topics/connectivity/bluetooth/profiles
-//            bluetoothAdapter.closeProfileProxy(0, bluetoothHidDevice);
         }
         bluetoothGatt = null;
     }

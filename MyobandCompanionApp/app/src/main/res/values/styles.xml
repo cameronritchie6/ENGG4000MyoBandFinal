@@ -8,7 +8,7 @@
             @dimen/button_txt_size
         </item>
         <item name="android:fontFamily" >
-            @font/anonymous_pro
+            @font/montserrat_alternates_medium
         </item>
     </style>
     <style name="IBMETextViewStyle" >
