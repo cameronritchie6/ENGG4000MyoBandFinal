@@ -167,7 +167,7 @@ delay(portMAX_DELAY);
 void setup() {
   Serial.begin(115200);
   xTaskCreate(taskServer, "server", 20000, NULL, 5, NULL);
-inputValues[0] |= 0b00000001;
+// inputValues[0] |= 0b00000001;
   // inputValues[1] = analogRead(ANALOGSTICK); //DELETE IF NOT WORKING
   //  inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
 
@@ -186,6 +186,7 @@ void loop() {
 //inputValues[0] |= 00000001;
     // if((changeDetection(potPin1)||changeDetection(potPin2))&&connected){
       while (connected) {
+        // ONLY WORKS WHEN SENDING 0b00000001 OR SOME OTHER VARIATION WITH 1 AS THE LSB
         inputValues[0] = 0b00000001;
         // inputValues[0] = buttonPress(analogRead(potPin1), analogRead(potPin2));
       // inputValues[1] = analogRead(potPin1);

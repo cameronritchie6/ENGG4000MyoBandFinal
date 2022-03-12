@@ -270,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // ONLY GIVING ME KEYCODE 23 (DPAD CENTER)
         Log.d(LOG_TAG, "KEY DOWN" + keyCode);
         return super.onKeyDown(keyCode, event);
     }
