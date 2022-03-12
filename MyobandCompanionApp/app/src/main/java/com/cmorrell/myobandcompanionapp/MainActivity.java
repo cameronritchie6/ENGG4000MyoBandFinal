@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.ParcelUuid;
 import android.util.Log;
+import android.view.InputDevice;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -244,6 +246,38 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    public ArrayList<Integer> getGameControllerIds() {
+        ArrayList<Integer> gameControllerDeviceIds = new ArrayList<Integer>();
+        int[] deviceIds = InputDevice.getDeviceIds();
+        for (int deviceId : deviceIds) {
+            InputDevice dev = InputDevice.getDevice(deviceId);
+            int sources = dev.getSources();
+
+            // Verify that the device has gamepad buttons, control sticks, or both.
+            if (((sources & InputDevice.SOURCE_GAMEPAD) == InputDevice.SOURCE_GAMEPAD)
+                    || ((sources & InputDevice.SOURCE_JOYSTICK)
+                    == InputDevice.SOURCE_JOYSTICK)) {
+                // This device is a game controller. Store its device ID.
+                if (!gameControllerDeviceIds.contains(deviceId)) {
+                    gameControllerDeviceIds.add(deviceId);
+                }
+            }
+        }
+        return gameControllerDeviceIds;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d(LOG_TAG, "KEY DOWN" + keyCode);
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Log.d(LOG_TAG, "KEY UP" + keyCode);
+        return super.onKeyUp(keyCode, event);
     }
 
 

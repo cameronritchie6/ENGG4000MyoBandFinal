@@ -108,8 +108,10 @@ public class MenuFragment extends Fragment {
         });
 
         settingsBtn.setOnClickListener(v -> {
-            NavDirections action = MenuFragmentDirections.actionGlobalSettingsFragment();
-            Navigation.findNavController(v).navigate(action);
+//            NavDirections action = MenuFragmentDirections.actionGlobalSettingsFragment();
+//            Navigation.findNavController(v).navigate(action);
+//main.getBluetoothLeService().write("PLEASE");
+            main.getGameControllerIds();
         });
 
         return view;

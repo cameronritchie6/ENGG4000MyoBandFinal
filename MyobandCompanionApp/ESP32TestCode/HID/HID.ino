@@ -59,7 +59,8 @@ int buttonPress(int voltageIn, int voltageIn2);
 //Each one of the bits represnets a button. 1 == pressed 0 == not pressed
 //uint8_t inputValues[3] = {0b00000000, 0b00000000, 0x0};----------undo this issomething happens
 //uint8_t inputValues[] = {0b00000000, 0b00000000, 0x0,0x0};---
-uint8_t inputValues[] = {0b00000000, 0x0,0x0};
+// uint8_t inputValues[] = {0b00000000, 0x0,0x0};
+uint8_t inputValues[] = {0b00000000};
 
 class MyCallbacks : public BLEServerCallbacks { //Class that does stuff when device disconects or connects
     void onConnect(BLEServer* pServer) {
@@ -83,8 +84,12 @@ class MyCallbacks : public BLEServerCallbacks { //Class that does stuff when dev
 
 class MyOutputCallbacks : public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic* me) {
-      uint8_t* value = (uint8_t*)(me->getValue().c_str());
+      // uint8_t* value = (uint8_t*)(me->getValue().c_str());
       //ESP_LOGI(LOG_TAG, "special keys: %d", *value);
+
+Serial.println("HELLO RECEIVED");
+      std::string testing = me -> getValue();
+      Serial.println(testing.c_str());
     }
 };
 
@@ -122,7 +127,8 @@ void taskServer(void*) {
     0x45, 0x01, // PHYSICAL_MAXIMUM (1)
     0x75, 0x01, // REPORT_SIZE (1)
     //0x95, 0x10, // REPORT_COUNT (16) --------uncomment if not working
-    0x95, 0x03, // REPORT_COUNT (3)----------delete if not working
+    //0x95, 0x03
+    0x95, 0x01, // REPORT_COUNT (3)----------delete if not working
     0x05, 0x09, // USAGE_PAGE (Button)
     0x19, 0x01, // USAGE_MINIMUM (Button 1)
     //0x29, 0x10, // USAGE_MAXIMUM (Button 16)
@@ -162,11 +168,12 @@ void setup() {
   Serial.begin(115200);
   xTaskCreate(taskServer, "server", 20000, NULL, 5, NULL);
 inputValues[0] |= 0b00000001;
-  inputValues[1] = analogRead(ANALOGSTICK); //DELETE IF NOT WORKING
-   inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
+  // inputValues[1] = analogRead(ANALOGSTICK); //DELETE IF NOT WORKING
+  //  inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
 
    Serial.println("HEY THERE");
 }
+
 
 void loop() {
 
@@ -177,15 +184,18 @@ void loop() {
   
 
 //inputValues[0] |= 00000001;
-    if((changeDetection(potPin1)||changeDetection(potPin2))&&connected){
-      inputValues[0] = buttonPress(analogRead(potPin1), analogRead(potPin2));
-      inputValues[1] = analogRead(potPin1);
-       inputValues[2] = analogRead(potPin2);
+    // if((changeDetection(potPin1)||changeDetection(potPin2))&&connected){
+      while (connected) {
+        inputValues[0] = 0b00000001;
+        // inputValues[0] = buttonPress(analogRead(potPin1), analogRead(potPin2));
+      // inputValues[1] = analogRead(potPin1);
+      //  inputValues[2] = analogRead(potPin2);
     input->setValue(inputValues, sizeof(inputValues));
     input->notify();
     delay(200);
-    }
-
+      }
+      
+    // }
     
 
 delay(200);
