@@ -184,6 +184,11 @@ void loop() {
     delay(200);
     }
 
+    uint8_t value = 1;
+
+    input->setValue(&value, 1);
+    input->notify();
+
     
 
 delay(200);
