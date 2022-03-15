@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.unity3d.player.UnityPlayer;
@@ -47,7 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
     public UnityPlayer unityPlayer;
 
-    private InputDevice myoController;
+    private boolean myoControllerConnected = false;
+
+
+    private CalibrationFragment calibrationFragment;
+
 
 
 
@@ -183,6 +188,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Generic method that is called whenever a MotionEvent is detected.
+     * @param ev MotionEvent that was detected
+     * @return true if source is an analog stick
+     */
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent ev) {
 
@@ -208,6 +218,18 @@ public class MainActivity extends AppCompatActivity {
         return super.dispatchGenericMotionEvent(ev);
     }
 
+    public void setCalibrationFragment(CalibrationFragment calibrationFragment) {
+        this.calibrationFragment = calibrationFragment;
+    }
+
+    /**
+     * Get the centered range for the analog range
+     * @param event MotionEvent that has occurred
+     * @param device InputDevice being used as game controller
+     * @param axis axis of joystick
+     * @param historyPos position in analog history buffer
+     * @return coordinate value as a float
+     */
     private static float getCenteredAxis(MotionEvent event,
                                          InputDevice device, int axis, int historyPos) {
         final InputDevice.MotionRange range =
@@ -231,6 +253,11 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
+    /**
+     *
+     * @param event MotionEvent that has occurred
+     * @param historyPos position in analog history buffer
+     */
     private void processJoystickInput(MotionEvent event,
                                       int historyPos) {
 
@@ -264,10 +291,36 @@ public class MainActivity extends AppCompatActivity {
                     MotionEvent.AXIS_RZ, historyPos);
         }
 
+        Log.d(LOG_TAG, String.format("X: %f\tY: %f", x, y));
+
         // UPDATE MOVEMENT IN GAME
+        if (isCurrentFragment(calibrationFragment)) {
+            calibrationFragment.setBar1Value(Math.round(x * 100));
+            calibrationFragment.setBar2Value(Math.round(y) * 100);
+        }
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d(LOG_TAG, "BUTTON: " + keyCode);
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * Determines if the fragment is currently visible.
+     *
+     * @param fragment fragment that may be visible.
+     * @return true if fragment is visible, otherwise false.
+     */
+    public boolean isCurrentFragment(Fragment fragment) {
+        return fragment != null && fragment.isVisible();
+    }
+
+    /**
+     * Get required BLE permissions for this device
+     * @return required BLE permissions as a String array
+     */
     private String[] getRequiredPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -280,10 +333,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Determine if device already has permission
+     * @param permission permission to verify
+     * @return true if device has permission, false otherwise
+     */
     private boolean hasPermission(String permission) {
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
+    /**
+     * Check for BLE permissions
+     * @return true if device has all BLE permissions, false otherwise
+     */
     @SuppressLint("MissingPermission")
     public boolean checkForBTPermissions() {
 
@@ -325,9 +387,16 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Check to see if a Myoband has been connected
+     */
     public void checkForMyoController() {
-        
+
+        myoControllerConnected = false; // assume controller is not connected
+
+        // Loop through device Ids to determine if one of them is a gamepad
         int[] deviceIds = InputDevice.getDeviceIds();
+
         for (int deviceId : deviceIds) {
             InputDevice dev = InputDevice.getDevice(deviceId);
             int sources = dev.getSources();
@@ -339,22 +408,31 @@ public class MainActivity extends AppCompatActivity {
                 // This device is a game controller. Store its device ID.
                 if (dev.getName().equals(BluetoothLeService.DEFAULT_DEVICE_NAME)) {
                     // Input device is a Myoband
-                    myoController = dev;
+                    myoControllerConnected = true;
+                    return;
                 }
             }
         }
+
+        // Tell user that no Myoband has been detected
+        Toast.makeText(this, "No Myoband detected", Toast.LENGTH_SHORT).show();
+
     }
 
+    /**
+     * Handles BLE disconnect from Myoband
+     */
     public void onDisconnect() {
         Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment)
                 .navigate(R.id.action_global_connectionFragment);
-        myoController = null;
         Toast.makeText(this, "Myoband disconnected", Toast.LENGTH_SHORT).show();
     }
 
 
-
-
+    /**
+     * Get BluetoothLeService
+     * @return  current BluetoothLeService object
+     */
     public BluetoothLeService getBluetoothLeService() {
         return bluetoothLeService;
     }
