@@ -24,7 +24,10 @@ public class CalibrationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        main = (MainActivity) requireActivity();
         MainActivity.myoReceiver.setCalibrationFragment(CalibrationFragment.this);
+
+        main.setCalibrationFragment(CalibrationFragment.this);
     }
 
     @Override
