@@ -43,10 +43,13 @@ public class MenuFragment extends Fragment {
 
         // Connect to device
         String address = main.getBluetoothLeService().getDeviceAddress();
-        if (!main.getBluetoothLeService().connect(address)) {
-            Toast.makeText(main, "Failed to connect to Myoband device", Toast.LENGTH_SHORT).show();
-            // Maybe go to connection screen, handle disconnect SOMEHOW
+        if (!main.getBluetoothLeService().getConnected()) {
+            if (!main.getBluetoothLeService().connect(address)) {
+                // Failed to connect, return to connection screen
+                main.onDisconnect();
+            }
         }
+
 
     }
 
@@ -108,10 +111,8 @@ public class MenuFragment extends Fragment {
         });
 
         settingsBtn.setOnClickListener(v -> {
-//            NavDirections action = MenuFragmentDirections.actionGlobalSettingsFragment();
-//            Navigation.findNavController(v).navigate(action);
-//main.getBluetoothLeService().write("PLEASE");
-            main.getGameControllerIds();
+            NavDirections action = MenuFragmentDirections.actionGlobalSettingsFragment();
+            Navigation.findNavController(v).navigate(action);
         });
 
         return view;

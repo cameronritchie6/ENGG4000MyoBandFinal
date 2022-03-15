@@ -10,7 +10,6 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothHidDevice;
-import android.bluetooth.BluetoothHidDeviceAppSdpSettings;
 import android.bluetooth.BluetoothProfile;
 import android.bluetooth.le.ScanFilter;
 import android.companion.AssociationRequest;
@@ -21,20 +20,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.os.Binder;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.ParcelUuid;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.Executor;
 import java.util.regex.Pattern;
 
 public class BluetoothLeService extends Service {
@@ -56,7 +51,7 @@ public class BluetoothLeService extends Service {
     //    private static final String WRITE_UUID = ""   // same as NOTIFY_UUID???
     private static final String UUID_2902 = "00002902-0000-1000-8000-00805f9b34fb";
     private static final String CONFIG2 = "00002908-0000-1000-8000-00805f9b34fb";
-    private static final String defaultDeviceName = "G";
+    public static final String DEFAULT_DEVICE_NAME = "G";
 
     public static final String TIME = "TIME";
 
@@ -262,7 +257,7 @@ public class BluetoothLeService extends Service {
             if (pairedDevices.size() > 0) {
                 for (BluetoothDevice device : pairedDevices) {
                     String deviceName = device.getName();
-                    if (deviceName.contains(defaultDeviceName)) {
+                    if (deviceName.contains(DEFAULT_DEVICE_NAME)) {
                         close();    // prevent multiple Bluetooth connections
                         if (connect(device.getAddress())) {
                             // Successful pairing
@@ -361,7 +356,7 @@ public class BluetoothLeService extends Service {
                 .build();
 
         BluetoothLeDeviceFilter deviceFilter = new BluetoothLeDeviceFilter.Builder()
-                .setNamePattern(Pattern.compile(defaultDeviceName))
+                .setNamePattern(Pattern.compile(DEFAULT_DEVICE_NAME))
                 .build();
 //                .setScanFilter(scanFilter).build();
 

@@ -1,21 +1,14 @@
 package com.cmorrell.myobandcompanionapp;
 
-import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.unity3d.player.UnityPlayer;
-
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-
-import kotlin.Unit;
 
 public class MyoReceiver extends BroadcastReceiver {
 
@@ -65,11 +58,13 @@ public class MyoReceiver extends BroadcastReceiver {
             if (isCurrentFragment(connectionFragment)) {
                 connectionFragment.updateUI();
             }
+            // Check to see if connected device is a game controller
+            main.checkForMyoController();
         } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
             Log.d(LOG_TAG, "Device has been disconnected.");
             if (!isCurrentFragment(connectionFragment)) {
                 // Handle disconnect
-                Navigation.findNavController(main, R.id.nav_host_fragment).navigate(R.id.action_global_connectionFragment);
+                main.onDisconnect();
             }
         } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
 //            List<BluetoothGattService> services = main.getBluetoothLeService().getSupportedGattServices();
