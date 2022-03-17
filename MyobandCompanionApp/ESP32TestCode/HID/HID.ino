@@ -96,7 +96,7 @@ Serial.println("HELLO RECEIVED");
 void taskServer(void*) {
 
 
-  BLEDevice::init("GAME-CONTROLLER");
+  BLEDevice::init("MyoBand");
   BLEServer *pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyCallbacks());
 

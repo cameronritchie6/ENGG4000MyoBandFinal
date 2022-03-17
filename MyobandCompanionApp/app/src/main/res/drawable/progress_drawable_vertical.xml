@@ -18,4 +18,13 @@
             </shape>
         </clip>
     </item>
+    <item android:bottom="300dp">
+
+        <rotate>
+            <shape android:shape="line" >
+                <stroke android:width="2dp" android:color="@color/red" />
+            </shape>
+        </rotate>
+    </item>
+
 </layer-list>

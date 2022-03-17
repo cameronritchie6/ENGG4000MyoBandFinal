@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private CalibrationFragment calibrationFragment;
+    // https://medium.com/android-news/5-steps-to-implement-room-persistence-library-in-android-47b10cd47b24
 
 
 
@@ -62,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
      Todo: Fix orientation change (turning screen sideways)
      Todo: Look at putting calibration screen progress bars on separate thread
      Todo: Let user select input device for game controller
+     Todo: Theme setting
+     Todo: Number of electrodes setting
     */
 
 
@@ -185,6 +188,11 @@ public class MainActivity extends AppCompatActivity {
         // Set MainActivity context for broadcast receiver and service
         bluetoothLeService.setMain(MainActivity.this);
         myoReceiver.setMain(MainActivity.this);
+
+        if (!bluetoothLeService.getConnected()) {
+            // Device disconnected in background
+            onDisconnect();
+        }
 
     }
 
