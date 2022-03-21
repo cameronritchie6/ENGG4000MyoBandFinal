@@ -29,10 +29,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.room.Room;
 
 import com.unity3d.player.UnityPlayer;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     /*
     Todo: Saving data in a database
      Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
-     Todo: Fix orientation change (turning screen sideways)
+     Todo: Fix orientation change causing UnityFragment to crash
      Todo: Look at putting calibration screen progress bars on separate thread
      Todo: Let user select input device for game controller
      Todo: Theme setting
@@ -179,6 +182,28 @@ public class MainActivity extends AppCompatActivity {
 
         unityPlayer = new UnityPlayer(this);
 
+
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "Values").build();
+
+        // "Cannot access database on the main thread since it may potentially lock the UI for a long period of time."
+        
+        File file = new File(this.getFilesDir(), "Values.txt");
+
+//        UserDao userDao = db.userDao();
+//        User user = new User();
+//        user.id = 54;
+//        user.electrode1Value = 50.2;
+//        user.electrode2Value = 12.9;
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                userDao.insertUser(user);
+//                List<User> users = userDao.getAll();
+//            }
+//        }).start();
+
+//        List<User> users = userDao.getAll();
 
     }
 

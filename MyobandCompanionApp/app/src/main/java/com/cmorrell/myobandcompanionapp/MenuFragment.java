@@ -1,6 +1,7 @@
 package com.cmorrell.myobandcompanionapp;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,8 @@ public class MenuFragment extends Fragment {
                 main.onDisconnect();
             }
         }
+
+        main.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
 
     }
