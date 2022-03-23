@@ -171,7 +171,7 @@ void setup() {
   // inputValues[1] = analogRead(ANALOGSTICK); //DELETE IF NOT WORKING
   //  inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
 
-   Serial.println("HEY THERE");
+   Serial.println("HEY MAN IM HERE");
 }
 
 
