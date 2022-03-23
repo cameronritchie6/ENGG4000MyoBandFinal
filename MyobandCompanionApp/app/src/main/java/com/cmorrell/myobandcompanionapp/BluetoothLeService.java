@@ -51,7 +51,7 @@ public class BluetoothLeService extends Service {
     //    private static final String WRITE_UUID = ""   // same as NOTIFY_UUID???
     private static final String UUID_2902 = "00002902-0000-1000-8000-00805f9b34fb";
     private static final String CONFIG2 = "00002908-0000-1000-8000-00805f9b34fb";
-    public static final String DEFAULT_DEVICE_NAME = "G";
+    public static final String DEFAULT_DEVICE_NAME = "MyoBand";
 
     public static final String TIME = "TIME";
 

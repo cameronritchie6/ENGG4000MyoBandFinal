@@ -11,9 +11,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -27,12 +30,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.room.Room;
 
 import com.unity3d.player.UnityPlayer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.text.FieldPosition;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,16 +66,32 @@ public class MainActivity extends AppCompatActivity {
 
 
     private CalibrationFragment calibrationFragment;
+    // https://medium.com/android-news/5-steps-to-implement-room-persistence-library-in-android-47b10cd47b24
 
 
+private static final int CREATE_FILE = 1;
 
+private void createFile(Uri pickerInitialUri) {
+    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+    intent.addCategory(Intent.CATEGORY_OPENABLE);
+    intent.setType("application/txt");
+    intent.putExtra(Intent.EXTRA_TITLE, "testing.txt");
+
+    // Optionally, specify a URI for the directory that should be opened in
+    // the system file picker when your app creates the document.
+    intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
+
+    startActivityForResult(intent, CREATE_FILE);
+}
 
     /*
     Todo: Saving data in a database
      Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
-     Todo: Fix orientation change (turning screen sideways)
+     Todo: Fix orientation change causing UnityFragment to crash
      Todo: Look at putting calibration screen progress bars on separate thread
      Todo: Let user select input device for game controller
+     Todo: Theme setting
+     Todo: Number of electrodes setting
     */
 
 
@@ -177,6 +207,81 @@ public class MainActivity extends AppCompatActivity {
         unityPlayer = new UnityPlayer(this);
 
 
+//        File outFile = new File("Android\\media");
+//        DocumentFile file = DocumentFile.fromSingleUri(this, Uri.parse("Android\\media"));
+//        assert file != null;
+//        Uri uri = file.getUri();
+//        Uri uri = Uri.fromFile(outFile);
+//        createFile(uri);
+//        String databaseFileName = "Values";
+
+//        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+//                AppDatabase.class, databaseFileName).build();
+//
+        if (isExternalStorageWritable()) {
+            // https://developer.android.com/training/data-storage/app-specific
+
+
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File subfolder = new File(path, "MyoBandOutput");
+            subfolder.mkdir();
+            File outputFile = new File(subfolder, "output.txt");
+
+            try (OutputStream os = new FileOutputStream(outputFile)) {
+                os.write("Howdy".getBytes(StandardCharsets.UTF_8));
+            } catch (FileNotFoundException e) {
+                Log.e(LOG_TAG, "Could not find file");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+//        String fileName = "Values";
+//        File file = new File("Android/testing", fileName);
+//        String fileContents = "Hello there testing!";
+
+
+//        UserDao userDao = db.userDao();
+//        User user = new User();
+//        user.id = 54;
+//        user.electrode1Value = 50.2;
+//        user.electrode2Value = 12.9;
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                userDao.insertUser(user);
+//                List<User> users = userDao.getAll();
+//            }
+//        }).start();
+
+//        List<User> users = userDao.getAll();
+
+    }
+
+    private boolean isExternalStorageWritable() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
+
+    public void saveToFile(String fileName, String data) {
+        if (isExternalStorageWritable()) {
+            // Find public storage directory
+            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+            File subfolder = new File(path, "MyoBandOutput");
+            subfolder.mkdir();  // make directory if it does not exist
+            File outputFile = new File(subfolder, fileName);
+
+            // Write to file
+            try (OutputStream os = new FileOutputStream(outputFile)) {
+                os.write(data.getBytes(StandardCharsets.UTF_8));
+            } catch (FileNotFoundException e) {
+                Log.e(LOG_TAG, "Could not find file");
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -185,6 +290,11 @@ public class MainActivity extends AppCompatActivity {
         // Set MainActivity context for broadcast receiver and service
         bluetoothLeService.setMain(MainActivity.this);
         myoReceiver.setMain(MainActivity.this);
+
+//        if (!bluetoothLeService.getConnected()) {
+//            // Device disconnected in background
+//            onDisconnect();
+//        }
 
     }
 
@@ -303,6 +413,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // 96 = electrode 1
+        // 23 = co-contraction
+        // 4 = electrode 2
         Log.d(LOG_TAG, "BUTTON: " + keyCode);
         return super.onKeyDown(keyCode, event);
     }

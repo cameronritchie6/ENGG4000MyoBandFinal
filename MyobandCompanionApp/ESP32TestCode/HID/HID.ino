@@ -96,7 +96,7 @@ Serial.println("HELLO RECEIVED");
 void taskServer(void*) {
 
 
-  BLEDevice::init("GAME-CONTROLLER");
+  BLEDevice::init("MyoBand");
   BLEServer *pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyCallbacks());
 
@@ -171,7 +171,7 @@ void setup() {
   // inputValues[1] = analogRead(ANALOGSTICK); //DELETE IF NOT WORKING
   //  inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
 
-   Serial.println("HEY THERE");
+   Serial.println("HEY MAN IM HERE");
 }
 
 

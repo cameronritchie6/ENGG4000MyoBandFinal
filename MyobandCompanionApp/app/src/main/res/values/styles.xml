@@ -12,6 +12,8 @@
         </item>
     </style>
     <style name="IBMETextViewStyle" >
-
+        <item name="fontFamily" >
+            @font/montserrat_alternates_medium
+        </item>
     </style>
 </resources>

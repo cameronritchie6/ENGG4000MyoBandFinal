@@ -2,7 +2,6 @@ package com.cmorrell.myobandcompanionapp;
 
 import android.content.Context;
 import android.hardware.usb.UsbAccessory;
-import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 
@@ -16,14 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
 
 public class SettingsFragment extends Fragment {
 
     public Button developerBtn;
-    public Button usbBtn;
+    public Button electrodeBtn;
 
 
     public SettingsFragment() {
@@ -44,7 +40,7 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         developerBtn = view.findViewById(R.id.developer_btn);
-        usbBtn = view.findViewById(R.id.usb_btn);
+        electrodeBtn = view.findViewById(R.id.electrode_btn);
         developerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +50,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        usbBtn.setOnClickListener(new View.OnClickListener() {
+        electrodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                UsbManager manager = (UsbManager) requireActivity().getSystemService(Context.USB_SERVICE);
@@ -82,10 +78,8 @@ public class SettingsFragment extends Fragment {
             developerBtn.setVisibility(View.INVISIBLE);
             TextView tv = view.findViewById(R.id.developer_tv);
             Button timeBtn = view.findViewById(R.id.time_btn);
-            Button usbBtn = view.findViewById(R.id.usb_btn);
             tv.setVisibility(View.VISIBLE);
             timeBtn.setVisibility(View.VISIBLE);
-            usbBtn.setVisibility(View.VISIBLE);
         }
     }
 }
