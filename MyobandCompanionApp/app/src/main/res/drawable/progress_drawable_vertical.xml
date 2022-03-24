@@ -18,7 +18,7 @@
             </shape>
         </clip>
     </item>
-    <item android:bottom="300dp">
+    <item android:bottom="180dp">
 
         <rotate>
             <shape android:shape="line" >

@@ -10,6 +10,8 @@
 #include "BLEHIDDevice.h"
 #include <driver/adc.h>
 
+//#include <sdkconfig.h>
+
 
 BLEHIDDevice* hid; //declare hid device
 BLECharacteristic* input; //Characteristic that inputs button values to devices
@@ -26,10 +28,12 @@ bool connected = false;
 #define ANALOG1 32 //for flashing or are input only.
 #define ANALOGSTICK 4 //the analog stick
 #define ANALOGSTICK2 15 //pot 2
+#define E1 32
+#define E2 33
 
 
-const int potPin1 = 4; //analog pin on esp 32
-const int potPin2 = 15; //analog pin 2 on esp 32 
+const int potPin1 = 32; //analog pin on esp 32
+const int potPin2 = 33; //analog pin 2 on esp 32 
 double VoltageMax = 3.3; //max vltage applied to POT
 float ADCResolution = 12; //The ESP32 has a 12bit approximation register for 
 bool clientWrite;
@@ -50,7 +54,7 @@ int SqeezeFlag=0;
 double signalCheck(int Pin);
 boolean changeDetection(int checkedPin);
 int tolleraceCheck(double voltageIn);
-int buttonPress(int voltageIn, int voltageIn2);
+int buttonPress(double voltageIn, double voltageIn2);
 
 //pin that goes high while there's a device connected
 #define CONNECTED_LED_INDICATOR_PIN 2
@@ -59,8 +63,7 @@ int buttonPress(int voltageIn, int voltageIn2);
 //Each one of the bits represnets a button. 1 == pressed 0 == not pressed
 //uint8_t inputValues[3] = {0b00000000, 0b00000000, 0x0};----------undo this issomething happens
 //uint8_t inputValues[] = {0b00000000, 0b00000000, 0x0,0x0};---
-// uint8_t inputValues[] = {0b00000000, 0x0,0x0};
-uint8_t inputValues[] = {0b00000000};
+uint8_t inputValues[] = {0b00000000, 0x0,0x0};
 
 class MyCallbacks : public BLEServerCallbacks { //Class that does stuff when device disconects or connects
     void onConnect(BLEServer* pServer) {
@@ -84,12 +87,8 @@ class MyCallbacks : public BLEServerCallbacks { //Class that does stuff when dev
 
 class MyOutputCallbacks : public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic* me) {
-      // uint8_t* value = (uint8_t*)(me->getValue().c_str());
+      uint8_t* value = (uint8_t*)(me->getValue().c_str());
       //ESP_LOGI(LOG_TAG, "special keys: %d", *value);
-
-Serial.println("HELLO RECEIVED");
-      std::string testing = me -> getValue();
-      Serial.println(testing.c_str());
     }
 };
 
@@ -112,7 +111,7 @@ void taskServer(void*) {
   hid->pnp(0x02, 0xe502, 0xa111, 0x0210);
   hid->hidInfo(0x00, 0x02);
 
-  BLESecurity *pSecurity = new BLESecurity();
+  BLESecurity *pSecurity = new BLESecurity(); 
   //  pSecurity->setKeySize();
   pSecurity->setAuthenticationMode(ESP_LE_AUTH_BOND);
 
@@ -127,8 +126,7 @@ void taskServer(void*) {
     0x45, 0x01, // PHYSICAL_MAXIMUM (1)
     0x75, 0x01, // REPORT_SIZE (1)
     //0x95, 0x10, // REPORT_COUNT (16) --------uncomment if not working
-    //0x95, 0x03
-    0x95, 0x01, // REPORT_COUNT (3)----------delete if not working
+    0x95, 0x03, // REPORT_COUNT (3)----------delete if not working
     0x05, 0x09, // USAGE_PAGE (Button)
     0x19, 0x01, // USAGE_MINIMUM (Button 1)
     //0x29, 0x10, // USAGE_MAXIMUM (Button 16)
@@ -137,11 +135,16 @@ void taskServer(void*) {
     0x95, 0x01,                    //     REPORT_COUNT (1)----------delete if not working
     0x75, 0x05,                    //     REPORT_SIZE (5)----------delete if not working
    0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)----------delete if not working
+
+
     0x05, 0x01, // USAGE_PAGE (Generic Desktop)
-    0x26, 0xff, 0x00, // LOGICAL_MAXIMUM (255)
-    0x46, 0xff, 0x00, // PHYSICAL_MAXIMUM (255)
-    0x09, 0x30,   //     USAGE (X) ----------------DELETE IF NOT WORKING
+    0x09, 0x30,   // USAGE (X) ----------------DELETE IF NOT WORKING
     0x09, 0x31, // USAGE (Y)
+    0x15, 0x00, // LOGICAL_MINIMUM (-127) ------------delete if not working
+    0x25, 0xff, // LOGICAL_MAXIMUM (127)
+   // 0x36, 0x00,0x80, // PHYSICAL_MINIMUM (0) -----------delete if not working
+   // 0x46, 0xff, 0x7f, // PHYSICAL_MAXIMUM (255)
+    
     0x75, 0x08, // REPORT_SIZE (8)
     //0x95, 0x01, // REPORT_COUNT (1)
     0x95, 0x02, // REPORT_COUNT (2) //x and y  ----DELETE if not working
@@ -156,6 +159,7 @@ hid->startServices();
 BLEAdvertising *pAdvertising = pServer->getAdvertising();
 pAdvertising->setAppearance(HID_GAMEPAD);
 pAdvertising->addServiceUUID(hid->hidService()->getUUID());
+pAdvertising->setScanResponse(true);
 pAdvertising->start();
 hid->setBatteryLevel(7);
 
@@ -164,39 +168,67 @@ delay(portMAX_DELAY);
 
 };
 
+
+// Define GPIO numbers (GPIOn)
+#define LED 23
+#define BUTTON 22
+#define TMRSEL 16
+#define EN5V 26
+#define EMG1 32
+#define EMG2 33
+
 void setup() {
   Serial.begin(115200);
+
+// Set pin modes
+  pinMode(TMRSEL, OUTPUT);        // Charging timer selection
+  pinMode(EN5V, OUTPUT);          // 5V regulator enable
+  pinMode(LED, OUTPUT);           // Status LED (active low)
+  pinMode(BUTTON, INPUT_PULLUP);  // Push button (active low)
+  
+
+  // Initialize pin states
+  digitalWrite(EN5V, HIGH);    // Enable 5V regulator
+  digitalWrite(TMRSEL, HIGH);  // Set max charge time to 4.5 hours
+  digitalWrite (LED, HIGH);    // Turn LED off by default
+  
   xTaskCreate(taskServer, "server", 20000, NULL, 5, NULL);
-// inputValues[0] |= 0b00000001;
-  // inputValues[1] = analogRead(ANALOGSTICK); //DELETE IF NOT WORKING
-  //  inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
-
-   Serial.println("HEY MAN IM HERE");
+inputValues[0] |= 0b00000001;
+  inputValues[1] = analogRead(ANALOGSTICK); //DELETE IF NOT WORKING
+   inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
 }
-
 
 void loop() {
 
-  //inputValues[1] = analogRead(ANALOGSTICK); 
- //  inputValues[2] = analogRead(ANALOGSTICK2);
+  inputValues[1] = analogRead(E1); 
+   inputValues[2] = analogRead(E2);
+   
+   int test1 = analogRead(E1);
+   int test2 = analogRead(E2);
+//   Serial.print("E1: ");
+//   Serial.println(inputValues[1]);
+//   Serial.print("E2: ");
+//   Serial.println(inputValues[2]);
 
   
   
 
 //inputValues[0] |= 00000001;
-    // if((changeDetection(potPin1)||changeDetection(potPin2))&&connected){
-      while (connected) {
-        // ONLY WORKS WHEN SENDING 0b00000001 OR SOME OTHER VARIATION WITH 1 AS THE LSB
-        inputValues[0] = 0b00000001;
-        // inputValues[0] = buttonPress(analogRead(potPin1), analogRead(potPin2));
-      // inputValues[1] = analogRead(potPin1);
-      //  inputValues[2] = analogRead(potPin2);
+     if((changeDetection(E1)||changeDetection(E2))&&connected){
+      inputValues[0] = buttonPress( signalCheck(E1),  signalCheck(E2));
+     // inputValues[0] = buttonPress(signalCheck(potPin1), signalCheck(potPin2));
+     // Serial.println(map(analogRead(potPin1), 0, 4095, 0, 255));
+     // Serial.println(map(analogRead(potPin2), 0, 4095, 0, 255));
+                   inputValues[1] =  map(analogRead(E1), 0, 4095, 0, 255);
+                   inputValues[2] =  map(analogRead(E2), 0, 4095, 0, 255);
+     // inputValues[1] = analogRead(potPin1);
+      // inputValues[2] = analogRead(potPin2);
     input->setValue(inputValues, sizeof(inputValues));
     input->notify();
     delay(200);
-      }
-      
-    // }
+    }
+
+
     
 
 delay(200);
@@ -207,6 +239,8 @@ double signalCheck(int Pin){
 int potValue = analogRead(Pin);
 double ADCRatio= VoltageMax/(pow(2,ADCResolution)-1);
  double voltageMeasurement = ADCRatio*potValue;
+ Serial.print("SIGNAL: ");
+ Serial.println(voltageMeasurement);
  
 return voltageMeasurement ;
 }
@@ -263,7 +297,7 @@ return SqeezeFlag;
 
 //*****************  END Signal Tollerance Check *******************//
 
-int buttonPress(int voltageIn, int voltageIn2){
+int buttonPress(double voltageIn, double voltageIn2){
      int signal1 = tolleraceCheck(voltageIn);
      int signal2 = tolleraceCheck(voltageIn2);
 

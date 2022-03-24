@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="300dp"
+        android:layout_marginBottom="180dp"
         android:text="@string/threshold_txt"
         app:layout_constraintBottom_toBottomOf="@+id/bar_1"
         app:layout_constraintStart_toEndOf="@+id/bar_1"

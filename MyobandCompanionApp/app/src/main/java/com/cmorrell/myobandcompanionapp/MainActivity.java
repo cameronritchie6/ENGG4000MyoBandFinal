@@ -11,13 +11,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.IBinder;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
@@ -31,25 +28,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
-import androidx.room.Room;
 
 import com.unity3d.player.UnityPlayer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.text.FieldPosition;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -71,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean myoControllerConnected = false;
 
+
     private boolean saveAnalogData = false;
 
 
@@ -79,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*
+    Todo: Pressing the back button does not allow the user to go back
      Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
      Todo: Fix orientation change causing UnityFragment to crash
      Todo: Let user select input device for game controller
@@ -364,11 +355,17 @@ public class MainActivity extends AppCompatActivity {
 
         // UPDATE MOVEMENT IN GAME
         if (isCurrentFragment(calibrationFragment)) {
-            calibrationFragment.setBar1Value(Math.round(x * 100));
-            calibrationFragment.setBar2Value(Math.round(y) * 100);
+            // 0 V equals -1 on joystick
+            calibrationFragment.setBar1Value(Math.round(map(x)));
+            calibrationFragment.setBar2Value(Math.round(map(y)));
+
         } else {
-            spaceGameMove(y * -10);
-            Log.d(LOG_TAG, "SENT ANALOG");
+            float average = (x + y) / 2;
+                spaceGameMove(average * 20);
+                spaceGameLiteMove(average * 20);
+                Log.d(LOG_TAG, "SENT ANALOG");
+
+
         }
 
         if (saveAnalogData) {
@@ -380,11 +377,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Map from one range of values to another
+     * @param amount value to map to other range
+     * @return mapped value
+     */
+    private float map(float amount) {
+        long inMin = -1;
+        long inMax = 1;
+        long outMin = 0;
+        long outMax = 100;
+        return (amount - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+    }
+
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 96 = electrode 1
         // 23 = co-contraction
         // 4 = electrode 2
+        // I found the xBox sends multiple codes for 1 button press (1 press sends 96 and 23)
         Log.d(LOG_TAG, "BUTTON: " + keyCode);
         if (checkCooldown()) {
             // Call method in Unity script
@@ -394,7 +406,8 @@ public class MainActivity extends AppCompatActivity {
             previousTime = Calendar.getInstance().getTimeInMillis();
         }
 //        UnityPlayer.UnitySendMessage("Canvas", "Jump", "");
-        return super.onKeyDown(keyCode, event);
+//        return super.onKeyDown(keyCode, event);
+        return true;
     }
 
     private boolean checkCooldown() {
@@ -414,12 +427,9 @@ public class MainActivity extends AppCompatActivity {
     private void spaceGameShoot() {
         UnityPlayer.UnitySendMessage("PlayerShip", "fireSecondary", "");
     }
-
-
-
-
-    private void spaceGameLite() {
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "ThrustUp", "");
+    
+    private void spaceGameLiteMove(Float amount) {
+        UnityPlayer.UnitySendMessage("PlayerShipLite", "JavaThrust", amount.toString());
     }
 
     /**
@@ -530,7 +540,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Tell user that no Myoband has been detected
-        Toast.makeText(this, "No Myoband detected", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "No Myoband detected", Toast.LENGTH_SHORT).show();
 
     }
 
