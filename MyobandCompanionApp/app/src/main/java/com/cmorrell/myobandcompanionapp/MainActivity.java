@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.IBinder;
 import android.provider.DocumentsContract;
@@ -46,14 +47,20 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.FieldPosition;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int SELECT_DEVICE_REQUEST_CODE = 1;    // request code for BLE bonding
     public static final int REQUEST_ENABLE_BT = 2;  // request code to enable Bluetooth
 
+    private static final long COOLDOWN_IN_MILLIS = 300;    // Cooldown between inputs
+    public static final String OUTPUT_FILE_NAME = "output.txt";
 
+    private long previousTime = Calendar.getInstance().getTimeInMillis();
     private BluetoothLeService bluetoothLeService;
     public static MyoReceiver myoReceiver = new MyoReceiver();
 
@@ -64,34 +71,21 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean myoControllerConnected = false;
 
+    private boolean saveAnalogData = false;
+
 
     private CalibrationFragment calibrationFragment;
     // https://medium.com/android-news/5-steps-to-implement-room-persistence-library-in-android-47b10cd47b24
 
 
-private static final int CREATE_FILE = 1;
-
-private void createFile(Uri pickerInitialUri) {
-    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-    intent.addCategory(Intent.CATEGORY_OPENABLE);
-    intent.setType("application/txt");
-    intent.putExtra(Intent.EXTRA_TITLE, "testing.txt");
-
-    // Optionally, specify a URI for the directory that should be opened in
-    // the system file picker when your app creates the document.
-    intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
-
-    startActivityForResult(intent, CREATE_FILE);
-}
-
     /*
-    Todo: Saving data in a database
      Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
      Todo: Fix orientation change causing UnityFragment to crash
-     Todo: Look at putting calibration screen progress bars on separate thread
      Todo: Let user select input device for game controller
      Todo: Theme setting
      Todo: Number of electrodes setting
+     Todo: Call Java function from Unity that tells me what scene is being shown
+     Todo: Change to IL2CPP for Unity scripting backend to improve performance
     */
 
 
@@ -118,6 +112,19 @@ private void createFile(Uri pickerInitialUri) {
                     }
             );
 
+
+    public void toggleSaveAnalogData() {
+        saveAnalogData = !saveAnalogData;
+        if (saveAnalogData) {
+            Toast.makeText(this, "Now saving data to MyoBandOutput directory", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "No longer saving data to MyoBandOutput directory", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean getSaveAnalogData() {
+        return saveAnalogData;
+    }
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -206,57 +213,8 @@ private void createFile(Uri pickerInitialUri) {
 
         unityPlayer = new UnityPlayer(this);
 
-
-//        File outFile = new File("Android\\media");
-//        DocumentFile file = DocumentFile.fromSingleUri(this, Uri.parse("Android\\media"));
-//        assert file != null;
-//        Uri uri = file.getUri();
-//        Uri uri = Uri.fromFile(outFile);
-//        createFile(uri);
-//        String databaseFileName = "Values";
-
-//        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-//                AppDatabase.class, databaseFileName).build();
-//
-        if (isExternalStorageWritable()) {
-            // https://developer.android.com/training/data-storage/app-specific
-
-
-            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            File subfolder = new File(path, "MyoBandOutput");
-            subfolder.mkdir();
-            File outputFile = new File(subfolder, "output.txt");
-
-            try (OutputStream os = new FileOutputStream(outputFile)) {
-                os.write("Howdy".getBytes(StandardCharsets.UTF_8));
-            } catch (FileNotFoundException e) {
-                Log.e(LOG_TAG, "Could not find file");
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-//        String fileName = "Values";
-//        File file = new File("Android/testing", fileName);
-//        String fileContents = "Hello there testing!";
-
-
-//        UserDao userDao = db.userDao();
-//        User user = new User();
-//        user.id = 54;
-//        user.electrode1Value = 50.2;
-//        user.electrode2Value = 12.9;
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                userDao.insertUser(user);
-//                List<User> users = userDao.getAll();
-//            }
-//        }).start();
-
-//        List<User> users = userDao.getAll();
+        saveToFile(OUTPUT_FILE_NAME, "Woah now");
+        saveToFile(OUTPUT_FILE_NAME, "Hey hey bro");
 
     }
 
@@ -273,8 +231,9 @@ private void createFile(Uri pickerInitialUri) {
             File outputFile = new File(subfolder, fileName);
 
             // Write to file
-            try (OutputStream os = new FileOutputStream(outputFile)) {
-                os.write(data.getBytes(StandardCharsets.UTF_8));
+            try (PrintWriter writer = new PrintWriter(outputFile)) {
+                writer.println(data);
+//                os.write(data.getBytes(StandardCharsets.UTF_8));
             } catch (FileNotFoundException e) {
                 Log.e(LOG_TAG, "Could not find file");
                 e.printStackTrace();
@@ -407,6 +366,16 @@ private void createFile(Uri pickerInitialUri) {
         if (isCurrentFragment(calibrationFragment)) {
             calibrationFragment.setBar1Value(Math.round(x * 100));
             calibrationFragment.setBar2Value(Math.round(y) * 100);
+        } else {
+            spaceGameMove(y * -10);
+            Log.d(LOG_TAG, "SENT ANALOG");
+        }
+
+        if (saveAnalogData) {
+            // Format string
+            Date time = Calendar.getInstance().getTime();
+            String data = String.format(Locale.CANADA, "%s: E1: %f E2:%f", time.toString(), x, y);
+            saveToFile(OUTPUT_FILE_NAME, data);
         }
 
     }
@@ -417,7 +386,40 @@ private void createFile(Uri pickerInitialUri) {
         // 23 = co-contraction
         // 4 = electrode 2
         Log.d(LOG_TAG, "BUTTON: " + keyCode);
+        if (checkCooldown()) {
+            // Call method in Unity script
+            quadrilateralJump();
+            spaceGameShoot();
+//            spaceGameLite();
+            previousTime = Calendar.getInstance().getTimeInMillis();
+        }
+//        UnityPlayer.UnitySendMessage("Canvas", "Jump", "");
         return super.onKeyDown(keyCode, event);
+    }
+
+    private boolean checkCooldown() {
+        long time = Calendar.getInstance().getTimeInMillis();
+        return (time - previousTime) >= COOLDOWN_IN_MILLIS;
+    }
+
+    private void quadrilateralJump() {
+        UnityPlayer.UnitySendMessage("Player", "Jump", "");
+    }
+
+    private void spaceGameMove(Float amount) {
+
+        UnityPlayer.UnitySendMessage("PlayerShip", "JavaThrust", amount.toString());
+    }
+
+    private void spaceGameShoot() {
+        UnityPlayer.UnitySendMessage("PlayerShip", "fireSecondary", "");
+    }
+
+
+
+
+    private void spaceGameLite() {
+        UnityPlayer.UnitySendMessage("PlayerShipLite", "ThrustUp", "");
     }
 
     /**

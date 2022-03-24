@@ -5333,6 +5333,16 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR Vector2_tBB32F2736AEC229A7BFBCE18197EC0F6AC7E
 		return L_0;
 	}
 }
+// System.Int32 UnityEngine.Event::get_button()
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t Event_get_button_mADE046078FB271895808D457C3CF9604808ABFB1 (Event_tED49F8EC5A2514F6E877E301B1AB7ABE4647253E * __this, const RuntimeMethod* method)
+{
+	typedef int32_t (*Event_get_button_mADE046078FB271895808D457C3CF9604808ABFB1_ftn) (Event_tED49F8EC5A2514F6E877E301B1AB7ABE4647253E *);
+	static Event_get_button_mADE046078FB271895808D457C3CF9604808ABFB1_ftn _il2cpp_icall_func;
+	if (!_il2cpp_icall_func)
+	_il2cpp_icall_func = (Event_get_button_mADE046078FB271895808D457C3CF9604808ABFB1_ftn)il2cpp_codegen_resolve_icall ("UnityEngine.Event::get_button()");
+	int32_t icallRetVal = _il2cpp_icall_func(__this);
+	return icallRetVal;
+}
 // UnityEngine.EventModifiers UnityEngine.Event::get_modifiers()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR int32_t Event_get_modifiers_m01356D3F1DDF6746122F129713EBE87BFA65D886 (Event_tED49F8EC5A2514F6E877E301B1AB7ABE4647253E * __this, const RuntimeMethod* method)
 {

@@ -1,8 +1,8 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:3:1-21:12
-INJECTED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:3:1-21:12
-INJECTED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:3:1-21:12
+ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:3:1-22:12
+INJECTED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:3:1-22:12
+INJECTED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:3:1-22:12
 	package
 		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:3:70-98
 		INJECTED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml
@@ -16,19 +16,19 @@ ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHu
 activity#com.unity3d.player.UnityPlayerActivity
 ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:5-9:16
 	android:screenOrientation
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:111-149
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:135-173
 	android:launchMode
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:150-181
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:174-205
 	android:hardwareAccelerated
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:399-434
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:423-458
 	android:exported
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:6:9-32
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:69-92
 	android:resizeableActivity
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:364-398
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:388-422
 	android:configChanges
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:182-363
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:206-387
 	android:theme
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:69-110
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:93-134
 	android:name
 		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:5:15-68
 meta-data#unityplayer.UnityActivity
@@ -83,24 +83,28 @@ ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHu
 		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:64-88
 	android:name
 		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:17:17-63
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:3-65
+	android:name
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:20-62
 uses-feature#android.hardware.touchscreen
-ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:3-88
+ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:3-88
 	android:required
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:61-85
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:61-85
 	android:name
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:18:17-60
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:17-60
 uses-feature#android.hardware.touchscreen.multitouch
-ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:3-99
+ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:3-99
 	android:required
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:72-96
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:72-96
 	android:name
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:19:17-71
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:17-71
 uses-feature#android.hardware.touchscreen.multitouch.distinct
-ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:3-108
+ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:21:3-108
 	android:required
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:81-105
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:21:81-105
 	android:name
-		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:20:17-80
+		ADDED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:21:17-80
 uses-sdk
 INJECTED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml

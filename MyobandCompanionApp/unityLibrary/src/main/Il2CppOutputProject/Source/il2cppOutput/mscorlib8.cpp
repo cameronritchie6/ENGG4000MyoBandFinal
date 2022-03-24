@@ -22661,6 +22661,52 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool Object_Equals_m6E8965587E01BDEC1CDF25DE6
 		return (bool)((((RuntimeObject*)(RuntimeObject *)__this) == ((RuntimeObject*)(RuntimeObject *)L_0))? 1 : 0);
 	}
 }
+// System.Boolean System.Object::Equals(System.Object,System.Object)
+IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool Object_Equals_mBE334AF263BDADA1D0F1DE7E14456A63E47F8053 (RuntimeObject * ___objA0, RuntimeObject * ___objB1, const RuntimeMethod* method)
+{
+	{
+		RuntimeObject * L_0 = ___objA0;
+		RuntimeObject * L_1 = ___objB1;
+		if ((!(((RuntimeObject*)(RuntimeObject *)L_0) == ((RuntimeObject*)(RuntimeObject *)L_1))))
+		{
+			goto IL_0006;
+		}
+	}
+	{
+		return (bool)1;
+	}
+
+IL_0006:
+	{
+		RuntimeObject * L_2 = ___objA0;
+		if (!L_2)
+		{
+			goto IL_000c;
+		}
+	}
+	{
+		RuntimeObject * L_3 = ___objB1;
+		if (L_3)
+		{
+			goto IL_000e;
+		}
+	}
+
+IL_000c:
+	{
+		return (bool)0;
+	}
+
+IL_000e:
+	{
+		RuntimeObject * L_4 = ___objA0;
+		RuntimeObject * L_5 = ___objB1;
+		NullCheck(L_4);
+		bool L_6;
+		L_6 = VirtFuncInvoker1< bool, RuntimeObject * >::Invoke(0 /* System.Boolean System.Object::Equals(System.Object) */, L_4, L_5);
+		return L_6;
+	}
+}
 // System.Void System.Object::.ctor()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Object__ctor_m88880E0413421D13FD95325EDCE231707CE1F405 (RuntimeObject * __this, const RuntimeMethod* method)
 {
@@ -29070,7 +29116,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void ObjectReader_CheckSerializable_mB42DDF24
 		Type_t * L_0 = ___t0;
 		NullCheck(L_0);
 		bool L_1;
-		L_1 = VirtFuncInvoker0< bool >::Invoke(66 /* System.Boolean System.Type::get_IsSerializable() */, L_0);
+		L_1 = VirtFuncInvoker0< bool >::Invoke(67 /* System.Boolean System.Type::get_IsSerializable() */, L_0);
 		if (L_1)
 		{
 			goto IL_003c;
@@ -34387,7 +34433,7 @@ IL_0010:
 		Type_t * L_12 = L_11->get_objectType_2();
 		NullCheck(L_12);
 		Type_t * L_13;
-		L_13 = VirtFuncInvoker0< Type_t * >::Invoke(92 /* System.Type System.Type::GetElementType() */, L_12);
+		L_13 = VirtFuncInvoker0< Type_t * >::Invoke(94 /* System.Type System.Type::GetElementType() */, L_12);
 		V_3 = L_13;
 		V_4 = (WriteObjectInfo_t73F5AD7990B2851B876C36F11D16BB12E322D22C *)NULL;
 		Type_t * L_14 = V_3;

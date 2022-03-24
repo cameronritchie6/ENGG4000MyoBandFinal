@@ -20,6 +20,8 @@ public class SettingsFragment extends Fragment {
 
     public Button developerBtn;
     public Button electrodeBtn;
+    public Button saveBtn;
+    private MainActivity main;
 
 
     public SettingsFragment() {
@@ -31,7 +33,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        main = (MainActivity) requireActivity();
     }
 
     @Override
@@ -41,6 +43,8 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         developerBtn = view.findViewById(R.id.developer_btn);
         electrodeBtn = view.findViewById(R.id.electrode_btn);
+        saveBtn = view.findViewById(R.id.save_btn);
+
         developerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,19 +57,14 @@ public class SettingsFragment extends Fragment {
         electrodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                UsbManager manager = (UsbManager) requireActivity().getSystemService(Context.USB_SERVICE);
-//                HashMap<String, UsbDevice> deviceList = manager.getDeviceList();
-//                Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
-//                while(deviceIterator.hasNext()){
-//                    UsbDevice device = deviceIterator.next();
-//                    //your code
-//                }
 
-                UsbManager manager = (UsbManager) requireActivity().getSystemService(Context.USB_SERVICE);
-                UsbAccessory[] accessoryList = manager.getAccessoryList();
+            }
+        });
 
-
-
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                main.toggleSaveAnalogData();
             }
         });
         return view;
