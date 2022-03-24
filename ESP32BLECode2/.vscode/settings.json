@@ -41,5 +41,6 @@
         "cinttypes": "cpp",
         "utility": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "idf.flashType": "UART"
 }

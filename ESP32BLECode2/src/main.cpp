@@ -10,6 +10,8 @@
 #include "BLEHIDDevice.h"
 #include <driver/adc.h>
 
+//#include <sdkconfig.h>
+
 
 BLEHIDDevice* hid; //declare hid device
 BLECharacteristic* input; //Characteristic that inputs button values to devices
@@ -50,7 +52,7 @@ int SqeezeFlag=0;
 double signalCheck(int Pin);
 boolean changeDetection(int checkedPin);
 int tolleraceCheck(double voltageIn);
-int buttonPress(int voltageIn, int voltageIn2);
+int buttonPress(double voltageIn, double voltageIn2);
 
 //pin that goes high while there's a device connected
 #define CONNECTED_LED_INDICATOR_PIN 2
@@ -107,7 +109,7 @@ void taskServer(void*) {
   hid->pnp(0x02, 0xe502, 0xa111, 0x0210);
   hid->hidInfo(0x00, 0x02);
 
-  BLESecurity *pSecurity = new BLESecurity();
+  BLESecurity *pSecurity = new BLESecurity(); 
   //  pSecurity->setKeySize();
   pSecurity->setAuthenticationMode(ESP_LE_AUTH_BOND);
 
@@ -131,11 +133,16 @@ void taskServer(void*) {
     0x95, 0x01,                    //     REPORT_COUNT (1)----------delete if not working
     0x75, 0x05,                    //     REPORT_SIZE (5)----------delete if not working
    0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)----------delete if not working
+
+
     0x05, 0x01, // USAGE_PAGE (Generic Desktop)
-    0x26, 0xff, 0x00, // LOGICAL_MAXIMUM (255)
-    0x46, 0xff, 0x00, // PHYSICAL_MAXIMUM (255)
-    0x09, 0x30,   //     USAGE (X) ----------------DELETE IF NOT WORKING
+    0x09, 0x30,   // USAGE (X) ----------------DELETE IF NOT WORKING
     0x09, 0x31, // USAGE (Y)
+    0x15, 0x00, // LOGICAL_MINIMUM (-127) ------------delete if not working
+    0x25, 0xff, // LOGICAL_MAXIMUM (127)
+   // 0x36, 0x00,0x80, // PHYSICAL_MINIMUM (0) -----------delete if not working
+   // 0x46, 0xff, 0x7f, // PHYSICAL_MAXIMUM (255)
+    
     0x75, 0x08, // REPORT_SIZE (8)
     //0x95, 0x01, // REPORT_COUNT (1)
     0x95, 0x02, // REPORT_COUNT (2) //x and y  ----DELETE if not working
@@ -150,6 +157,7 @@ hid->startServices();
 BLEAdvertising *pAdvertising = pServer->getAdvertising();
 pAdvertising->setAppearance(HID_GAMEPAD);
 pAdvertising->addServiceUUID(hid->hidService()->getUUID());
+pAdvertising->setScanResponse(true);
 pAdvertising->start();
 hid->setBatteryLevel(7);
 
@@ -175,10 +183,15 @@ void loop() {
   
 
 //inputValues[0] |= 00000001;
-    if((changeDetection(potPin1)||changeDetection(potPin2))&&connected){
-      inputValues[0] = buttonPress(analogRead(potPin1), analogRead(potPin2));
-      inputValues[1] = analogRead(potPin1);
-       inputValues[2] = analogRead(potPin2);
+     if((changeDetection(potPin1)||changeDetection(potPin2))&&connected){
+      inputValues[0] = buttonPress( signalCheck(potPin1),  signalCheck(potPin2));
+     // inputValues[0] = buttonPress(signalCheck(potPin1), signalCheck(potPin2));
+     // Serial.println(map(analogRead(potPin1), 0, 4095, 0, 255));
+     // Serial.println(map(analogRead(potPin2), 0, 4095, 0, 255));
+                   inputValues[1] =  map(analogRead(potPin1), 0, 4095, 0, 255);
+                   inputValues[2] =  map(analogRead(potPin2), 0, 4095, 0, 255);
+     // inputValues[1] = analogRead(potPin1);
+      // inputValues[2] = analogRead(potPin2);
     input->setValue(inputValues, sizeof(inputValues));
     input->notify();
     delay(200);
@@ -255,7 +268,7 @@ return SqeezeFlag;
 
 //*****************  END Signal Tollerance Check *******************//
 
-int buttonPress(int voltageIn, int voltageIn2){
+int buttonPress(double voltageIn, double voltageIn2){
      int signal1 = tolleraceCheck(voltageIn);
      int signal2 = tolleraceCheck(voltageIn2);
 
