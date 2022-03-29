@@ -221,6 +221,8 @@ public class MainActivity extends AppCompatActivity {
             subfolder.mkdir();  // make directory if it does not exist
             File outputFile = new File(subfolder, fileName);
 
+            // https://stackoverflow.com/questions/9961292/write-to-text-file-without-overwriting-in-java
+
             // Write to file
             try (PrintWriter writer = new PrintWriter(outputFile)) {
                 writer.println(data);
@@ -427,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
     private void spaceGameShoot() {
         UnityPlayer.UnitySendMessage("PlayerShip", "fireSecondary", "");
     }
-    
+
     private void spaceGameLiteMove(Float amount) {
         UnityPlayer.UnitySendMessage("PlayerShipLite", "JavaThrust", amount.toString());
     }
