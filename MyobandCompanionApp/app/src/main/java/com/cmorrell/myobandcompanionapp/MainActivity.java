@@ -53,15 +53,21 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothLeService bluetoothLeService;
     public static MyoReceiver myoReceiver = new MyoReceiver();
 
-    private static final String LOG_TAG = "MainActivity";
-    public static final String ACTION_QUIT_UNITY = "com.cmorrell.myobandcompanionapp.ACTION_QUIT_UNITY";
+    private static final double THRESHOLD_VOLTAGE = 2/3.3;
 
-    public UnityPlayer unityPlayer;
+    private static final String LOG_TAG = "MainActivity";
+
+    private UnityPlayer unityPlayer;
 
     private boolean myoControllerConnected = false;
 
 
     private boolean saveAnalogData = false;
+
+    // Game buttons
+    private static final int ELECTRODE_1_CODE = 96;
+    private static final int ELECTRODE_2_CODE = 97;
+    private static final int CO_CONTRACTION_CODE = 99;
 
 
     private CalibrationFragment calibrationFragment;
@@ -69,14 +75,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*
-    Todo: Pressing the back button does not allow the user to go back
+    Todo: Fix the fact that you can't go back to Unity from main menu after opening Unity once NOW IMPORTANT
      Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
      Todo: Fix orientation change causing UnityFragment to crash
      Todo: Let user select input device for game controller
      Todo: Theme setting
      Todo: Number of electrodes setting
      Todo: Call Java function from Unity that tells me what scene is being shown
-     Todo: Change to IL2CPP for Unity scripting backend to improve performance
     */
 
 
@@ -111,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No longer saving data to MyoBandOutput directory", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public UnityPlayer getUnityPlayer() {
+        return unityPlayer;
     }
 
     public boolean getSaveAnalogData() {
@@ -174,12 +183,18 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Unity method
      *
-     * @param message message from Unity
      */
-    public void quitUnity(String message) {
-        Log.d("UNITY", message);
+    public void quitUnity() {
+        Log.d("UNITY", "QUIT_UNITY");
 
-        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
+        UnityPlayer.currentActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
+                unityPlayer.pause();
+            }
+        });
+//        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
     }
 
     @Override
@@ -191,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
 
         unityPlayer = new UnityPlayer(this);
 
-        saveToFile(OUTPUT_FILE_NAME, "Woah now");
-        saveToFile(OUTPUT_FILE_NAME, "Hey hey bro");
+//        saveToFile(OUTPUT_FILE_NAME, "Woah now");
+//        saveToFile(OUTPUT_FILE_NAME, "Hey hey bro");
 
     }
 
@@ -237,11 +254,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        unityPlayer.pause();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         // Set MainActivity context for broadcast receiver and service
         bluetoothLeService.setMain(MainActivity.this);
         myoReceiver.setMain(MainActivity.this);
+        unityPlayer.resume();
 
 //        if (!bluetoothLeService.getConnected()) {
 //            // Device disconnected in background
@@ -362,10 +386,16 @@ public class MainActivity extends AppCompatActivity {
             calibrationFragment.setBar2Value(Math.round(map(y)));
 
         } else {
-            float average = (x + y) / 2;
-                spaceGameMove(average * 20);
-                spaceGameLiteMove(average * 20);
-                Log.d(LOG_TAG, "SENT ANALOG");
+            if (map(x) < THRESHOLD_VOLTAGE) {
+                releaseUpButton();
+            }
+            if (map(y) < THRESHOLD_VOLTAGE) {
+                releaseDownButton();
+            }
+//            float average = (x + y) / 2;
+//                spaceGameMove(average * 20);
+//                spaceGameLiteMove(average * 20);
+//                Log.d(LOG_TAG, "SENT ANALOG");
 
 
         }
@@ -399,12 +429,26 @@ public class MainActivity extends AppCompatActivity {
         // 23 = co-contraction
         // 4 = electrode 2
         // I found the xBox sends multiple codes for 1 button press (1 press sends 96 and 23)
+        // xbox:
+        // a = 96
+        // b = 97
+        // x = 99
+        // y = 100
+
         Log.d(LOG_TAG, "BUTTON: " + keyCode);
+        switch (keyCode) {
+            case ELECTRODE_1_CODE:
+                pressUpButton();
+            case ELECTRODE_2_CODE:
+                pressDownButton();
+            case CO_CONTRACTION_CODE:
+                spaceGameShoot();
+        }
         if (checkCooldown()) {
             // Call method in Unity script
             quadrilateralJump();
-            spaceGameShoot();
-//            spaceGameLite();
+
+            // Reset cooldown
             previousTime = Calendar.getInstance().getTimeInMillis();
         }
 //        UnityPlayer.UnitySendMessage("Canvas", "Jump", "");
@@ -417,12 +461,32 @@ public class MainActivity extends AppCompatActivity {
         return (time - previousTime) >= COOLDOWN_IN_MILLIS;
     }
 
+    private void pressUpButton() {
+        UnityPlayer.UnitySendMessage("PlayerShip", "pressUpButton", "");
+        UnityPlayer.UnitySendMessage("PlayerShipLite", "pressUpButton", "");
+    }
+    private void pressDownButton() {
+        UnityPlayer.UnitySendMessage("PlayerShip", "pressDownButton", "");
+        UnityPlayer.UnitySendMessage("PlayerShipLite", "pressDownButton", "");
+    }
+
+    private void releaseUpButton() {
+        UnityPlayer.UnitySendMessage("PlayerShip", "releaseUpButton", "");
+        UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseUpButton", "");
+    }
+
+    private void releaseDownButton() {
+        UnityPlayer.UnitySendMessage("PlayerShip", "releaseDownButton", "");
+        UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseDownButton", "");
+    }
+
+
+
     private void quadrilateralJump() {
         UnityPlayer.UnitySendMessage("Player", "Jump", "");
     }
 
     private void spaceGameMove(Float amount) {
-
         UnityPlayer.UnitySendMessage("PlayerShip", "JavaThrust", amount.toString());
     }
 

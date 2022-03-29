@@ -31,11 +31,6 @@
             app:destination="@id/unityFragment"
             app:popUpTo="@id/unityFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_menuFragment_to_BLETestFragment"
-            app:destination="@id/BLETestFragment"
-            app:popUpTo="@id/BLETestFragment"
-            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/calibrationFragment"
@@ -52,11 +47,6 @@
         android:name="com.cmorrell.myobandcompanionapp.BondingFragment"
         android:label="fragment_bonding"
         tools:layout="@layout/fragment_bonding" />
-    <fragment
-        android:id="@+id/BLETestFragment"
-        android:name="com.cmorrell.myobandcompanionapp.BLETestFragment"
-        android:label="fragment_b_l_e_test"
-        tools:layout="@layout/fragment_b_l_e_test" />
     <fragment
         android:id="@+id/connectionFragment"
         android:name="com.cmorrell.myobandcompanionapp.ConnectionFragment"

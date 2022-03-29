@@ -14,12 +14,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.unity3d.player.UnityPlayer;
+import com.unity3d.player.UnityPlayerActivity;
 
 
 public class UnityFragment extends Fragment {
 
 //    protected UnityPlayer unityPlayer;
     private MainActivity main;
+    private UnityPlayer unityPlayer;
 
 
     public UnityFragment() {
@@ -31,6 +33,7 @@ public class UnityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         main = (MainActivity) requireActivity();
         MainActivity.myoReceiver.setUnityFragment(UnityFragment.this);
+        unityPlayer = main.getUnityPlayer();
         // Lock screen orientation to landscape
 //        main.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
@@ -42,13 +45,17 @@ public class UnityFragment extends Fragment {
         // https://medium.com/xrpractices/embedding-unity-app-inside-native-android-application-c7b82245f8af
 //        unityPlayer = new UnityPlayer(main);
 //        View view = inflater.inflate(R.layout.fragment_unity, container, false);
-        View view = main.unityPlayer.getView();
+        if (unityPlayer.getParent() != null) {
+            // Avoid creating multiple Unity layouts
+            ((ViewGroup) unityPlayer.getParent()).removeAllViews();
+        }
+        View view = unityPlayer.getView();
 //        FrameLayout frameLayoutForUnity = (FrameLayout) view.findViewById(R.id.frameLayoutForUnity);
 //        frameLayoutForUnity.addView(unityPlayer.getView(),
 //                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 
-        main.unityPlayer.requestFocus();
-        main.unityPlayer.windowFocusChanged(true);
+        unityPlayer.requestFocus();
+        unityPlayer.windowFocusChanged(true);
 
         return view;
     }
@@ -57,19 +64,19 @@ public class UnityFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        main.unityPlayer.quit();
+        unityPlayer.quit();
         super.onDestroy();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        main.unityPlayer.pause();
+        unityPlayer.pause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        main.unityPlayer.resume();
+        unityPlayer.resume();
     }
 }

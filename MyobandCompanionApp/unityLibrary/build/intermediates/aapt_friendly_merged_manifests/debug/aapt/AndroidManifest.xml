@@ -57,7 +57,7 @@
             android:value="portrait|landscape" />
         <meta-data
             android:name="unity.build-id"
-            android:value="584136fb-e189-42fc-a97d-c47b51eb3370" />
+            android:value="ba35e33b-e6f0-4cd4-9728-df2c8b353b1b" />
     </application>
 
 </manifest>

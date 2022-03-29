@@ -14,7 +14,6 @@ public class MyoReceiver extends BroadcastReceiver {
 
     private BondingFragment bondingFragment;
     private CalibrationFragment calibrationFragment;
-    private BLETestFragment bleTestFragment;
     private ConnectionFragment connectionFragment;
     private UnityFragment unityFragment;
 
@@ -34,9 +33,6 @@ public class MyoReceiver extends BroadcastReceiver {
         this.calibrationFragment = calibrationFragment;
     }
 
-    public void setBleTestFragment(BLETestFragment bleTestFragment) {
-        this.bleTestFragment = bleTestFragment;
-    }
 
     public void setConnectionFragment(ConnectionFragment connectionFragment) {
         this.connectionFragment = connectionFragment;
@@ -93,8 +89,6 @@ public class MyoReceiver extends BroadcastReceiver {
                 } catch (NumberFormatException e) {
                     Log.e(LOG_TAG, "Unable to parse integer.");
                 }
-            } else if (isCurrentFragment(bleTestFragment)) {
-                bleTestFragment.setText(dataString);
             } else if (dataString.equals(BluetoothLeService.TIME)) {
                 main.getBluetoothLeService().write("T");
             }

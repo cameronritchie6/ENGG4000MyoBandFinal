@@ -4,11 +4,13 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 
@@ -37,10 +39,17 @@ public class CalibrationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calibration, container, false);
+
+        Button menuBtn = view.findViewById(R.id.quit_calibration_btn);
+        menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_global_menuFragment);
+            }
+        });
+
         bar1 = view.findViewById(R.id.bar_1);
         bar2 = view.findViewById(R.id.bar_2);
-        bar1.setProgress(45);
-        bar2.setProgress(80);
         return view;
     }
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,13 @@ public class SettingsFragment extends Fragment {
         developerBtn = view.findViewById(R.id.developer_btn);
         electrodeBtn = view.findViewById(R.id.electrode_btn);
         saveBtn = view.findViewById(R.id.save_btn);
+        Button menuBtn = view.findViewById(R.id.quit_settings_btn);
+        menuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_global_menuFragment);
+            }
+        });
 
         developerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +87,7 @@ public class SettingsFragment extends Fragment {
             Button timeBtn = view.findViewById(R.id.time_btn);
             tv.setVisibility(View.VISIBLE);
             timeBtn.setVisibility(View.VISIBLE);
+            saveBtn.setVisibility(View.VISIBLE);
         }
     }
 }

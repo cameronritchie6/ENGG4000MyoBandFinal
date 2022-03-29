@@ -89,4 +89,13 @@
         app:layout_constraintEnd_toStartOf="@+id/bar_2"
         app:layout_constraintTop_toTopOf="@+id/textView4" />
 
+    <Button
+        android:id="@+id/quit_calibration_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu"
+        app:layout_constraintBottom_toBottomOf="@+id/bar_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
