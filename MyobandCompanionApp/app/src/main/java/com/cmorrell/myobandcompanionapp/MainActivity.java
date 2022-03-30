@@ -35,6 +35,7 @@ import com.unity3d.player.UnityPlayer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Calendar;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
      Todo: Fix orientation change causing UnityFragment to crash
      Todo: Let user select input device for game controller
      Todo: Theme setting
-     Todo: Number of electrodes setting
+     Todo: Number of electrodes setting (discard the second electrode if in 1 electrode mode)
      Todo: Call Java function from Unity that tells me what scene is being shown
     */
 
@@ -221,6 +222,9 @@ public class MainActivity extends AppCompatActivity {
 
         unityPlayer = new UnityPlayer(this);
 
+        saveToFile("HELLO THERE");
+        saveToFile("THIS GONNA WORK?");
+
 //        saveToFile(OUTPUT_FILE_NAME, "Woah now");
 //        saveToFile(OUTPUT_FILE_NAME, "Hey hey bro");
 
@@ -230,20 +234,19 @@ public class MainActivity extends AppCompatActivity {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
-    public void saveToFile(String fileName, String data) {
+    public void saveToFile(String data) {
         if (isExternalStorageWritable()) {
             // Find public storage directory
             File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
             File subfolder = new File(path, "MyoBandOutput");
             subfolder.mkdir();  // make directory if it does not exist
-            File outputFile = new File(subfolder, fileName);
+            File outputFile = new File(subfolder, OUTPUT_FILE_NAME);
 
             // https://stackoverflow.com/questions/9961292/write-to-text-file-without-overwriting-in-java
 
             // Write to file
-            try (PrintWriter writer = new PrintWriter(outputFile)) {
-                writer.println(data);
-//                os.write(data.getBytes(StandardCharsets.UTF_8));
+            try (FileWriter writer = new FileWriter(outputFile, true)) {
+                writer.append(data);
             } catch (FileNotFoundException e) {
                 Log.e(LOG_TAG, "Could not find file");
                 e.printStackTrace();
@@ -403,8 +406,8 @@ public class MainActivity extends AppCompatActivity {
         if (saveAnalogData) {
             // Format string
             Date time = Calendar.getInstance().getTime();
-            String data = String.format(Locale.CANADA, "%s: E1: %f E2:%f", time.toString(), x, y);
-            saveToFile(OUTPUT_FILE_NAME, data);
+            String data = String.format(Locale.CANADA, "%s: E1: %f E2:%f\n", time.toString(), x, y);
+            saveToFile(data);
         }
 
     }

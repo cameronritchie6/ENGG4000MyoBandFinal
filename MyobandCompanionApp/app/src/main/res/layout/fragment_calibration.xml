@@ -91,6 +91,7 @@
 
     <Button
         android:id="@+id/quit_calibration_btn"
+        style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Menu"
