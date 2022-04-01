@@ -33,7 +33,7 @@ public class UnityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         main = (MainActivity) requireActivity();
         MainActivity.myoReceiver.setUnityFragment(UnityFragment.this);
-        unityPlayer = main.getUnityPlayer();
+//        unityPlayer = main.getUnityPlayer();
         // Lock screen orientation to landscape
 //        main.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }

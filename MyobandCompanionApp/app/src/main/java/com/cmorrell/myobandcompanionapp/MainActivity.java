@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
 
-    private UnityPlayer unityPlayer;
+//    private UnityPlayer unityPlayer;
 
     private boolean myoControllerConnected = false;
 
@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private CalibrationFragment calibrationFragment;
-    // https://medium.com/android-news/5-steps-to-implement-room-persistence-library-in-android-47b10cd47b24
 
 
     /*
@@ -119,9 +118,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public UnityPlayer getUnityPlayer() {
-        return unityPlayer;
-    }
+//    public UnityPlayer getUnityPlayer() {
+//        return unityPlayer;
+//    }
 
     public boolean getSaveAnalogData() {
         return saveAnalogData;
@@ -168,9 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (device != null && checkForBTPermissions()) {
                 // Bond with device
-                String address = device.getAddress();
                 device.createBond();
-//                bluetoothLeService.setDeviceAddress(address);
                 bluetoothLeService.setMyoDevice(device);
                 // Navigate to main menu
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
@@ -192,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
-                unityPlayer.pause();
+//                unityPlayer.pause();
             }
         });
 //        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
@@ -220,13 +217,8 @@ public class MainActivity extends AppCompatActivity {
         startService(gattServiceIntent);
         bindService(gattServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        unityPlayer = new UnityPlayer(this);
+//        unityPlayer = new UnityPlayer(this);
 
-        saveToFile("HELLO THERE");
-        saveToFile("THIS GONNA WORK?");
-
-//        saveToFile(OUTPUT_FILE_NAME, "Woah now");
-//        saveToFile(OUTPUT_FILE_NAME, "Hey hey bro");
 
     }
 
@@ -259,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        unityPlayer.pause();
+//        unityPlayer.pause();
     }
 
     @Override
@@ -268,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
         // Set MainActivity context for broadcast receiver and service
         bluetoothLeService.setMain(MainActivity.this);
         myoReceiver.setMain(MainActivity.this);
-        unityPlayer.resume();
+//        unityPlayer.resume();
 
 //        if (!bluetoothLeService.getConnected()) {
 //            // Device disconnected in background
@@ -388,20 +380,21 @@ public class MainActivity extends AppCompatActivity {
             calibrationFragment.setBar1Value(Math.round(map(x)));
             calibrationFragment.setBar2Value(Math.round(map(y)));
 
-        } else {
-            if (map(x) < THRESHOLD_VOLTAGE) {
-                releaseUpButton();
-            }
-            if (map(y) < THRESHOLD_VOLTAGE) {
-                releaseDownButton();
-            }
+        }
+//        else {
+//            if (map(x) < THRESHOLD_VOLTAGE) {
+//                releaseUpButton();
+//            }
+//            if (map(y) < THRESHOLD_VOLTAGE) {
+//                releaseDownButton();
+//            }
 //            float average = (x + y) / 2;
 //                spaceGameMove(average * 20);
 //                spaceGameLiteMove(average * 20);
 //                Log.d(LOG_TAG, "SENT ANALOG");
 
 
-        }
+//        }
 
         if (saveAnalogData) {
             // Format string
@@ -425,79 +418,79 @@ public class MainActivity extends AppCompatActivity {
         return (amount - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     }
 
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // 96 = electrode 1
-        // 23 = co-contraction
-        // 4 = electrode 2
-        // I found the xBox sends multiple codes for 1 button press (1 press sends 96 and 23)
-        // xbox:
-        // a = 96
-        // b = 97
-        // x = 99
-        // y = 100
-
-        Log.d(LOG_TAG, "BUTTON: " + keyCode);
-        switch (keyCode) {
-            case ELECTRODE_1_CODE:
-                pressUpButton();
-            case ELECTRODE_2_CODE:
-                pressDownButton();
-            case CO_CONTRACTION_CODE:
-                spaceGameShoot();
-        }
-        if (checkCooldown()) {
-            // Call method in Unity script
-            quadrilateralJump();
-            // Reset cooldown
-            previousTime = Calendar.getInstance().getTimeInMillis();
-        }
-        // Don't return super() call to avoid calling back button pressed
-        return true;
-    }
-
-    private boolean checkCooldown() {
-        long time = Calendar.getInstance().getTimeInMillis();
-        return (time - previousTime) >= COOLDOWN_IN_MILLIS;
-    }
-
-    private void pressUpButton() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "pressUpButton", "");
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "pressUpButton", "");
-    }
-    private void pressDownButton() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "pressDownButton", "");
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "pressDownButton", "");
-    }
-
-    private void releaseUpButton() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "releaseUpButton", "");
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseUpButton", "");
-    }
-
-    private void releaseDownButton() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "releaseDownButton", "");
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseDownButton", "");
-    }
-
-
-
-    private void quadrilateralJump() {
-        UnityPlayer.UnitySendMessage("Player", "Jump", "");
-    }
-
-    private void spaceGameMove(Float amount) {
-        UnityPlayer.UnitySendMessage("PlayerShip", "JavaThrust", amount.toString());
-    }
-
-    private void spaceGameShoot() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "fireSecondary", "");
-    }
-
-    private void spaceGameLiteMove(Float amount) {
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "JavaThrust", amount.toString());
-    }
+//
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        // 96 = electrode 1
+//        // 23 = co-contraction
+//        // 4 = electrode 2
+//        // I found the xBox sends multiple codes for 1 button press (1 press sends 96 and 23)
+//        // xbox:
+//        // a = 96
+//        // b = 97
+//        // x = 99
+//        // y = 100
+//
+//        Log.d(LOG_TAG, "BUTTON: " + keyCode);
+//        switch (keyCode) {
+//            case ELECTRODE_1_CODE:
+//                pressUpButton();
+//            case ELECTRODE_2_CODE:
+//                pressDownButton();
+//            case CO_CONTRACTION_CODE:
+//                spaceGameShoot();
+//        }
+//        if (checkCooldown()) {
+//            // Call method in Unity script
+//            quadrilateralJump();
+//            // Reset cooldown
+//            previousTime = Calendar.getInstance().getTimeInMillis();
+//        }
+//        // Don't return super() call to avoid calling back button pressed
+//        return true;
+//    }
+//
+//    private boolean checkCooldown() {
+//        long time = Calendar.getInstance().getTimeInMillis();
+//        return (time - previousTime) >= COOLDOWN_IN_MILLIS;
+//    }
+//
+//    private void pressUpButton() {
+//        UnityPlayer.UnitySendMessage("PlayerShip", "pressUpButton", "");
+//        UnityPlayer.UnitySendMessage("PlayerShipLite", "pressUpButton", "");
+//    }
+//    private void pressDownButton() {
+//        UnityPlayer.UnitySendMessage("PlayerShip", "pressDownButton", "");
+//        UnityPlayer.UnitySendMessage("PlayerShipLite", "pressDownButton", "");
+//    }
+//
+//    private void releaseUpButton() {
+//        UnityPlayer.UnitySendMessage("PlayerShip", "releaseUpButton", "");
+//        UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseUpButton", "");
+//    }
+//
+//    private void releaseDownButton() {
+//        UnityPlayer.UnitySendMessage("PlayerShip", "releaseDownButton", "");
+//        UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseDownButton", "");
+//    }
+//
+//
+//
+//    private void quadrilateralJump() {
+//        UnityPlayer.UnitySendMessage("Player", "Jump", "");
+//    }
+//
+//    private void spaceGameMove(Float amount) {
+//        UnityPlayer.UnitySendMessage("PlayerShip", "JavaThrust", amount.toString());
+//    }
+//
+//    private void spaceGameShoot() {
+//        UnityPlayer.UnitySendMessage("PlayerShip", "fireSecondary", "");
+//    }
+//
+//    private void spaceGameLiteMove(Float amount) {
+//        UnityPlayer.UnitySendMessage("PlayerShipLite", "JavaThrust", amount.toString());
+//    }
 
     /**
      * Determines if the fragment is currently visible.

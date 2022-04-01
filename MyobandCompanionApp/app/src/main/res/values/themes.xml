@@ -20,4 +20,13 @@
     <style name="MyActionBar">
         <item name="android:background">@color/color_secondary</item>
     </style>
+
+    <style name="Theme.MyobandCompanionApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.MyobandCompanionApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.MyobandCompanionApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

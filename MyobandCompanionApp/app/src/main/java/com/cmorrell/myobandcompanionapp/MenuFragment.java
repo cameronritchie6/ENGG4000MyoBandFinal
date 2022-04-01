@@ -108,8 +108,10 @@ public class MenuFragment extends Fragment {
             // Go to training games screen
 //                Intent intent = new Intent(requireActivity(), UnityPlayerActivity.class);
 //                startActivity(intent);
-            NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
-            Navigation.findNavController(view12).navigate(action);
+//            NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
+//            Navigation.findNavController(view12).navigate(action);
+            Intent intent = new Intent(main, MainUnityActivity.class);
+            startActivity(intent);
 
         });
 
