@@ -77,11 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
     /*
     Todo: Fix the fact that you can't go back to Unity from main menu after opening Unity once NOW IMPORTANT
+     Todo: Number of electrodes setting (discard the second electrode if in 1 electrode mode)
      Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
      Todo: Fix orientation change causing UnityFragment to crash
      Todo: Let user select input device for game controller
      Todo: Theme setting
-     Todo: Number of electrodes setting (discard the second electrode if in 1 electrode mode)
      Todo: Call Java function from Unity that tells me what scene is being shown
     */
 
@@ -450,12 +450,10 @@ public class MainActivity extends AppCompatActivity {
         if (checkCooldown()) {
             // Call method in Unity script
             quadrilateralJump();
-
             // Reset cooldown
             previousTime = Calendar.getInstance().getTimeInMillis();
         }
-//        UnityPlayer.UnitySendMessage("Canvas", "Jump", "");
-//        return super.onKeyDown(keyCode, event);
+        // Don't return super() call to avoid calling back button pressed
         return true;
     }
 
