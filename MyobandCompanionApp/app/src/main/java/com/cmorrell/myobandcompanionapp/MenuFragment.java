@@ -43,8 +43,9 @@ public class MenuFragment extends Fragment {
         main = (MainActivity) requireActivity();
 
         // Connect to device
-        String address = main.getBluetoothLeService().getDeviceAddress();
-        if (!main.getBluetoothLeService().getConnected()) {
+        BluetoothLeService bluetoothLeService = main.getBluetoothLeService();
+        if (bluetoothLeService != null && !bluetoothLeService.getConnected()) {
+            String address = main.getBluetoothLeService().getDeviceAddress();
             if (!main.getBluetoothLeService().connect(address)) {
                 // Failed to connect, return to connection screen
                 main.onDisconnect();

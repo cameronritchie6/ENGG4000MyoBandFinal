@@ -1,6 +1,7 @@
 package com.cmorrell.myobandcompanionapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class MainUnityActivity extends UnityPlayerActivity {
 //        setContentView(R.layout.activity_main_unity);
         unityPlayer = new UnityPlayer(this);
         setContentView(unityPlayer);
+        Log.d(LOG_TAG, "WORKING");
 //        if (unityPlayer.getParent() != null) {
 //            // Avoid creating multiple Unity layouts
 //            ((ViewGroup) unityPlayer.getParent()).removeAllViews();
@@ -51,6 +53,10 @@ public class MainUnityActivity extends UnityPlayerActivity {
         super.onUnityPlayerQuitted();
         // Handle quitting out
         showMainActivity();
+    }
+
+    public void quitUnity() {
+        onUnityPlayerQuitted();
     }
 
     @Override
