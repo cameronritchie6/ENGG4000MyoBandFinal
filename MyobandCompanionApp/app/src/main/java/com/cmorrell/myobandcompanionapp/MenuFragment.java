@@ -52,8 +52,6 @@ public class MenuFragment extends Fragment {
             }
         }
 
-        main.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-
 
     }
 
@@ -65,19 +63,10 @@ public class MenuFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
-//        view.requestFocus();
-//        main.unityPlayer.clearFocus();
-
         // Assign UI elements
         calibrationBtn = view.findViewById(R.id.calibration_btn);
         gamesBtn = view.findViewById(R.id.games_btn);
         settingsBtn = view.findViewById(R.id.settings_btn);
-//        Button btn = view.findViewById(R.id.ble_button);
-//
-//        btn.setOnClickListener(v -> {
-//            NavDirections action = MenuFragmentDirections.actionMenuFragmentToBLETestFragment();
-//            Navigation.findNavController(view).navigate(action);
-//        });
 
 
 
@@ -106,11 +95,7 @@ public class MenuFragment extends Fragment {
         });
 
         gamesBtn.setOnClickListener(view12 -> {
-            // Go to training games screen
-//                Intent intent = new Intent(requireActivity(), UnityPlayerActivity.class);
-//                startActivity(intent);
-//            NavDirections action = MenuFragmentDirections.actionMenuFragmentToUnityFragment();
-//            Navigation.findNavController(view12).navigate(action);
+            // Go to training games activity
             Intent intent = new Intent(main, MainUnityActivity.class);
             startActivity(intent);
 

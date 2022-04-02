@@ -84,6 +84,14 @@ public class GameControls {
                     MotionEvent.AXIS_RZ, historyPos);
         }
 
+        if (MainActivity.getElectrodeMode() == ElectrodeDialogFragment.MODE_OPEN) {
+            // Ignore electrode 2
+            y = -1;
+        } else if (MainActivity.getElectrodeMode() == ElectrodeDialogFragment.MODE_CLOSE) {
+            // Ignore electrode 1
+            x = -1;
+        }
+
         return new float[]{x, y};
 
     }

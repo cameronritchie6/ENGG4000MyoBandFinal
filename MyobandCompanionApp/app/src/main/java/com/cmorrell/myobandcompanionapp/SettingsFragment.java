@@ -1,8 +1,5 @@
 package com.cmorrell.myobandcompanionapp;
 
-import android.content.Context;
-import android.hardware.usb.UsbAccessory;
-import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,7 +17,7 @@ import android.widget.TextView;
 public class SettingsFragment extends Fragment {
 
     public Button developerBtn;
-    public Button electrodeBtn;
+    public Button numElectrodesBtn;
     public Button saveBtn;
     private MainActivity main;
 
@@ -43,7 +40,7 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         developerBtn = view.findViewById(R.id.developer_btn);
-        electrodeBtn = view.findViewById(R.id.electrode_btn);
+        numElectrodesBtn = view.findViewById(R.id.num_electrodes_btn);
         saveBtn = view.findViewById(R.id.save_btn);
         Button menuBtn = view.findViewById(R.id.quit_settings_btn);
         menuBtn.setOnClickListener(new View.OnClickListener() {
@@ -62,10 +59,11 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        electrodeBtn.setOnClickListener(new View.OnClickListener() {
+        numElectrodesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                new ElectrodeDialogFragment().show(
+                        getChildFragmentManager(), ElectrodeDialogFragment.TAG);
             }
         });
 
