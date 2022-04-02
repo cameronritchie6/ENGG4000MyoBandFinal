@@ -15,7 +15,6 @@ public class MyoReceiver extends BroadcastReceiver {
     private BondingFragment bondingFragment;
     private CalibrationFragment calibrationFragment;
     private ConnectionFragment connectionFragment;
-    private UnityFragment unityFragment;
 
 
     private static final String LOG_TAG = "MyoReceiver";
@@ -38,9 +37,6 @@ public class MyoReceiver extends BroadcastReceiver {
         this.connectionFragment = connectionFragment;
     }
 
-    public void setUnityFragment(UnityFragment unityFragment) {
-        this.unityFragment = unityFragment;
-    }
 
     @Override
     public void onReceive(Context context, Intent intent) {

@@ -47,18 +47,14 @@ public class MainActivity extends AppCompatActivity {
     public static final int SELECT_DEVICE_REQUEST_CODE = 1;    // request code for BLE bonding
     public static final int REQUEST_ENABLE_BT = 2;  // request code to enable Bluetooth
 
-    private static final long COOLDOWN_IN_MILLIS = 300;    // Cooldown between inputs
     public static final String OUTPUT_FILE_NAME = "output.txt";
 
-    private long previousTime = Calendar.getInstance().getTimeInMillis();
     private BluetoothLeService bluetoothLeService;
     public static MyoReceiver myoReceiver = new MyoReceiver();
 
-    private static final double THRESHOLD_VOLTAGE = 2/3.3;
-
     private static final String LOG_TAG = "MainActivity";
 
-    private UnityPlayer unityPlayer;
+//    private UnityPlayer unityPlayer;
 
     private boolean myoControllerConnected = false;
 
@@ -72,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private CalibrationFragment calibrationFragment;
-    // https://medium.com/android-news/5-steps-to-implement-room-persistence-library-in-android-47b10cd47b24
 
 
     /*
@@ -119,9 +114,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public UnityPlayer getUnityPlayer() {
-        return unityPlayer;
-    }
+//    public UnityPlayer getUnityPlayer() {
+//        return unityPlayer;
+//    }
 
     public boolean getSaveAnalogData() {
         return saveAnalogData;
@@ -168,9 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (device != null && checkForBTPermissions()) {
                 // Bond with device
-                String address = device.getAddress();
                 device.createBond();
-//                bluetoothLeService.setDeviceAddress(address);
                 bluetoothLeService.setMyoDevice(device);
                 // Navigate to main menu
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
@@ -181,22 +174,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Unity method
-     *
-     */
-    public void quitUnity() {
-        Log.d("UNITY", "QUIT_UNITY");
-
-        UnityPlayer.currentActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
-                unityPlayer.pause();
-            }
-        });
-//        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
-    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -220,13 +197,7 @@ public class MainActivity extends AppCompatActivity {
         startService(gattServiceIntent);
         bindService(gattServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        unityPlayer = new UnityPlayer(this);
 
-        saveToFile("HELLO THERE");
-        saveToFile("THIS GONNA WORK?");
-
-//        saveToFile(OUTPUT_FILE_NAME, "Woah now");
-//        saveToFile(OUTPUT_FILE_NAME, "Hey hey bro");
 
     }
 
@@ -259,7 +230,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        unityPlayer.pause();
     }
 
     @Override
@@ -268,7 +238,6 @@ public class MainActivity extends AppCompatActivity {
         // Set MainActivity context for broadcast receiver and service
         bluetoothLeService.setMain(MainActivity.this);
         myoReceiver.setMain(MainActivity.this);
-        unityPlayer.resume();
 
 //        if (!bluetoothLeService.getConnected()) {
 //            // Device disconnected in background
@@ -312,37 +281,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Get the centered range for the analog range
-     * @param event MotionEvent that has occurred
-     * @param device InputDevice being used as game controller
-     * @param axis axis of joystick
-     * @param historyPos position in analog history buffer
-     * @return coordinate value as a float
-     */
-    private static float getCenteredAxis(MotionEvent event,
-                                         InputDevice device, int axis, int historyPos) {
-        final InputDevice.MotionRange range =
-                device.getMotionRange(axis, event.getSource());
-
-        // A joystick at rest does not always report an absolute position of
-        // (0,0). Use the getFlat() method to determine the range of values
-        // bounding the joystick axis center.
-        if (range != null) {
-            final float flat = range.getFlat();
-            final float value =
-                    historyPos < 0 ? event.getAxisValue(axis):
-                            event.getHistoricalAxisValue(axis, historyPos);
-
-            // Ignore axis values that are within the 'flat' region of the
-            // joystick axis center.
-            if (Math.abs(value) > flat) {
-                return value;
-            }
-        }
-        return 0;
-    }
-
-    /**
      *
      * @param event MotionEvent that has occurred
      * @param historyPos position in analog history buffer
@@ -350,57 +288,17 @@ public class MainActivity extends AppCompatActivity {
     private void processJoystickInput(MotionEvent event,
                                       int historyPos) {
 
-        InputDevice inputDevice = event.getDevice();
+        float[] analogStickValues = GameControls.processJoystickInput(event, historyPos);
 
-        // Calculate the horizontal distance to move by
-        // using the input value from one of these physical controls:
-        // the left control stick, hat axis, or the right control stick.
-        float x = getCenteredAxis(event, inputDevice,
-                MotionEvent.AXIS_X, historyPos);
-        if (x == 0) {
-            x = getCenteredAxis(event, inputDevice,
-                    MotionEvent.AXIS_HAT_X, historyPos);
-        }
-        if (x == 0) {
-            x = getCenteredAxis(event, inputDevice,
-                    MotionEvent.AXIS_Z, historyPos);
-        }
-
-        // Calculate the vertical distance to move by
-        // using the input value from one of these physical controls:
-        // the left control stick, hat switch, or the right control stick.
-        float y = getCenteredAxis(event, inputDevice,
-                MotionEvent.AXIS_Y, historyPos);
-        if (y == 0) {
-            y = getCenteredAxis(event, inputDevice,
-                    MotionEvent.AXIS_HAT_Y, historyPos);
-        }
-        if (y == 0) {
-            y = getCenteredAxis(event, inputDevice,
-                    MotionEvent.AXIS_RZ, historyPos);
-        }
+        float x = analogStickValues[0];
+        float y = analogStickValues[1];
 
         Log.d(LOG_TAG, String.format("X: %f\tY: %f", x, y));
 
-        // UPDATE MOVEMENT IN GAME
         if (isCurrentFragment(calibrationFragment)) {
             // 0 V equals -1 on joystick
-            calibrationFragment.setBar1Value(Math.round(map(x)));
-            calibrationFragment.setBar2Value(Math.round(map(y)));
-
-        } else {
-            if (map(x) < THRESHOLD_VOLTAGE) {
-                releaseUpButton();
-            }
-            if (map(y) < THRESHOLD_VOLTAGE) {
-                releaseDownButton();
-            }
-//            float average = (x + y) / 2;
-//                spaceGameMove(average * 20);
-//                spaceGameLiteMove(average * 20);
-//                Log.d(LOG_TAG, "SENT ANALOG");
-
-
+            calibrationFragment.setBar1Value(Math.round(GameControls.map(x)));
+            calibrationFragment.setBar2Value(Math.round(GameControls.map(y)));
         }
 
         if (saveAnalogData) {
@@ -412,91 +310,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Map from one range of values to another
-     * @param amount value to map to other range
-     * @return mapped value
-     */
-    private float map(float amount) {
-        long inMin = -1;
-        long inMax = 1;
-        long outMin = 0;
-        long outMax = 100;
-        return (amount - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
-    }
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // 96 = electrode 1
-        // 23 = co-contraction
-        // 4 = electrode 2
-        // I found the xBox sends multiple codes for 1 button press (1 press sends 96 and 23)
-        // xbox:
-        // a = 96
-        // b = 97
-        // x = 99
-        // y = 100
-
-        Log.d(LOG_TAG, "BUTTON: " + keyCode);
-        switch (keyCode) {
-            case ELECTRODE_1_CODE:
-                pressUpButton();
-            case ELECTRODE_2_CODE:
-                pressDownButton();
-            case CO_CONTRACTION_CODE:
-                spaceGameShoot();
-        }
-        if (checkCooldown()) {
-            // Call method in Unity script
-            quadrilateralJump();
-            // Reset cooldown
-            previousTime = Calendar.getInstance().getTimeInMillis();
-        }
-        // Don't return super() call to avoid calling back button pressed
+        // Override method so UI is not controlled by MyoBand controls
         return true;
-    }
-
-    private boolean checkCooldown() {
-        long time = Calendar.getInstance().getTimeInMillis();
-        return (time - previousTime) >= COOLDOWN_IN_MILLIS;
-    }
-
-    private void pressUpButton() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "pressUpButton", "");
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "pressUpButton", "");
-    }
-    private void pressDownButton() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "pressDownButton", "");
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "pressDownButton", "");
-    }
-
-    private void releaseUpButton() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "releaseUpButton", "");
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseUpButton", "");
-    }
-
-    private void releaseDownButton() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "releaseDownButton", "");
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseDownButton", "");
-    }
-
-
-
-    private void quadrilateralJump() {
-        UnityPlayer.UnitySendMessage("Player", "Jump", "");
-    }
-
-    private void spaceGameMove(Float amount) {
-        UnityPlayer.UnitySendMessage("PlayerShip", "JavaThrust", amount.toString());
-    }
-
-    private void spaceGameShoot() {
-        UnityPlayer.UnitySendMessage("PlayerShip", "fireSecondary", "");
-    }
-
-    private void spaceGameLiteMove(Float amount) {
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "JavaThrust", amount.toString());
     }
 
     /**
@@ -552,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 new AlertDialog.Builder(this)
-                        .setTitle("Location Permission")
+                        .setTitlecd ("Location Permission")
                         .setMessage(message)
                         .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
                             // Prompt the user once explanation has been shown
