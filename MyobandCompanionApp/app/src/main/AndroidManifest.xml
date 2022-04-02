@@ -49,6 +49,7 @@
         android:theme="@style/Theme.MyobandCompanionApp">
         <activity
             android:name=".MainUnityActivity"
+            android:process=".MainUnityActivity"
             android:exported="false" />
 
         <receiver

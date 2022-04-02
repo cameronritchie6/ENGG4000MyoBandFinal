@@ -6,7 +6,9 @@ import androidx.navigation.Navigation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.InputDevice;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -15,55 +17,91 @@ import com.unity3d.player.UnityPlayer;
 import com.unity3d.player.UnityPlayerActivity;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainUnityActivity extends UnityPlayerActivity {
 
     private UnityPlayer unityPlayer;
     private static final String LOG_TAG = "MainUnityActivity";
 
-    private static final int ELECTRODE_1_CODE = 96;
-    private static final int ELECTRODE_2_CODE = 97;
-    private static final int CO_CONTRACTION_CODE = 99;
+
     private long previousTime = Calendar.getInstance().getTimeInMillis();
-    private static final long COOLDOWN_IN_MILLIS = 300;    // Cooldown between inputs
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main_unity);
         unityPlayer = new UnityPlayer(this);
         setContentView(unityPlayer);
         Log.d(LOG_TAG, "WORKING");
-//        if (unityPlayer.getParent() != null) {
-//            // Avoid creating multiple Unity layouts
-//            ((ViewGroup) unityPlayer.getParent()).removeAllViews();
-//        }
-//        View view = unityPlayer.getView();
-//        FrameLayout frameLayoutForUnity = (FrameLayout) view.findViewById(R.id.frameLayoutForUnity);
-//        frameLayoutForUnity.addView(unityPlayer.getView(),
-//                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+
 
         unityPlayer.requestFocus();
         unityPlayer.windowFocusChanged(true);
     }
 
+    /**
+     * Generic method that is called whenever a MotionEvent is detected.
+     * @param ev MotionEvent that was detected
+     * @return true if source is an analog stick
+     */
     @Override
-    public void onUnityPlayerQuitted() {
-        super.onUnityPlayerQuitted();
-        // Handle quitting out
-        showMainActivity();
+    public boolean dispatchGenericMotionEvent(MotionEvent ev) {
+
+        // Check that the event came from a game controller
+        if ((ev.getSource() & InputDevice.SOURCE_JOYSTICK) ==
+                InputDevice.SOURCE_JOYSTICK &&
+                ev.getAction() == MotionEvent.ACTION_MOVE) {
+
+            // Process all historical movement samples in the batch
+            final int historySize = ev.getHistorySize();
+
+            // Process the movements starting from the
+            // earliest historical position in the batch
+            for (int i = 0; i < historySize; i++) {
+                // Process the event at historical position i
+                processJoystickInput(ev, i);
+            }
+
+            // Process the current movement sample in the batch (position -1)
+            processJoystickInput(ev, -1);
+            return true;
+        }
+        return super.dispatchGenericMotionEvent(ev);
     }
 
-    public void quitUnity() {
-        onUnityPlayerQuitted();
+    /**
+     *
+     * @param event MotionEvent that has occurred
+     * @param historyPos position in analog history buffer
+     */
+    private void processJoystickInput(MotionEvent event,
+                                      int historyPos) {
+
+        float[] analogStickValues = GameControls.processJoystickInput(event, historyPos);
+
+        float x = analogStickValues[0];
+        float y = analogStickValues[1];
+
+        Log.d(LOG_TAG, String.format("X: %f\tY: %f", x, y));
+
+
+            if (GameControls.map(x) < GameControls.THRESHOLD_VOLTAGE) {
+                releaseUpButton();
+            }
+            if (GameControls.map(y) < GameControls.THRESHOLD_VOLTAGE) {
+                releaseDownButton();
+            }
+
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 96 = electrode 1
-        // 23 = co-contraction
-        // 4 = electrode 2
+        // 97 = electrode 2
+        // 98 = co-contraction
         // I found the xBox sends multiple codes for 1 button press (1 press sends 96 and 23)
         // xbox:
         // a = 96
@@ -73,11 +111,11 @@ public class MainUnityActivity extends UnityPlayerActivity {
 
         Log.d(LOG_TAG, "BUTTON: " + keyCode);
         switch (keyCode) {
-            case ELECTRODE_1_CODE:
+            case GameControls.ELECTRODE_1_CODE:
                 pressUpButton();
-            case ELECTRODE_2_CODE:
+            case GameControls.ELECTRODE_2_CODE:
                 pressDownButton();
-            case CO_CONTRACTION_CODE:
+            case GameControls.CO_CONTRACTION_CODE:
                 spaceGameShoot();
         }
         if (checkCooldown()) {
@@ -87,12 +125,12 @@ public class MainUnityActivity extends UnityPlayerActivity {
             previousTime = Calendar.getInstance().getTimeInMillis();
         }
         // Don't return super() call to avoid calling back button pressed
-        return true;
+        return false;
     }
 
     private boolean checkCooldown() {
         long time = Calendar.getInstance().getTimeInMillis();
-        return (time - previousTime) >= COOLDOWN_IN_MILLIS;
+        return (time - previousTime) >= GameControls.COOLDOWN_IN_MILLIS;
     }
 
     private void pressUpButton() {
@@ -105,37 +143,29 @@ public class MainUnityActivity extends UnityPlayerActivity {
     }
 
     private void releaseUpButton() {
+        Log.d(LOG_TAG, "RUP");
         UnityPlayer.UnitySendMessage("PlayerShip", "releaseUpButton", "");
         UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseUpButton", "");
     }
 
     private void releaseDownButton() {
+        Log.d(LOG_TAG, "RDOWN");
         UnityPlayer.UnitySendMessage("PlayerShip", "releaseDownButton", "");
         UnityPlayer.UnitySendMessage("PlayerShipLite", "releaseDownButton", "");
     }
-
 
 
     private void quadrilateralJump() {
         UnityPlayer.UnitySendMessage("Player", "Jump", "");
     }
 
-    private void spaceGameMove(Float amount) {
-        UnityPlayer.UnitySendMessage("PlayerShip", "JavaThrust", amount.toString());
-    }
 
     private void spaceGameShoot() {
         UnityPlayer.UnitySendMessage("PlayerShip", "fireSecondary", "");
     }
 
-    private void spaceGameLiteMove(Float amount) {
-        UnityPlayer.UnitySendMessage("PlayerShipLite", "JavaThrust", amount.toString());
-    }
 
-    protected void showMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
+
 
     @Override
     public void onDestroy() {
