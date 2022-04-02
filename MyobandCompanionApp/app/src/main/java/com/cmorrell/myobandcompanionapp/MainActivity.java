@@ -31,13 +31,10 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.unity3d.player.UnityPlayer;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -54,30 +51,53 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
 
-//    private UnityPlayer unityPlayer;
-
     private boolean myoControllerConnected = false;
-
 
     private boolean saveAnalogData = false;
 
-    // Game buttons
-    private static final int ELECTRODE_1_CODE = 96;
-    private static final int ELECTRODE_2_CODE = 97;
-    private static final int CO_CONTRACTION_CODE = 99;
+    private static int electrodeMode = ElectrodeDialogFragment.MODE_BOTH;
+
+//    private boolean singleElectrodeMode = true;
+//
+//    public void toggleSingleElectrodeMode() {
+//        singleElectrodeMode = !singleElectrodeMode;
+//        if (singleElectrodeMode) {
+//            Toast.makeText(this, "Now operating in single electrode mode", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "Now operating in dual electrode mode", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+    public void setElectrodeMode(int electrodeMode) {
+        MainActivity.electrodeMode = electrodeMode;
+        String message = null;
+        if (electrodeMode == ElectrodeDialogFragment.MODE_OPEN) {
+            message = "Now operating in open electrode mode";
+        } else if (electrodeMode == ElectrodeDialogFragment.MODE_CLOSE) {
+            message = "Now operating in close electrode mode";
+        } else if (electrodeMode == ElectrodeDialogFragment.MODE_BOTH) {
+            message = "Now operating in dual electrode mode";
+        }
+
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static int getElectrodeMode() {
+        return electrodeMode;
+    }
 
 
     private CalibrationFragment calibrationFragment;
 
 
     /*
-    Todo: Fix the fact that you can't go back to Unity from main menu after opening Unity once NOW IMPORTANT
+    Todo: show spinning progress bar when doing BLE scan
+    Todo: show on calibration, menu, and settings that data is being saved
+    Todo: bluetooth permissions for other levels of Android
      Todo: Number of electrodes setting (discard the second electrode if in 1 electrode mode)
-     Todo: Fix the bottom navigation bar disappearing once returning to main menu from Unity
      Todo: Fix orientation change causing UnityFragment to crash
      Todo: Let user select input device for game controller
      Todo: Theme setting
-     Todo: Call Java function from Unity that tells me what scene is being shown
     */
 
 
@@ -114,13 +134,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    public UnityPlayer getUnityPlayer() {
-//        return unityPlayer;
-//    }
-
-    public boolean getSaveAnalogData() {
-        return saveAnalogData;
-    }
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -196,9 +209,6 @@ public class MainActivity extends AppCompatActivity {
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         startService(gattServiceIntent);
         bindService(gattServiceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-
-
-
     }
 
     private boolean isExternalStorageWritable() {
@@ -212,8 +222,6 @@ public class MainActivity extends AppCompatActivity {
             File subfolder = new File(path, "MyoBandOutput");
             subfolder.mkdir();  // make directory if it does not exist
             File outputFile = new File(subfolder, OUTPUT_FILE_NAME);
-
-            // https://stackoverflow.com/questions/9961292/write-to-text-file-without-overwriting-in-java
 
             // Write to file
             try (FileWriter writer = new FileWriter(outputFile, true)) {

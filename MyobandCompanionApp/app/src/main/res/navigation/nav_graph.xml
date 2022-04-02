@@ -66,6 +66,9 @@
             app:destination="@id/developerDialogFragment"
             app:popUpTo="@id/developerDialogFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_settingsFragment_to_electrodeDialogFragment"
+            app:destination="@id/electrodeDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/developerDialogFragment"
@@ -77,4 +80,9 @@
         app:destination="@id/settingsFragment"
         app:popUpTo="@id/settingsFragment"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/electrodeDialogFragment"
+        android:name="com.cmorrell.myobandcompanionapp.ElectrodeDialogFragment"
+        android:label="fragment_electrode_dialog"
+        tools:layout="@layout/fragment_electrode_dialog" />
 </navigation>

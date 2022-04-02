@@ -29,7 +29,7 @@
         android:text="Developer Settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/electrode_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/num_electrodes_btn" />
 
     <Button
         android:id="@+id/time_btn"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/developer_btn" />
 
     <Button
-        android:id="@+id/electrode_btn"
+        android:id="@+id/num_electrodes_btn"
         style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
