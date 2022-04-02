@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 new AlertDialog.Builder(this)
-                        .setTitle("Location Permission")
+                        .setTitlecd ("Location Permission")
                         .setMessage(message)
                         .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
                             // Prompt the user once explanation has been shown
