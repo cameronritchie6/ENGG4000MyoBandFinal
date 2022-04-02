@@ -57,16 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static int electrodeMode = ElectrodeDialogFragment.MODE_BOTH;
 
-//    private boolean singleElectrodeMode = true;
-//
-//    public void toggleSingleElectrodeMode() {
-//        singleElectrodeMode = !singleElectrodeMode;
-//        if (singleElectrodeMode) {
-//            Toast.makeText(this, "Now operating in single electrode mode", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "Now operating in dual electrode mode", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     public void setElectrodeMode(int electrodeMode) {
         MainActivity.electrodeMode = electrodeMode;
@@ -86,15 +76,14 @@ public class MainActivity extends AppCompatActivity {
         return electrodeMode;
     }
 
+    private final FragmentContexts fragmentContexts = new FragmentContexts();
 
-    private CalibrationFragment calibrationFragment;
 
 
     /*
     Todo: show spinning progress bar when doing BLE scan
     Todo: show on calibration, menu, and settings that data is being saved
     Todo: bluetooth permissions for other levels of Android
-     Todo: Number of electrodes setting (discard the second electrode if in 1 electrode mode)
      Todo: Fix orientation change causing UnityFragment to crash
      Todo: Let user select input device for game controller
      Todo: Theme setting
@@ -180,6 +169,9 @@ public class MainActivity extends AppCompatActivity {
                 bluetoothLeService.setMyoDevice(device);
                 // Navigate to main menu
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
+            } else {
+                fragmentContexts.getBondingFragment().setUI(false);
+                Toast.makeText(this, "Failed to find an available MyoBand device", Toast.LENGTH_SHORT).show();
             }
         } else
             super.onActivityResult(requestCode, resultCode, data);
@@ -285,7 +277,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setCalibrationFragment(CalibrationFragment calibrationFragment) {
-        this.calibrationFragment = calibrationFragment;
+        this.fragmentContexts.setCalibrationFragment(calibrationFragment);
+    }
+
+    public void setBondingFragment(BondingFragment bondingFragment) {
+        this.fragmentContexts.setBondingFragment(bondingFragment);
     }
 
     /**
@@ -303,10 +299,11 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(LOG_TAG, String.format("X: %f\tY: %f", x, y));
 
-        if (isCurrentFragment(calibrationFragment)) {
+
+        if (isCurrentFragment(fragmentContexts.getCalibrationFragment())) {
             // 0 V equals -1 on joystick
-            calibrationFragment.setBar1Value(Math.round(GameControls.map(x)));
-            calibrationFragment.setBar2Value(Math.round(GameControls.map(y)));
+            fragmentContexts.getCalibrationFragment().setBar1Value(Math.round(GameControls.map(x)));
+            fragmentContexts.getCalibrationFragment().setBar2Value(Math.round(GameControls.map(y)));
         }
 
         if (saveAnalogData) {

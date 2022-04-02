@@ -199,7 +199,7 @@ inputValues[0] |= 0b00000001;
 }
 
 void loop() {
-
+/*
   inputValues[1] = analogRead(E1); 
    inputValues[2] = analogRead(E2);
    
@@ -209,12 +209,13 @@ void loop() {
 //   Serial.println(inputValues[1]);
 //   Serial.print("E2: ");
 //   Serial.println(inputValues[2]);
-
+*/
   
   
 
 //inputValues[0] |= 00000001;
-     if((changeDetection(E1)||changeDetection(E2))&&connected){
+     //if((changeDetection(E1)||changeDetection(E2))&&connected){
+       if(connected){
       inputValues[0] = buttonPress( signalCheck(E1),  signalCheck(E2));
      // inputValues[0] = buttonPress(signalCheck(potPin1), signalCheck(potPin2));
      // Serial.println(map(analogRead(potPin1), 0, 4095, 0, 255));
@@ -225,13 +226,13 @@ void loop() {
       // inputValues[2] = analogRead(potPin2);
     input->setValue(inputValues, sizeof(inputValues));
     input->notify();
-    delay(200);
-    }
+   // delay(10);
 
+    }
 
     
 
-delay(200);
+delay(10);
 }
 
 
