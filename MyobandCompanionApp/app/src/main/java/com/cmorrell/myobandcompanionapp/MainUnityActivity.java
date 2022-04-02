@@ -99,15 +99,6 @@ public class MainUnityActivity extends UnityPlayerActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // 96 = electrode 1
-        // 97 = electrode 2
-        // 98 = co-contraction
-        // I found the xBox sends multiple codes for 1 button press (1 press sends 96 and 23)
-        // xbox:
-        // a = 96
-        // b = 97
-        // x = 99
-        // y = 100
 
         Log.d(LOG_TAG, "BUTTON: " + keyCode);
         switch (keyCode) {
@@ -125,7 +116,7 @@ public class MainUnityActivity extends UnityPlayerActivity {
             previousTime = Calendar.getInstance().getTimeInMillis();
         }
         // Don't return super() call to avoid calling back button pressed
-        return false;
+        return true;
     }
 
     private boolean checkCooldown() {

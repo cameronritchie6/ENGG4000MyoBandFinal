@@ -26,22 +26,12 @@
             app:destination="@id/calibrationFragment"
             app:popUpTo="@id/calibrationFragment"
             app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_menuFragment_to_unityFragment"
-            app:destination="@id/unityFragment"
-            app:popUpTo="@id/unityFragment"
-            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/calibrationFragment"
         android:name="com.cmorrell.myobandcompanionapp.CalibrationFragment"
         android:label="fragment_calibration"
         tools:layout="@layout/fragment_calibration" />
-    <fragment
-        android:id="@+id/unityFragment"
-        android:name="com.cmorrell.myobandcompanionapp.UnityFragment"
-        android:label="fragment_unity"
-        tools:layout="@layout/fragment_unity" />
     <fragment
         android:id="@+id/bondingFragment"
         android:name="com.cmorrell.myobandcompanionapp.BondingFragment"
@@ -60,8 +50,8 @@
     <action
         android:id="@+id/action_global_menuFragment"
         app:destination="@id/menuFragment"
-        app:popUpTo="@id/unityFragment"
-        app:popUpToInclusive="false" />
+        app:popUpTo="@id/menuFragment"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.cmorrell.myobandcompanionapp.SettingsFragment"

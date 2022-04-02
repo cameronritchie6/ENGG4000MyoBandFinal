@@ -174,22 +174,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Unity method
-     *
-     */
-    public void quitUnity() {
-        Log.d("UNITY", "QUIT_UNITY");
-
-        UnityPlayer.currentActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
-//                unityPlayer.pause();
-            }
-        });
-//        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.action_global_menuFragment);
-    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -330,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // Override method so UI is not controlled by MyoBand controls
-        return false;
+        return true;
     }
 
     /**
