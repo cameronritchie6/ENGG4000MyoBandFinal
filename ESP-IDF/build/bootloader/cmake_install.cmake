@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/bootloader/esp-idf/cmake_install.cmake")
+  include("C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/bootloader/esp-idf/cmake_install.cmake")
 
 endif()
 
@@ -51,5 +51,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/bootloader/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/bootloader/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
