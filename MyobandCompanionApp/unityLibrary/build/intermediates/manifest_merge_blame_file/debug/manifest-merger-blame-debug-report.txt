@@ -105,7 +105,7 @@
 58-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:5-101
 59            android:name="unity.build-id"
 59-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:16-45
-60            android:value="06e014ea-a941-4baa-b89f-aae00363eab9" />
+60            android:value="027c62a2-8a5b-405c-b94b-4174016a10cc" />
 60-->C:\Users\cmorr\OneDrive - University of New Brunswick\Documents\GitHubLocal\ENGG4000MyoBandFinal\MyobandCompanionApp\unityLibrary\src\main\AndroidManifest.xml:14:46-98
 61    </application>
 62
