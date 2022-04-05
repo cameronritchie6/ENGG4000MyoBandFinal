@@ -1,11 +1,4 @@
 #include <stdio.h>
-<<<<<<< HEAD
-
-class MyClass {
-    public:
-        int num;
-        // String str;
-=======
 #include "include/bleLibs/BLEDevice.h"
 #include "include/bleLibs/BLEUtils.h"
 #include "include/bleLibs/BLEServer.h"
@@ -147,7 +140,6 @@ hid->setBatteryLevel(7);
 // delay(portMAX_DELAY);
 vTaskDelay(portMAX_DELAY);
 
->>>>>>> Espressif
 };
 
 extern "C" void app_main(void)
