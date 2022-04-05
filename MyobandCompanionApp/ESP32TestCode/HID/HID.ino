@@ -9,6 +9,7 @@
 #include "HIDTypes.h"
 #include "BLEHIDDevice.h"
 #include <driver/adc.h>
+#include "LTC2944.h"
 
 //#include <sdkconfig.h>
 
