@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# Install script for directory: C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test
-=======
 # Install script for directory: C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF
->>>>>>> Espressif
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -43,11 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-<<<<<<< HEAD
-  include("C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/esp-idf/cmake_install.cmake")
-=======
   include("C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/esp-idf/cmake_install.cmake")
->>>>>>> Espressif
 
 endif()
 
@@ -59,9 +51,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-<<<<<<< HEAD
-file(WRITE "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/${CMAKE_INSTALL_MANIFEST}"
-=======
 file(WRITE "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/${CMAKE_INSTALL_MANIFEST}"
->>>>>>> Espressif
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-/* * Data converted from C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/esp-idf/mbedtls/x509_crt_bundle
-=======
 /* * Data converted from C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/esp-idf/mbedtls/x509_crt_bundle
->>>>>>> Espressif
  */
 .data
 .section .rodata.embedded

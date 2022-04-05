@@ -144,18 +144,6 @@ vTaskDelay(portMAX_DELAY);
 
 extern "C" void app_main(void)
 {
-<<<<<<< HEAD
-    printf("\n\n\n\nHello there from C++\n");
-
-    MyClass obj;
-
-    obj.num = 12;
-    // obj.str = "WOAH";
-
-    printf("\n%d \n", obj.num);
-
-}
-=======
     setup();
     while(true) {
        loop(); 
@@ -315,4 +303,3 @@ int buttonPress(double voltageIn, double voltageIn2){
       }//end else
       
     }//end change detection
->>>>>>> Espressif

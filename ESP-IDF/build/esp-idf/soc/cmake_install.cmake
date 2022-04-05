@@ -39,11 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-<<<<<<< HEAD
-  include("C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/esp-idf/soc/esp32/cmake_install.cmake")
-=======
   include("C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/esp-idf/soc/esp32/cmake_install.cmake")
->>>>>>> Espressif
 
 endif()
 
