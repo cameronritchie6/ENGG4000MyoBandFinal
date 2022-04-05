@@ -36,6 +36,10 @@ $<TARGET_FILE:__idf_newlib>
 $<TARGET_FILE:__idf_cxx>
 $<TARGET_FILE:__idf_app_trace>
 $<TARGET_FILE:__idf_asio>
+<<<<<<< HEAD
+=======
+$<TARGET_FILE:__idf_bt>
+>>>>>>> Espressif
 $<TARGET_FILE:__idf_cbor>
 $<TARGET_FILE:__idf_unity>
 $<TARGET_FILE:__idf_cmock>

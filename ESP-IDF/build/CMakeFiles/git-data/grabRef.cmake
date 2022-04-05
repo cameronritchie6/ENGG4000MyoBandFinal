@@ -15,10 +15,17 @@
 
 set(HEAD_HASH)
 
+<<<<<<< HEAD
 file(READ "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/CMakeFiles/git-data/HEAD" HEAD_CONTENTS LIMIT 1024)
 
 string(STRIP "${HEAD_CONTENTS}" HEAD_CONTENTS)
 set(GIT_DIR "C:/Espressif/frameworks/esp-idf-v4.4/.git")
+=======
+file(READ "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/CMakeFiles/git-data/HEAD" HEAD_CONTENTS LIMIT 1024)
+
+string(STRIP "${HEAD_CONTENTS}" HEAD_CONTENTS)
+set(GIT_DIR "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/.git")
+>>>>>>> Espressif
 # handle git-worktree
 if(EXISTS "${GIT_DIR}/commondir")
 	file(READ "${GIT_DIR}/commondir" GIT_DIR_NEW LIMIT 1024)
@@ -34,17 +41,31 @@ if(HEAD_CONTENTS MATCHES "ref")
 	# named branch
 	string(REPLACE "ref: " "" HEAD_REF "${HEAD_CONTENTS}")
 	if(EXISTS "${GIT_DIR}/${HEAD_REF}")
+<<<<<<< HEAD
 		configure_file("${GIT_DIR}/${HEAD_REF}" "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/CMakeFiles/git-data/head-ref" COPYONLY)
 	elseif(EXISTS "${GIT_DIR}/logs/${HEAD_REF}")
 		configure_file("${GIT_DIR}/logs/${HEAD_REF}" "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/CMakeFiles/git-data/head-ref" COPYONLY)
+=======
+		configure_file("${GIT_DIR}/${HEAD_REF}" "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/CMakeFiles/git-data/head-ref" COPYONLY)
+	elseif(EXISTS "${GIT_DIR}/logs/${HEAD_REF}")
+		configure_file("${GIT_DIR}/logs/${HEAD_REF}" "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/CMakeFiles/git-data/head-ref" COPYONLY)
+>>>>>>> Espressif
 		set(HEAD_HASH "${HEAD_REF}")
 	endif()
 else()
 	# detached HEAD
+<<<<<<< HEAD
 	configure_file("${GIT_DIR}/HEAD" "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/CMakeFiles/git-data/head-ref" COPYONLY)
 endif()
 
 if(NOT HEAD_HASH)
 	file(READ "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/build/CMakeFiles/git-data/head-ref" HEAD_HASH LIMIT 1024)
+=======
+	configure_file("${GIT_DIR}/HEAD" "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/CMakeFiles/git-data/head-ref" COPYONLY)
+endif()
+
+if(NOT HEAD_HASH)
+	file(READ "C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/build/CMakeFiles/git-data/head-ref" HEAD_HASH LIMIT 1024)
+>>>>>>> Espressif
 	string(STRIP "${HEAD_HASH}" HEAD_HASH)
 endif()

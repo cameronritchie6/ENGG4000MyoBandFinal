@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Install script for directory: C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/UNB/Winter 2022/ENGG4000/ESP32Test/main
+=======
+# Install script for directory: C:/Users/cmorr/OneDrive - University of New Brunswick/Documents/GitHubLocal/ENGG4000MyoBandFinal/ESP-IDF/main
+>>>>>>> Espressif
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
