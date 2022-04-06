@@ -104,10 +104,15 @@ public class MainUnityActivity extends UnityPlayerActivity {
         switch (keyCode) {
             case GameControls.ELECTRODE_1_CODE:
                 pressUpButton();
+                break;
             case GameControls.ELECTRODE_2_CODE:
                 pressDownButton();
+                break;
             case GameControls.CO_CONTRACTION_CODE:
                 spaceGameShoot();
+                break;
+            default:
+                // Do nothing
         }
         if (checkCooldown()) {
             // Call method in Unity script

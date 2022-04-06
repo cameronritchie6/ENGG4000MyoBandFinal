@@ -273,7 +273,9 @@ public class MainActivity extends AppCompatActivity {
             processJoystickInput(ev, -1);
             return true;
         }
-        return super.dispatchGenericMotionEvent(ev);
+        // Don't return super() to avoid affecting the menu
+        return false;
+//        return super.dispatchGenericMotionEvent(ev);
     }
 
     public void setCalibrationFragment(CalibrationFragment calibrationFragment) {
