@@ -50,6 +50,8 @@
         <activity
             android:name=".MainUnityActivity"
             android:process=".MainUnityActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape"
             android:exported="false" />
 
         <receiver
@@ -64,6 +66,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="fullSensor"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

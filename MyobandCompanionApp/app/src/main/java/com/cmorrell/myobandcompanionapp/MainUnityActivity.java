@@ -119,6 +119,7 @@ public class MainUnityActivity extends UnityPlayerActivity {
         return true;
     }
 
+
     private boolean checkCooldown() {
         long time = Calendar.getInstance().getTimeInMillis();
         return (time - previousTime) >= GameControls.COOLDOWN_IN_MILLIS;

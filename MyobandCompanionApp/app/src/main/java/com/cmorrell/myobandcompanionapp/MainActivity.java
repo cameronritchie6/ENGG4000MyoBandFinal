@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     /*
-    Todo: show spinning progress bar when doing BLE scan
     Todo: show on calibration, menu, and settings that data is being saved
     Todo: bluetooth permissions for other levels of Android
      Todo: Fix orientation change causing UnityFragment to crash

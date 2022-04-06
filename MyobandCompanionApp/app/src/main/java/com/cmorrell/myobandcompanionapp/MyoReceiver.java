@@ -8,6 +8,8 @@ import android.util.Log;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.unity3d.player.UnityPlayerActivity;
+
 import java.nio.charset.StandardCharsets;
 
 public class MyoReceiver extends BroadcastReceiver {
@@ -19,6 +21,7 @@ public class MyoReceiver extends BroadcastReceiver {
 
     private static final String LOG_TAG = "MyoReceiver";
     private MainActivity main;
+
 
     public void setMain(MainActivity main) {
         this.main = main;
@@ -56,7 +59,12 @@ public class MyoReceiver extends BroadcastReceiver {
             Log.d(LOG_TAG, "Device has been disconnected.");
             if (!isCurrentFragment(connectionFragment)) {
                 // Handle disconnect
-                main.onDisconnect();
+                if (main != null) {
+                    main.onDisconnect();
+                }
+
+
+
             }
         } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
 //            List<BluetoothGattService> services = main.getBluetoothLeService().getSupportedGattServices();
@@ -77,18 +85,9 @@ public class MyoReceiver extends BroadcastReceiver {
             data = intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA);
             dataString = new String(data, StandardCharsets.UTF_8);
 //            dataString = dataString.substring(0, dataString.length() - 1);  // remove \n
-            if (isCurrentFragment(calibrationFragment)) {
-                try {
-                    // Set meter value for calibration fragment
-                    int analogValue = Integer.parseInt(dataString);
-                    calibrationFragment.setBar1Value(analogValue);
-                } catch (NumberFormatException e) {
-                    Log.e(LOG_TAG, "Unable to parse integer.");
-                }
-            } else if (dataString.equals(BluetoothLeService.TIME)) {
+            if (dataString.equals(BluetoothLeService.TIME)) {
                 main.getBluetoothLeService().write("T");
             }
-//            UnityPlayer.UnitySendMessage("Canvas", "ShowMessage", dataString);
         }
     }
 
