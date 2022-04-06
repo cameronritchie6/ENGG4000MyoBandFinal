@@ -11,6 +11,7 @@
 #include <freertos/task.h>
 #include <math.h>
 #include "include/main.h"
+#include "include/LTC2944/LTC2944.h"
 
 
 BLEHIDDevice* hid; //declare hid device
