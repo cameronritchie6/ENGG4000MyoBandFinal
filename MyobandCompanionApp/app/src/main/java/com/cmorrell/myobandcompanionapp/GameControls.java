@@ -14,6 +14,15 @@ public class GameControls {
     public static final int CO_CONTRACTION_CODE = 98;
     public static final double THRESHOLD_VOLTAGE = 2/3.3 * 100;
     public static final long COOLDOWN_IN_MILLIS = 300;    // Cooldown between inputs
+    private static boolean saveAnalogData;
+
+    public static void toggleSaveAnalogData() {
+        saveAnalogData = !saveAnalogData;
+    }
+
+    public static boolean getSaveAnalogData() {
+        return saveAnalogData;
+    }
 
     /**
      * Get the centered range for the analog range
@@ -90,6 +99,13 @@ public class GameControls {
         } else if (MainActivity.getElectrodeMode() == ElectrodeDialogFragment.MODE_CLOSE) {
             // Ignore electrode 1
             x = -1;
+        }
+
+        if (saveAnalogData) {
+            // Format string
+            Date time = Calendar.getInstance().getTime();
+            String data = String.format(Locale.CANADA, "%s: E1: %f E2:%f\n", time.toString(), x, y);
+            DataStorage.saveToFile(data);
         }
 
         return new float[]{x, y};

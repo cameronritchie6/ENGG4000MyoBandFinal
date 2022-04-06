@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean myoControllerConnected = false;
 
-    private boolean saveAnalogData = false;
+//    private boolean saveAnalogData = false;
 
     private static int electrodeMode = ElectrodeDialogFragment.MODE_BOTH;
 
@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void toggleSaveAnalogData() {
-        saveAnalogData = !saveAnalogData;
-        if (saveAnalogData) {
+        GameControls.toggleSaveAnalogData();
+        if (GameControls.getSaveAnalogData()) {
             Toast.makeText(this, "Now saving data to MyoBandOutput directory", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "No longer saving data to MyoBandOutput directory", Toast.LENGTH_SHORT).show();
@@ -208,21 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveToFile(String data) {
         if (isExternalStorageWritable()) {
-            // Find public storage directory
-            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-            File subfolder = new File(path, "MyoBandOutput");
-            subfolder.mkdir();  // make directory if it does not exist
-            File outputFile = new File(subfolder, OUTPUT_FILE_NAME);
-
-            // Write to file
-            try (FileWriter writer = new FileWriter(outputFile, true)) {
-                writer.append(data);
-            } catch (FileNotFoundException e) {
-                Log.e(LOG_TAG, "Could not find file");
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            DataStorage.saveToFile(data);
         }
     }
 
@@ -272,9 +258,7 @@ public class MainActivity extends AppCompatActivity {
             processJoystickInput(ev, -1);
             return true;
         }
-        // Don't return super() to avoid affecting the menu
-        return false;
-//        return super.dispatchGenericMotionEvent(ev);
+        return super.dispatchGenericMotionEvent(ev);
     }
 
     public void setCalibrationFragment(CalibrationFragment calibrationFragment) {
@@ -307,12 +291,6 @@ public class MainActivity extends AppCompatActivity {
             fragmentContexts.getCalibrationFragment().setBar2Value(Math.round(GameControls.map(y)));
         }
 
-        if (saveAnalogData) {
-            // Format string
-            Date time = Calendar.getInstance().getTime();
-            String data = String.format(Locale.CANADA, "%s: E1: %f E2:%f\n", time.toString(), x, y);
-            saveToFile(data);
-        }
 
     }
 
