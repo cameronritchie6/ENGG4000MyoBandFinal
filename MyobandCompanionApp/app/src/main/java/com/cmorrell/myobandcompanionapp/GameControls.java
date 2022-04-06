@@ -11,7 +11,7 @@ import java.util.Locale;
 public class GameControls {
     public static final int ELECTRODE_1_CODE = 96;
     public static final int ELECTRODE_2_CODE = 97;
-    public static final int CO_CONTRACTION_CODE = 99;
+    public static final int CO_CONTRACTION_CODE = 98;
     public static final double THRESHOLD_VOLTAGE = 2/3.3 * 100;
     public static final long COOLDOWN_IN_MILLIS = 300;    // Cooldown between inputs
 
