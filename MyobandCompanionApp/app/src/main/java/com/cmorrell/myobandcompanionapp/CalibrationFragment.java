@@ -16,6 +16,8 @@ import android.widget.ProgressBar;
 
 public class CalibrationFragment extends Fragment {
 
+    public static final int PB_MIN = 0;
+    public static final int PB_MAX = 255;
     ProgressBar bar1;
     ProgressBar bar2;
     MainActivity main;
@@ -70,5 +72,10 @@ public class CalibrationFragment extends Fragment {
                 bar2.setProgress(value);
             }
         });
+    }
+
+    private void initProgressBar(ProgressBar bar) {
+        bar.setMin(PB_MIN);
+        bar.setMax(PB_MAX);
     }
 }
