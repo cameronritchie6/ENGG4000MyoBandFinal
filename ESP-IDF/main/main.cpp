@@ -46,7 +46,6 @@ class MyCallbacks : public BLEServerCallbacks { //Class that does stuff when dev
       desc->setNotifications(true);
       gpio_set_level(CONNECTED_LED_INDICATOR_PIN, 1);
 
-    //   digitalWrite(CONNECTED_LED_INDICATOR_PIN, HIGH);
     }
 
     void onDisconnect(BLEServer* pServer) {
@@ -55,7 +54,6 @@ class MyCallbacks : public BLEServerCallbacks { //Class that does stuff when dev
       BLE2902* desc = (BLE2902*)input->getDescriptorByUUID(BLEUUID((uint16_t)0x2902));
       desc->setNotifications(false);
       gpio_set_level(CONNECTED_LED_INDICATOR_PIN, 0);
-    //   digitalWrite(CONNECTED_LED_INDICATOR_PIN, LOW);
     }
 };
 
@@ -137,8 +135,6 @@ pAdvertising->setScanResponse(true);
 pAdvertising->start();
 hid->setBatteryLevel(7);
 
-// ESP_LOGD(LOG_TAG, "Advertising started!");
-// delay(portMAX_DELAY);
 vTaskDelay(portMAX_DELAY);
 
 };
@@ -146,7 +142,7 @@ vTaskDelay(portMAX_DELAY);
 extern "C" void app_main(void)
 {
     setup();
-    while(true) {
+    while(1) {
        loop(); 
     }
     
@@ -154,8 +150,6 @@ extern "C" void app_main(void)
 
 void setup() {
 
-    // Initialize ADC
-    initADC();
 
     // Initialize pin states
     gpio_set_level(EN5V, 1); // Enable 5V regulator
@@ -164,10 +158,13 @@ void setup() {
     gpio_set_pull_mode(BUTTON, GPIO_PULLUP_ONLY);   // Set button to pull up
 
     // Display board has turned on
-    blinkLED();
+    // blinkLED();
 
     // Create BLE server
     xTaskCreate(taskServer, "server", 20000, NULL, 5, NULL);
+
+    printf("FINISHED SETUP");
+
 }
 
 void loop() {
@@ -176,16 +173,16 @@ void loop() {
       inputValues[0] = buttonPress( signalCheck(EMG1),  signalCheck(EMG2));
                    inputValues[1] =  map(readADC(EMG1), 0, 4095, 0, 255);
                    inputValues[2] =  map(readADC(EMG2), 0, 4095, 0, 255);
-    input->setValue(inputValues, sizeof(inputValues));
-    input->notify();
+      input->setValue(inputValues, sizeof(inputValues));
+      input->notify();
 
     }
 
-    if (!gpio_get_level(BUTTON))
-    {
-        // Button is on
-        writeLED(0);
-    }
+    // if (!gpio_get_level(BUTTON))
+    // {
+    //     // Button is on
+    //     writeLED(0);
+    // }
     
 
     delay(10);    
@@ -213,11 +210,6 @@ void delay(int t) {
     vTaskDelay(t / portTICK_RATE_MS);
 }
 
-
-void initADC() {
-    // Turn on ADC
-    adc_power_on();
-}
 
 int readADC(int channelNum) {
     // Electrode 1 = channel 4
@@ -277,24 +269,24 @@ int buttonPress(double voltageIn, double voltageIn2){
 
     
       if(signal1 ==1 && signal2 ==0 ){ //contraction on electrode 1
-      printf("CONTRACTION ELECTRODE 1");
+      printf("CONTRACTION ELECTRODE 1\n");
       return 0b00000001;
 
        
       }
       else if(signal1 ==0 && signal2 ==1 ){ //contraction on electrode 2
-      printf("CONTRACTION ELECTRODE 2");
+      printf("CONTRACTION ELECTRODE 2\n");
       return 0b00000010;
         
       }
       else if(signal1 ==1 && signal2 ==1 ){ //co-contraction
-      printf("CO-CONTRACTION");
+      printf("CO-CONTRACTION\n");
       return 0b00000100;
 
         
       }
       else if(signal1 ==0 && signal2 ==0 ){ //no contraction
-      printf("NO CONTRACTION");
+      printf("NO CONTRACTION\n");
       return 0b00000000;   
 
       }

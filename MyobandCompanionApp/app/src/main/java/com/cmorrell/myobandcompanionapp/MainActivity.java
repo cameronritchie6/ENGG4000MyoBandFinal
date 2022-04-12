@@ -206,11 +206,11 @@ public class MainActivity extends AppCompatActivity {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
-    public void saveToFile(String data) {
-        if (isExternalStorageWritable()) {
-            DataStorage.saveToFile(data);
-        }
-    }
+//    public void saveToFile(String data) {
+//        if (isExternalStorageWritable()) {
+//            DataStorage.saveToFile(data);
+//        }
+//    }
 
     @Override
     protected void onPause() {

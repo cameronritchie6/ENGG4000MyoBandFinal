@@ -16,6 +16,7 @@ public class GameControls {
     public static final long COOLDOWN_IN_MILLIS = 300;    // Cooldown between inputs
     private static boolean saveAnalogData;
 
+
     public static void toggleSaveAnalogData() {
         saveAnalogData = !saveAnalogData;
     }
@@ -120,8 +121,8 @@ public class GameControls {
     public static float map(float amount) {
         long inMin = -1;
         long inMax = 1;
-        long outMin = 0;
-        long outMax = 100;
+        long outMin = CalibrationFragment.PB_MIN;
+        long outMax = CalibrationFragment.PB_MAX;
         return (amount - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     }
 
