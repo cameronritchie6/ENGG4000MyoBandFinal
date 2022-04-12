@@ -32,18 +32,6 @@
         app:layout_constraintTop_toBottomOf="@+id/num_electrodes_btn" />
 
     <Button
-        android:id="@+id/time_btn"
-        style="@style/IBMEButtonStyle"
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Time Delay Test"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/developer_btn" />
-
-    <Button
         android:id="@+id/num_electrodes_btn"
         style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
@@ -71,12 +59,12 @@
         style="@style/IBMEButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:visibility="invisible"
+        android:layout_marginTop="50dp"
         android:text="Save Data"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/developer_tv" />
 
     <Button
         android:id="@+id/quit_settings_btn"

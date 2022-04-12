@@ -78,13 +78,15 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        boolean correctPassCode = SettingsFragmentArgs.fromBundle(getArguments()).getCorrectPassCode();
+        assert getArguments() != null;
+        boolean correctPassCode = getArguments().getBoolean("passCode", false);
+//        SettingsFragmentArgs.fromBundle(getArguments().getBundle("passCode"))
+//        boolean correctPassCode = SettingsFragmentArgs.fromBundle(getArguments()).getCorrectPassCode();
+//        SettingsFragmentArgs
         if (correctPassCode) {
             developerBtn.setVisibility(View.INVISIBLE);
             TextView tv = view.findViewById(R.id.developer_tv);
-            Button timeBtn = view.findViewById(R.id.time_btn);
             tv.setVisibility(View.VISIBLE);
-            timeBtn.setVisibility(View.VISIBLE);
             saveBtn.setVisibility(View.VISIBLE);
         }
     }

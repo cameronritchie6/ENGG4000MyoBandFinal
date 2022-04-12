@@ -54,7 +54,8 @@ public class DeveloperDialogFragment extends DialogFragment {
                 if (code.equals(DEVELOPER_CODE)) {
                     dismiss();
                     NavGraphDirections.ActionGlobalSettingsFragment action = NavGraphDirections.actionGlobalSettingsFragment();
-                    action.setCorrectPassCode(true);
+
+                    action.setCorrectPassCode(String.valueOf(true));
                     Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).navigate(action);
                     message = "Success";
                 } else {
