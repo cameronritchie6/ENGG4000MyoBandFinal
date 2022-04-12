@@ -52,6 +52,10 @@ public class CalibrationFragment extends Fragment {
 
         bar1 = view.findViewById(R.id.bar_1);
         bar2 = view.findViewById(R.id.bar_2);
+
+        // Initialize ProgressBars to have an 8 bit range
+        initProgressBar(bar1);
+        initProgressBar(bar2);
         return view;
     }
 
