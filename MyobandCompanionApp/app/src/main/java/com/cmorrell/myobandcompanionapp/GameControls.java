@@ -16,6 +16,7 @@ public class GameControls {
     public static final long COOLDOWN_IN_MILLIS = 300;    // Cooldown between inputs
     private static boolean saveAnalogData;
 
+
     public static void toggleSaveAnalogData() {
         saveAnalogData = !saveAnalogData;
     }

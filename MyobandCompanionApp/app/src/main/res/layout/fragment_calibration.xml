@@ -99,4 +99,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_proof_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/title_tv_txt_size"
+        app:layout_constraintBottom_toTopOf="@+id/quit_calibration_btn"
+        app:layout_constraintStart_toEndOf="@+id/bar_1" />
+
+    <TextView
+        android:id="@+id/tv_proof_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/title_tv_txt_size"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_proof_1"
+        app:layout_constraintEnd_toStartOf="@+id/bar_2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
