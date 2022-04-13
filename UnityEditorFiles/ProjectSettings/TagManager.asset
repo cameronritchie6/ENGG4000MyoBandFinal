@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Bullet
+  - Asteroid
+  - CameraStop
+  - Projectile
+  - Boundary
+  - PlayerShipLite
+  - Score
+  - HealthBar
+  - SPLScore
+  - PowerUp
+  - BOP1
+  - BOP2
+  - PF1
+  - OPT
+  - OPS
+  - PF2
+  - BP
+  - BT
+  - IB
+  - HB
+  - PlayerShip
+  - Lollipop
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Asteroid
+  - Water
+  - UI
+  - Camera
+  - CameraStop
+  - Boundary
+  - EnemyFire
+  - PlayerFire
+  - empty
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: BackDrop
+    uniqueID: 4107854393
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Landscape
+    uniqueID: 2790854493
+    locked: 0
+  - name: Player
+    uniqueID: 2874604471
+    locked: 0
+  - name: Asteroid-
+    uniqueID: 629436715
+    locked: 0
+  - name: Asteroid
+    uniqueID: 2266636383
+    locked: 0
+  - name: Asteroid+
+    uniqueID: 3420844099
+    locked: 0
+  - name: Background
+    uniqueID: 2694925195
+    locked: 0
+  - name: Text
+    uniqueID: 328268561
+    locked: 0
