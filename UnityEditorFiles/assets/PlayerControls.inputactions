@@ -1,0 +1,147 @@
+{
+    "name": "PlayerControls",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "b864686d-c2e5-4089-8e05-254cd3f6847a",
+            "actions": [
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "a93e1cfc-74ac-4251-88d0-33232a8126e9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Up",
+                    "type": "Value",
+                    "id": "71c576b2-843f-481e-98cb-2796eb88e062",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Down",
+                    "type": "Value",
+                    "id": "ee60310e-41ac-487e-b610-c1a332a396e0",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Jump2",
+                    "type": "Button",
+                    "id": "ba447a73-0632-456b-b2bb-3e0c25397d9a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Up2",
+                    "type": "Button",
+                    "id": "512b4517-4414-4856-8469-dca743504e70",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Down2",
+                    "type": "Button",
+                    "id": "4d8d5613-fa57-40c1-8119-4463ecb8a606",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "22aa7a1a-9c12-4aeb-a61b-641f0f389aed",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7591b132-5916-489c-ad3d-beb668a8b09e",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "95b24c21-7885-432c-a310-c8a27fe22879",
+                    "path": "<Gamepad>/leftStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "626eaf6f-647b-475f-b586-7b7d4d0888bc",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f45da71d-1ad6-4048-bb22-9879d654d47e",
+                    "path": "<Keyboard>/anyKey",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "26eb0432-f658-4b7d-b1b2-de967a7b1cdb",
+                    "path": "<Keyboard>/#(w)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Up2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "40c68f15-93b1-4b09-aeb7-b5694c594612",
+                    "path": "<Keyboard>/#(s)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Down2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0f112bb0-600d-46e4-bedd-bd80589530ec",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
