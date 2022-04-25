@@ -102,7 +102,7 @@ public class MenuFragment extends Fragment {
         });
 
         settingsBtn.setOnClickListener(v -> {
-            NavDirections action = MenuFragmentDirections.actionGlobalSettingsFragment();
+            NavDirections action = MenuFragmentDirections.actionGlobalSettingsFragment(String.valueOf(false));
             Navigation.findNavController(v).navigate(action);
         });
 

@@ -105,7 +105,7 @@ public class GameControls {
         if (saveAnalogData) {
             // Format string
             Date time = Calendar.getInstance().getTime();
-            String data = String.format(Locale.CANADA, "%s: E1: %f E2:%f\n", time.toString(), x, y);
+            String data = String.format(Locale.CANADA, "%s: E1: %f E2:%f %d\n", time.toString(), x, y);
             DataStorage.saveToFile(data);
         }
 

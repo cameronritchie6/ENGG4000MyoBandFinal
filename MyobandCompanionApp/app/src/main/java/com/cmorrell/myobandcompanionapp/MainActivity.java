@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean myoControllerConnected = false;
 
+    private static int rxCount = 0;
+
 //    private boolean saveAnalogData = false;
 
     private static int electrodeMode = ElectrodeDialogFragment.MODE_BOTH;
@@ -282,8 +284,9 @@ public class MainActivity extends AppCompatActivity {
         float x = analogStickValues[0];
         float y = analogStickValues[1];
 
-        Log.d(LOG_TAG, String.format("X: %f\tY: %f", x, y));
+        Log.d(LOG_TAG, String.format("X: %f\tY: %f %d", x, y, rxCount));
 
+        rxCount++;
 
         if (isCurrentFragment(fragmentContexts.getCalibrationFragment())) {
             // 0 V equals -1 on joystick

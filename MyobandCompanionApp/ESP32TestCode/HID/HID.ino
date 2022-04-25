@@ -200,6 +200,7 @@ inputValues[0] |= 0b00000001;
    inputValues[2] = analogRead(ANALOGSTICK2);//DELETE IF NOT WORKING
 }
 
+int i;
 void loop() {
 /*
   inputValues[1] = analogRead(E1); 
@@ -228,6 +229,9 @@ void loop() {
       // inputValues[2] = analogRead(potPin2);
     input->setValue(inputValues, sizeof(inputValues));
     input->notify();
+    Serial.print("SENT VALUE");
+    Serial.println(i);
+    i++;
    // delay(10);
 
     }
@@ -328,7 +332,7 @@ int buttonPress(double voltageIn, double voltageIn2){
 
       }
       else{ //is there is an error
-      //Serial.println("CONTRACTION ERROR");
+      Serial.println("CONTRACTION ERROR");
       return 0b00000000;  
       }//end else
       
